@@ -36,7 +36,7 @@
             <!-- Page Content -->
             <main>
 
-                <div class="lg:flex pt-[4rem] lg:pt-0 h-screen overflow-auto">
+                <div class="lg:flex h-screen overflow-auto">
                     {{ $slot }}
                 </div>
 

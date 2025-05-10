@@ -1,4 +1,4 @@
-<div id="map" class="scroll-mt-20 mt-8">
+<div id="map" class="scroll-mt-20 mt-8 mb-8">
     <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Lokasi Masjid</h2>
     <div class="overflow-hidden rounded-md shadow-md">
         <iframe

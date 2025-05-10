@@ -45,6 +45,8 @@
     </label>
 </header>
 
+<div class="mb-[4rem] lg:mb-0"></div>
+
 <div id="popup-menu" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 justify-center items-center">
     <div class="bg-white rounded-bl-md rounded-br-md shadow-xl p-6">
         <h2 class="text-xl font-semibold mb-4">Admin Panel</h2>

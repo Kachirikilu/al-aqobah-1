@@ -1,6 +1,6 @@
 <div class="flex-1 p-4 md:p-8 overflow-y-auto">
 
-    <div class="max-w-[1080px] header-with-backdrop-blur text-white shadow-md mb-6 rounded-md">
+    <div class=" header-with-backdrop-blur text-white shadow-md mb-6 rounded-md">
         <div class="w-full h-full py-20 backdrop-blur-sm hover:backdrop-brightness-50 duration-500 ease-in-out backdrop-brightness-75 flex flex-col lg:flex-row justify-between items-center rounded-md">
             <a href="map" id="scroll-ke-map" class="text-3xl font-semibold mb-1 lg:ml-10 sm:mb-2 lg:mb-0">Al-Aqobah 1</a>
             <div class="flex items-center">
@@ -21,7 +21,7 @@
     
 
           
-    {{-- <div class="max-w-[1080px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-3 mb-6">
+    {{-- <div class=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-3 mb-6">
         
          <a href="#jadwal-hari-ini" id="scroll-ke-hari-ini" class="aspect-auto sm:aspect-square md:aspect-auto lg:aspect-[4/3] xl:aspect-[3/2] bg-white shadow-md rounded-md p-6 hover:bg-green-200 hover:shadow-lg transition duration-300">
             <h3 class="text-sm sm:text-lg font-semibold mb-2">Jadwal Hari Ini</h3>
@@ -59,7 +59,7 @@
         <div></div>
     </div> --}}
 
-    <div class="max-w-[1080px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap- mb-6">
+    <div class=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap- mb-6">
 
         <a href="#jadwal-hari-ini" id="scroll-ke-hari-ini" class="bg-white hover:bg-green-200 hover:shadow-lg transition duration-300 aspect-auto sm:aspect-square md:aspect-auto lg:aspect-[4/3] xl:aspect-[3/2] shadow-md rounded-md p-6">
             <h3 class="text-sm sm:text-lg font-semibold mb-2">Jadwal Hari Ini</h3>
@@ -101,9 +101,7 @@
                 <div id="jadwal-sholat">
                     <p class="text-gray-600 text-sm">Sedang memuat jadwal sholat...</p>
                 </div>
-                <div id="jadwal-sholat-next" class="text-right">
-                   
-                </div>
+                <div id="jadwal-sholat-next" class="text-right"></div>
             </div>
         </div>
     
@@ -219,7 +217,7 @@
 
 
 
-    <section class="max-w-[1080px] bg-white shadow-md rounded-md">
+    <section class=" bg-white shadow-md rounded-md">
         <div class="py-4 px-2 mx-auto max-w-screen-xl sm:px-4 lg:px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 h-full">
                 <div class="col-span-2 sm:col-span-2 bg-gray-50 h-[20rem] lg:h-full flex flex-col">
@@ -262,7 +260,7 @@
 
 
 
-    <div id="jadwal-hari-ini" class="max-w-[1080px] scroll-mt-20 my-6 bg-white shadow-md rounded-md p-2 md:pd-6">
+    <div id="jadwal-hari-ini" class=" scroll-mt-20 my-6 bg-white shadow-md rounded-md p-2 md:pd-6">
         <h3 class="text-xl font-semibold my-1 ml-2">Jadwal Hari Ini</h3>
         @if($jadwalHariIni->isEmpty())
             <p class="text-gray-600 text-xs sm:text-sm">Tidak ada jadwal hari ini.</p>
@@ -290,7 +288,7 @@
         @endif
     </div>
 
-    <div id="jadwal-minggu-ini" class="max-w-[1080px] scroll-mt-20 mt-8 mb-4">
+    <div id="jadwal-minggu-ini" class=" scroll-mt-20 mt-8 mb-4">
         <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Jadwal Minggu Ini</h2>
         @if($jadwalMingguIni->isEmpty())
             <p>Tidak ada jadwal untuk minggu ini.</p>
@@ -314,7 +312,7 @@
         @endif
     </div>
 
-    <div class="max-w-[1080px] mb-8">
+    <div class=" mb-8">
         <h2 class="text-xl font-semibold mt-8 mb-4 border-b border-gray-200 pb-2">Jadwal Minggu Depan</h2>
         @if($jadwalMingguDepan->isEmpty())
             <p>Tidak ada jadwal untuk minggu depan.</p>

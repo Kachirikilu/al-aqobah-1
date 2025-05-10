@@ -1,7 +1,7 @@
-<div id="jadwal-minggu-ini" class="max-w-[1080px] scroll-mt-20 mt-8 mb-4">
+<div id="jadwal-minggu-ini" class=" scroll-mt-20 mt-8 mb-4">
     <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Jadwal Minggu Ini</h2>
     @if($jadwalMingguIni->isEmpty())
-        <p>Tidak ada jadwal untuk minggu ini.</p>
+        <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal untuk minggu ini.</p>
     @else
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
             @foreach($jadwalMingguIni as $jadwal)

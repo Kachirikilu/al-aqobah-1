@@ -1,7 +1,7 @@
-<div class="max-w-[1080px] mb-8">
+<div class=" mb-8">
     <h2 class="text-xl font-semibold mt-8 mb-4 border-b border-gray-200 pb-2">Jadwal Minggu Depan</h2>
     @if($jadwalMingguDepan->isEmpty())
-        <p>Tidak ada jadwal untuk minggu depan.</p>
+        <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal untuk minggu depan.</p>
     @else
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
             @foreach($jadwalMingguDepan as $jadwal)
