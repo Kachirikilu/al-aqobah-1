@@ -35,7 +35,7 @@
     </a>
 
 
-    <div id="jadwal-sholat" class="scroll-mt-48 bg-white hover:bg-yellow-100 hover:shadow-lg transition duration-300 shadow-md rounded-md p-6 col-span-2 aspect-[24/9] md:aspect-[48/9] xl:aspect-[56/9] sm:col-span-2 sm:aspect-auto md:col-span-4 lg:col-span-2 lg:aspect-auto xl:col-span-4">
+    <div id="scroll-jadwal-sholat" class="scroll-mt-48 bg-white hover:bg-yellow-100 hover:shadow-lg transition duration-300 shadow-md rounded-md p-6 col-span-2 aspect-[24/9] md:aspect-[48/9] xl:aspect-[56/9] sm:col-span-2 sm:aspect-auto md:col-span-4 lg:col-span-2 lg:aspect-auto xl:col-span-4">
         <h3 id="jadwal-sholat-hari-ini" class="text-lg font-semibold mb-2">Jadwal Sholat</h3>
         <div class="flex justify-between">
             <div id="jadwal-sholat">
@@ -149,7 +149,8 @@
                     <p class="text-green-600 text-sm">Waktu Sholat ${nextPrayer}</p>
                     <p class="text-gray-600 text-sm live-time"></p>
                 `;
-            } else {
+            } 
+            else {
                 jadwalSholatNext.innerHTML = `
                     <h1 class="text-4xl font-bold text-blue-600">${dataNext.data.jadwal.subuh}</h1>
                     <p class="text-green-600 text-sm">Waktu Sholat Subuh, Besok</p>
