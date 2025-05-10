@@ -27,7 +27,6 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse ($jadwalCeramahs as $jadwal)
                             <tr 
-                            {{-- onclick="window.location='{{ route('admin.schedules.show', $jadwal->slug) }}'" --}}
                              class="cursor-pointer hover:bg-gray-100">
                                     <td class="px-6 py-4 whitespace-nowrap"><img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="max-w-40 rounded"></td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $jadwal->judul_ceramah }}</td>

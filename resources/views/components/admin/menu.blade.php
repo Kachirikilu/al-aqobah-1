@@ -95,7 +95,6 @@
             popupMenu.classList.add('hidden');
         });
 
-        // Tutup pop-up jika mengklik di luar pop-up
         window.addEventListener('click', (event) => {
             if (event.target === popupMenu) {
                 popupMenu.classList.add('hidden');

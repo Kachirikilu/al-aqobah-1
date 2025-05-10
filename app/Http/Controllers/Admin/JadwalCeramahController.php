@@ -24,7 +24,7 @@ class JadwalCeramahController extends Controller
      */
     public function create()
     {
-        return view('schedules-create');
+        return view('schedules');
     }
 
     /**
@@ -48,7 +48,6 @@ class JadwalCeramahController extends Controller
 
         $data = $request->all();
 
-        // Generate slug
         $slug = Str::slug($request->judul_ceramah) . '_' . Str::slug($request->nama_ustadz) . '_' . now()->format('YmdHisu');
         $data['slug'] = $slug;
 
@@ -74,7 +73,7 @@ class JadwalCeramahController extends Controller
     public function show($slug)
     {
         $jadwalCeramah = JadwalCeramah::where('slug', $slug)->firstOrFail();
-        return view('schedules-show', compact('jadwalCeramah'));
+        return view('schedules', compact('jadwalCeramah'));
     }
 
     /**
@@ -83,7 +82,7 @@ class JadwalCeramahController extends Controller
     public function edit($id)
     {
         $jadwalCeramah = JadwalCeramah::findOrFail($id);
-        return view('schedules-update', compact('jadwalCeramah'));
+        return view('schedules', compact('jadwalCeramah'));
     }
 
     /**

@@ -6,7 +6,7 @@
     </x-slot> --}}
     {{-- <div class="flex h-screen overflow-hidden"> --}}
 
-        <x-admin-menu />
+        <x-admin.menu />
 
         <div class="flex-1 p-8 overflow-y-auto">
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
