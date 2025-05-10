@@ -1,4 +1,4 @@
-<div id="jadwal-hari-ini" class=" scroll-mt-20 my-6 bg-white shadow-md rounded-md p-2 md:pd-6">
+<div id="jadwal-hari-ini" class="scroll-mt-20 my-6 bg-white shadow-md rounded-md p-2 md:pd-6">
     <h3 class="text-xl font-semibold my-1 ml-2">Jadwal Hari Ini</h3>
     @if($jadwalHariIni->isEmpty())
         <p class="bg-gray-100 rounded-md text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal hari ini.</p>

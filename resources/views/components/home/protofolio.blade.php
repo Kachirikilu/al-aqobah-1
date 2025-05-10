@@ -31,12 +31,12 @@
             <h1 class="text-3xl font-bold mb-4">Al-Aqobah 1</h1>
             <p class="text-lg mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ullamcorper euismod
                 massa eget dapibus. Sed in leo vel justo blandit faucibus id nec sapien.</p>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Lihat Jadwal
-            </button>
+            <a href="#grup-jadwal" id="scroll-ke-grup-jadwal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Lihat Kegiatan
+            </a>
         </div>
         <div class="md:w-1/2 lg:w-2/3 mt-8 md:mt-0">
-            <img src="/images/masjid/Pic 1_Al-Aqobah 1.jpg" alt="Responsive Design" class="w-full h-full object-cover">
+            <img src="/images/masjid/Pic 1_Al-Aqobah 1.jpg" alt="Responsive Design" class="w-full h-full object-cover rounded-sm shadow-md">
         </div>
     </div>
 

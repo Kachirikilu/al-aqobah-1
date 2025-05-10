@@ -16,6 +16,17 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const scrollLinks = [
+            { id: 'scroll-ke-grup-jadwal', target: '#grup-jadwal' },
+            { id: 'scroll-ke-grup-jadwal-2', target: '#grup-jadwal' },
+            { id: 'scroll-ke-grup-jadwal-3', target: '#grup-jadwal' },
+            { id: 'scroll-ke-jadwal-sholat', target: '#jadwal-sholat' },
+            { id: 'scroll-ke-jadwal-sholat-2', target: '#jadwal-sholat' },
+            { id: 'scroll-ke-jadwal-sholat-3', target: '#jadwal-sholat' },
+            { id: 'scroll-ke-galery', target: '#galery' },
+            { id: 'scroll-ke-galery-2', target: '#galery' },
+            { id: 'scroll-ke-galery-3', target: '#galery' },
+            { id: 'scroll-ke-footer', target: '#footer' },
+            { id: 'scroll-ke-footer-2', target: '#footer' },
             { id: 'scroll-ke-hari-ini', target: '#jadwal-hari-ini' },
             { id: 'scroll-ke-minggu-ini', target: '#jadwal-minggu-ini' },
             { id: 'scroll-ke-sudah-terlaksana', target: '#jadwal-sudah-terlaksana' },

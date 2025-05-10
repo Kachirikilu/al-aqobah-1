@@ -17,6 +17,8 @@
             </a>
         </li>
 
+        <li><a href="/" class="'hover:bg-gray-700' block py-2 px-4 rounded">Home</a></li>
+
         <li><a href="{{ route('profile.show') }}" class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a></li>
         <li>
             <form method="POST" action="{{ route('logout') }}" x-data>
@@ -65,6 +67,7 @@
                         @endif
                     </span>
                 </a></li>
+                <li><a href="/" class="block py-2 px-4 hover:bg-gray-100 rounded">Home</a></li>
                 <li><a href="{{ route('profile.show') }}" class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" x-data>

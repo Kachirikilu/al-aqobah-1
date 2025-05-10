@@ -1,5 +1,7 @@
 <x-app-layout>
     
+    <x-home.navbar />
+    
     <div>
         <x-home.protofolio />
 
@@ -12,14 +14,24 @@
                 :jadwalSudahTerlaksanaCount="$jadwalSudahTerlaksanaCount"
                 :totalJadwalCount="$totalJadwalCount"
             />
+            <x-home.galery-home />
+
+            <div id="grup-jadwal" class="scroll-mt-20">
+                @if(!$jadwalHariIni->isEmpty())
+                    <x-home.hari-ini :jadwalHariIni="$jadwalHariIni" />
+                @endif
+                @if(!$jadwalMingguIni->isEmpty())
+                    <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" />
+                @endif
+
+                <x-home.terlaksana-user :jadwalSudahTerlaksana="$jadwalSudahTerlaksana" />
+            </div>
+
             <x-home.maps />
 
-            <x-home.galery-home />
-            <x-home.hari-ini :jadwalHariIni="$jadwalHariIni" />
-            <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" />
-            <x-home.minggu-depan :jadwalMingguDepan="$jadwalMingguDepan" />
-            <x-home.minggu-selanjutnya :jadwalMingguSelanjutnya="$jadwalMingguSelanjutnya" />
-            <x-home.terlaksana :jadwalSudahTerlaksana="$jadwalSudahTerlaksana" />
+            <x-home.footer />
+
+
         </div>
     </div>
 
