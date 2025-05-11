@@ -1,4 +1,4 @@
-<div id="map" class="scroll-mt-20 mt-8 mb-8">
+<div id="scroll-map" class="scroll-mt-20 mt-8 mb-8">
     <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Lokasi Masjid</h2>
     <div class="overflow-hidden rounded-md shadow-md">
         <iframe
@@ -19,19 +19,22 @@
             { id: 'scroll-ke-grup-jadwal', target: '#grup-jadwal' },
             { id: 'scroll-ke-grup-jadwal-2', target: '#grup-jadwal' },
             { id: 'scroll-ke-grup-jadwal-3', target: '#grup-jadwal' },
+            { id: 'scroll-ke-grup-jadwal-4', target: '#grup-jadwal' },
             { id: 'scroll-ke-jadwal-sholat', target: '#scroll-jadwal-sholat' },
             { id: 'scroll-ke-jadwal-sholat-2', target: '#scroll-jadwal-sholat' },
             { id: 'scroll-ke-jadwal-sholat-3', target: '#scroll-jadwal-sholat' },
-            { id: 'scroll-ke-galery', target: '#galery' },
-            { id: 'scroll-ke-galery-2', target: '#galery' },
-            { id: 'scroll-ke-galery-3', target: '#galery' },
-            { id: 'scroll-ke-footer', target: '#footer' },
-            { id: 'scroll-ke-footer-2', target: '#footer' },
+            { id: 'scroll-ke-galery', target: '#scroll-galery' },
+            { id: 'scroll-ke-galery-2', target: '#scroll-galery' },
+            { id: 'scroll-ke-galery-3', target: '#scroll-galery' },
+            { id: 'scroll-ke-footer', target: '#scroll-footer' },
+            { id: 'scroll-ke-footer-2', target: '#scroll-footer' },
             { id: 'scroll-ke-hari-ini', target: '#jadwal-hari-ini' },
             { id: 'scroll-ke-minggu-ini', target: '#jadwal-minggu-ini' },
+            { id: 'scroll-ke-minggu-depan', target: '#jadwal-minggu-depan' },
             { id: 'scroll-ke-sudah-terlaksana', target: '#jadwal-sudah-terlaksana' },
             { id: 'scroll-ke-sudah-terlaksana-2', target: '#jadwal-sudah-terlaksana' },
-            { id: 'scroll-ke-map', target: '#map' }
+            { id: 'scroll-ke-map', target: '#scroll-map' },
+            { id: 'scroll-ke-map-2', target: '#scroll-map' }
         ];
 
         scrollLinks.forEach(linkInfo => {

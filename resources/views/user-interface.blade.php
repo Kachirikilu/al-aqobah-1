@@ -1,12 +1,12 @@
 <x-app-layout>
     
     <x-home.navbar />
-    
+
     <div>
         <x-home.protofolio />
 
-        <div class="max-w-[1080px] mx-auto flex-1 p-4 md:p-8 overflow-y-auto">
-            <x-home.header-home />
+        <div class="max-w-[1360px] mx-auto flex-1 p-4 md:p-8 overflow-y-auto">
+            <x-home.welcome-home />
 
             <x-home.info-home 
                 :jadwalHariIni="$jadwalHariIni"

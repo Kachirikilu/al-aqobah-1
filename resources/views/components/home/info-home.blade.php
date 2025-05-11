@@ -1,4 +1,4 @@
-<div class="max-w-[1080px] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap- mb-6">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap- mb-6">
 
     <a href="#jadwal-hari-ini" id="scroll-ke-hari-ini" class="bg-white hover:bg-green-200 hover:shadow-lg transition duration-300 aspect-auto sm:aspect-square md:aspect-auto lg:aspect-[4/3] xl:aspect-[3/2] shadow-md rounded-md p-6">
         <h3 class="text-sm sm:text-lg font-semibold mb-2">Jadwal Hari Ini</h3>
@@ -21,7 +21,7 @@
         @endif
     </a>
 
-    <a href="#jadwal-minggu-depan" id="scroll-ke-minggu-ini" class="bg-white hover:bg-orange-200 hover:shadow-lg transition duration-300 aspect-auto sm:aspect-square md:aspect-auto lg:aspect-[4/3] xl:aspect-[3/2] shadow-md rounded-md p-6">
+    <a href="#jadwal-minggu-ini" id="scroll-ke-minggu-ini" class="bg-white hover:bg-orange-200 hover:shadow-lg transition duration-300 aspect-auto sm:aspect-square md:aspect-auto lg:aspect-[4/3] xl:aspect-[3/2] shadow-md rounded-md p-6">
         <h3 class="text-lg font-semibold mb-2">Jadwal Belum Terlaksana</h3>
         <div class="text-2xl font-bold text-blue-500">{{ $jadwalBelumTerlaksanaCount }}</div>
     </a>

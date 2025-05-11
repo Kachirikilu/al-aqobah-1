@@ -29,49 +29,21 @@
     <div class="container mx-auto py-8 px-9 lg:px-40 md:flex md:justify-center md:items-center">
         <div class="md:w-1/2 md:mr-8">
             <h1 class="text-3xl font-bold mb-4">Al-Aqobah 1</h1>
-            <p class="text-lg mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ullamcorper euismod
-                massa eget dapibus. Sed in leo vel justo blandit faucibus id nec sapien.</p>
-            <a href="#grup-jadwal" id="scroll-ke-grup-jadwal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Lihat Kegiatan
-            </a>
+            <p class="text-lg mb-4">Masjid Al-Aqobah 1 merupakan salah satu rumah ibadah yang terletak di Palembang. Sebagai bagian dari komunitas muslim setempat, masjid ini menjadi pusat kegiatan keagamaan, pendidikan, dan sosial bagi warga sekitar. Dengan arsitektur yang mungkin memiliki ciri khas tersendiri, Al-Aqobah 1 hadir sebagai tempat yang khusyuk untuk beribadah dan mempererat tali silaturahmi antar umat. Keberadaannya memiliki peran penting dalam kehidupan spiritual dan kebersamaan masyarakat di lingkungannya.</p>
+            <div class="flex col-span-1 gap-3">
+                <a href="#scroll-grup-jadwal" id="scroll-ke-grup-jadwal-3" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Lihat Kegiatan
+                </a>
+                <a href="#scroll-map" id="scroll-ke-map-2" id="scroll-ke-grup-jadwal" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Lokasi
+                </a>
+            </div>
         </div>
         <div class="md:w-1/2 lg:w-2/3 mt-8 md:mt-0">
             <img src="/images/masjid/Pic 1_Al-Aqobah 1.jpg" alt="Responsive Design" class="w-full h-full object-cover rounded-sm shadow-md">
         </div>
     </div>
 
-    {{-- <div class="p-6">
-        <div class="mx-auto">
-            <div class="relative z-20 rounded-lg shadow-xl overflow-hidden lg:grid lg:grid-cols-2 lg:gap-4"
-                style="background-image: linear-gradient(to left bottom, #f87171, #f55979, #ee4085, #e12896, #cb18a9, #bd12b5, #aa16c1, #921fce, #881ed5, #7d1fdc, #6e21e3, #5c24eb);">
-                <div class="pt-10 pb-12 px-6 sm:pt-16 sm:px-8 lg:py-16 lg:pr-0">
-                    <div class="lg:self-center">
-                        <h2 class="text-3xl leading-9 font-extrabold text-white sm:text-4xl sm:leading-10">
-                            <span class="block">This is a title for your call to action card</span>
-                        </h2>
-                        <p class="mt-4 text-base leading-6 text-white">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
-                        <p class="mt-4 text-base leading-6 text-dark-blue-800">
-                        </p>
-                        <a href="#" target="_blank" style="background-color: #000"
-                            class="mt-8 border border-transparent rounded-md shadow px-6 py-3 inline-flex items-center text-base leading-6 font-medium  text-white transition duration-150 ease-in-out">
-                            Get started
-                        </a>
-                        <a href="#" target="_blank" class="ml-4 mt-8 text-white font-bold text-sm underline">
-                            Learn more
-                        </a>
-                    </div>
-                </div>
-                <div class="relative pb-3/5 -mt-6 md:pb-1/2">
-                    <img class="absolute inset-0 w-full h-full transform translate-x-6 translate-y-6 rounded-md object-cover object-left-top sm:translate-x-10 lg:translate-y-20"
-                    src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxsYXB0b3B8ZW58MHwwfHx8MTY5NzQ0ODQ4M3ww&ixlib=rb-4.0.3&q=80&w=1080">
-                </div>
-            </div>
-        </div>
-    </div> --}}
 </div>
 
 

@@ -3,7 +3,7 @@
     <x-admin.menu />
 
     <div class="max-w-[1080px] mx-auto flex-1 p-4 md:p-8 overflow-y-auto">
-        <x-home.header-home />
+        <x-home.welcome-home />
         <x-home.info-home 
             :jadwalHariIni="$jadwalHariIni"
             :jadwalBelumTerlaksanaCount="$jadwalBelumTerlaksanaCount"
