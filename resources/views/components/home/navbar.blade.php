@@ -8,19 +8,19 @@
                     <span class="ml-2 text-xl font-bold text-gray-800">PT. PUSRI</span>
                 </a>
                 <div class="hidden md:ml-6 md:flex md:space-x-8">
-                    <a href="/" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="/" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Home
                     </a>
-                    <a id="scroll-ke-grup-jadwal" href="#grup-jadwal" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="#grup-jadwal" id="scroll-ke-grup-jadwal" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Kegiatan
                     </a>
-                    <a id="scroll-ke-jadwal-sholat" href="#scroll-jadwal-sholat" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="#scroll-jadwal-sholat" id="scroll-ke-jadwal-sholat" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Waktu Sholat
                     </a>
-                    <a id="scroll-ke-galery" href="#scroll-galery" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="#scroll-galery" id="scroll-ke-galery" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Galery
                     </a>
-                    <a id="scroll-ke-footer" href="#scroll-footer" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="#scroll-footer" id="scroll-ke-footer" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Contact
                     </a>
                 </div>

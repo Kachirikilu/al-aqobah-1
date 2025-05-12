@@ -17,7 +17,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($jadwalSudahTerlaksana as $jadwal)
-                    <tr onclick="window.location='{{ route('admin.schedules.show', $jadwal->slug) }}'" class="cursor-pointer hover:bg-gray-100">
+                    <tr onclick="window.location='/schedules/show/{{ $jadwal->slug }}'" class="cursor-pointer hover:bg-gray-100">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($jadwal->gambar)
                                     <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="max-w-40 rounded">

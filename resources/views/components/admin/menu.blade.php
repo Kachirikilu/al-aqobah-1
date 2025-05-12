@@ -1,6 +1,8 @@
 <aside class="hidden lg:block bg-gray-700 text-white w-64 left-0 h-auto py-8 px-4">
     <h2 class="text-2xl font-semibold mb-6 border-b border-gray-600 pb-2">Admin Panel</h2>
     <ul class="space-y-2">
+        <li><a href="/" class="'hover:bg-gray-700' block py-2 px-4 rounded">Home</a></li>
+
         <li><a href="/dashboard" class="{{ request()->is('dashboard') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">Dashboard</a></li>
         <li>
             <a href="/schedules" class="group {{ request()->is('schedules*') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">
@@ -17,16 +19,13 @@
             </a>
         </li>
 
-        <li><a href="/" class="'hover:bg-gray-700' block py-2 px-4 rounded">Home</a></li>
-
         <li><a href="{{ route('profile.show') }}" class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a></li>
         <li>
             <form method="POST" action="{{ route('logout') }}" x-data>
                 @csrf
-                <a href="{{ route('logout') }}" class="block py-2 px-4 hover:bg-gray-700 rounded"
-                        @click.prevent="$root.submit();">
-                    {{ __('Log Out') }}
-                </a>
+                <button type="submit" class="block py-2 px-4 hover:bg-gray-700 rounded">
+                    {{ __('Logout') }}
+                </button>
             </form>
         </li>
     </ul>
@@ -54,6 +53,7 @@
         <h2 class="text-xl font-semibold mb-4">Admin Panel</h2>
         <nav>
             <ul class="space-y-2">
+                <li><a href="/" class="block py-2 px-4 hover:bg-gray-100 rounded">Home</a></li>
                 <li><a href="/dashboard" class="{{ request()->is('dashboard') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">Dashboard</a></li>
                 <li><a href="/schedules" class="group {{ request()->is('schedules*') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">
                     Schedules
@@ -67,15 +67,13 @@
                         @endif
                     </span>
                 </a></li>
-                <li><a href="/" class="block py-2 px-4 hover:bg-gray-100 rounded">Home</a></li>
                 <li><a href="{{ route('profile.show') }}" class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
-                        <a href="{{ route('logout') }}" class="block py-2 px-4 hover:bg-gray-100 rounded"
-                                @click.prevent="$root.submit();">
-                            {{ __('Log Out') }}
-                        </a>
+                        <button type="submit" class="w-full text-left block py-2 px-4 hover:bg-gray-100 rounded">
+                            {{ __('Logout') }}
+                        </button>
                     </form>
                 </li>
                 <li>

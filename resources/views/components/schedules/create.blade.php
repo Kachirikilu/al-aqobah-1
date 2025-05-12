@@ -1,4 +1,4 @@
-<div class="bg-white flex-1 px-20 overflow-auto shadow-md rounded-md p-6">
+<div class="bg-white flex-1 overflow-auto shadow-md rounded-md px-3 sm:px-6 md:px-30 lg:px-20 xl:px-50 py-6">
     <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Input Jadwal Ceramah</h2>
     <form action="{{ route('admin.schedules.store') }}" method="POST" class="space-y-4" enctype="multipart/form-data">
         @csrf

@@ -268,7 +268,7 @@
             <div class="grid grid-cols-1 gap-4 pt-3">
                 @foreach($jadwalHariIni as $jadwal)
                     <div class="rounded-md overflow-hidden hover:bg-gray-100 hover:shadow-lg transition duration-300 group">
-                        <a href="{{ route('admin.schedules.show', $jadwal->slug) }}" class="block">
+                        <a href="/schedules/show/{{ $jadwal->slug }}" class="block">
                             <div class="flex sm:flex-row flex-col items-start">
                                 @if($jadwal->gambar)
                                     <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full sm:w-48 aspect-[3/2] sm:aspect-square object-cover rounded-md sm:mr-4 mb-2 sm:mb-0">
@@ -295,7 +295,7 @@
         @else
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
                 @foreach($jadwalMingguIni as $jadwal)
-                    <a href="{{ route('admin.schedules.show', $jadwal->slug) }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
+                    <a href="/schedules/show/{{ $jadwal->slug }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
                         @if($jadwal->gambar)
                             <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full aspect-square object-cover">
                         @else
@@ -319,7 +319,7 @@
         @else
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
                 @foreach($jadwalMingguDepan as $jadwal)
-                    <a href="{{ route('admin.schedules.show', $jadwal->slug) }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
+                    <a href="/schedules/show/{{ $jadwal->slug }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
                         @if($jadwal->gambar)
                             <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full aspect-square object-cover">
                         @else
@@ -343,7 +343,7 @@
         @else
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
                 @foreach($jadwalMingguSelanjutnya as $jadwal)
-                    <a href="{{ route('admin.schedules.show', $jadwal->slug) }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
+                    <a href="/schedules/show/{{ $jadwal->slug }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
                         @if($jadwal->gambar)
                             <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full aspect-square object-cover">
                         @else
@@ -396,7 +396,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($jadwalSudahTerlaksana as $jadwal)
-                        <tr onclick="window.location='{{ route('admin.schedules.show', $jadwal->slug) }}'" class="cursor-pointer hover:bg-gray-100">
+                        <tr onclick="window.location='/schedules/show/{{ $jadwal->slug }}'" class="cursor-pointer hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($jadwal->gambar)
                                         <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="max-w-40 rounded">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\JadwalCeramah;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str; // Import Str class untuk fungsi slug
@@ -33,7 +34,7 @@ class JadwalCeramahController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'judul_ceramah' => 'required|string|max:255',
             'nama_ustadz' => 'required|string|max:255',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Contoh validasi gambar
@@ -45,6 +46,12 @@ class JadwalCeramahController extends Controller
             'kategori_ceramah' => 'nullable|string|max:255',
             'link_streaming' => 'nullable|url|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.schedules.create')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $data = $request->all();
 
@@ -92,8 +99,21 @@ class JadwalCeramahController extends Controller
     {
         $jadwalCeramah = JadwalCeramah::findOrFail($id);
 
+        // $request->validate([
+        //     'judul_ceramah' => 'required|string|max:255',
+        //     'nama_ustadz' => 'required|string|max:255',
+        //     'tanggal_ceramah' => 'required|date',
+        //     'jam_mulai' => 'required|date_format:H:i',
+        //     'jam_selesai' => 'nullable|date_format:H:i|after:jam_mulai',
+        //     'tempat_ceramah' => 'required|string|max:255',
+        //     'tentang_ceramah' => 'nullable|string',
+        //     'kategori_ceramah' => 'nullable|string|max:255',
+        //     'link_streaming' => 'nullable|url|max:255',
+        //     'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk gambar
+        // ]);
 
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'judul_ceramah' => 'required|string|max:255',
             'nama_ustadz' => 'required|string|max:255',
             'tanggal_ceramah' => 'required|date',
@@ -105,6 +125,11 @@ class JadwalCeramahController extends Controller
             'link_streaming' => 'nullable|url|max:255',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk gambar
         ]);
+        if ($validator->fails()) {
+            return redirect()->route('admin.schedules.edit', ['schedule' => $jadwalCeramah->id])
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         // Generate slug
 

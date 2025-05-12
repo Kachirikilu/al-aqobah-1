@@ -6,7 +6,7 @@
         <div class="grid grid-cols-1 gap-4 pt-3">
             @foreach($jadwalHariIni as $jadwal)
                 <div class="rounded-md overflow-hidden hover:bg-gray-100 hover:shadow-lg transition duration-300 group">
-                    <a href="{{ route('admin.schedules.show', $jadwal->slug) }}" class="block">
+                    <a href="/schedules/show/{{ $jadwal->slug }}" class="block">
                         <div class="flex sm:flex-row flex-col items-start">
                             @if($jadwal->gambar)
                                 <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full sm:w-48 aspect-[3/2] sm:aspect-square object-cover rounded-md sm:mr-4 mb-2 sm:mb-0">
