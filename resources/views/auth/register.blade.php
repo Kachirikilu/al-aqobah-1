@@ -32,6 +32,11 @@
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+            <div class="mt-4">
+                <x-label for="admin_key" value="{{ __('Admin Key') }}" />
+                <x-input id="admin_key" class="block mt-1 w-full" type="password" name="admin_key" required autocomplete="new-password" />
+            </div>
+
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
                     <x-label for="terms">

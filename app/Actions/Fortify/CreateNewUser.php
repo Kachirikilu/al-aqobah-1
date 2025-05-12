@@ -19,12 +19,20 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        Validator::make($input, [
+       Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-        ])->validate();
+            'admin_key' => ['required', 'string'], // Tambahkan validasi untuk admin_key
+        ])->after(function ($validator) use ($input) {
+            if (isset($input['admin_key']) && $input['admin_key'] !== 'nrgKnSD$ZJP9sUh') {
+                $validator->errors()->add(
+                    'admin_key',
+                    'Kunci admin tidak valid.'
+                );
+            }
+        })->validate();
 
         return User::create([
             'name' => $input['name'],
