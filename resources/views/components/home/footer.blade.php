@@ -16,19 +16,19 @@
 
     <div class="flex justify-center space-x-5">
         <a href="https://www.facebook.com/share/19SofgsQFs/" target="_blank" rel="noopener noreferrer">
-            <img src="https://img.icons8.com/fluent/30/000000/facebook-new.png" />
-        </a>
-        <a href="https://www.linkedin.com/in/wildan-athif-muttaqien-89b327297" target="_blank" rel="noopener noreferrer">
-            <img src="https://img.icons8.com/fluent/30/000000/linkedin-2.png" />
+            <img src="/images/icons/facebook.png" class="w-9" />
         </a>
         <a href="https://www.instagram.com/athif_kyuziera/profilecard/?igsh=NHFsazN2a2diM3Rp " target="_blank" rel="noopener noreferrer">
-            <img src="https://img.icons8.com/fluent/30/000000/instagram-new.png" />
+            <img src="/images/icons/instagram.png" class="w-9" />
         </a>
         <a href="https://wa.me/628985655826" target="_blank" rel="noopener noreferrer">
-            <img src="https://img.icons8.com/fluent/30/000000/whatsapp.png" />
+            <img src="/images/icons/whatsapp.png" class="w-9" />
         </a>
         <a href="https://x.com/WildanAthif12" target="_blank" rel="noopener noreferrer">
-            <img src="https://img.icons8.com/fluent/30/000000/twitter.png" />
+            <img src="/images/icons/x.png" class="w-9" />
+        </a>
+        <a href="https://www.linkedin.com/in/wildan-athif-muttaqien-89b327297" target="_blank" rel="noopener noreferrer">
+            <img src="/images/icons/linkedin.png" class="w-9" />
         </a>
     </div>
     <p class="text-center text-gray-700 font-medium">&copy; 2025 PT. PUSRI</p>

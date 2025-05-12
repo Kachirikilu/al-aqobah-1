@@ -8,7 +8,7 @@
                     <span class="ml-2 text-xl font-bold text-gray-800">PT. PUSRI</span>
                 </a>
                 <div class="hidden md:ml-6 md:flex md:space-x-8">
-                    <a href="/" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="#scroll-home" id="scroll-ke-home" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Home
                     </a>
                     <a href="#grup-jadwal" id="scroll-ke-grup-jadwal" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -50,7 +50,7 @@
     <!-- Mobile menu, show/hide based on menu state -->
     <div class="md:hidden hidden" id="mobile-menu">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="/" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a href="#scroll-home" id="scroll-ke-home-2" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Home
             </a>
             <a id="scroll-ke-grup-jadwal-2" href="#grup-jadwal" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">

@@ -16,6 +16,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const scrollLinks = [
+            { id: 'scroll-ke-home', target: '#scroll-home' },
+            { id: 'scroll-ke-home-2', target: '#scroll-home' },
             { id: 'scroll-ke-grup-jadwal', target: '#grup-jadwal' },
             { id: 'scroll-ke-grup-jadwal-2', target: '#grup-jadwal' },
             { id: 'scroll-ke-grup-jadwal-3', target: '#grup-jadwal' },
