@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="#" class="flex-shrink-0 flex items-center">
-                    <img class="h-8 w-auto" src="/images/masjid/Logo PT PUSRI.png" alt="Logo">
+                    <img class="h-12 w-auto" src="/images/masjid/Logo PT PUSRI.png" alt="Logo">
                     <span class="ml-2 text-xl font-bold text-gray-800">PT. PUSRI</span>
                 </a>
                 <div class="hidden md:ml-6 md:flex md:space-x-8">
