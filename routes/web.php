@@ -1,12 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Admin\JadwalCeramahController;
 use App\Http\Controllers\DashboardController;
 // use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Route::get('/', function () {
 //     return view('welcome');
+// });
+
+// Route::get('/proxy/jadwal-sholat', function (Request $request) {
+//     $idKota = $request->query('idKota', '0816');
+//     $today = $request->query('today', now()->format('Y-m-d'));
+
+//     $response = Http::get("https://api.myquran.com/v2/sholat/jadwal/{$idKota}/{$today}");
+//     return $response->json();
 // });
 
 Route::get('/', [DashboardController::class, 'user'])->name('user');

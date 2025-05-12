@@ -4,20 +4,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "preview": "vite preview",
-        "watch": "vite build --watch",
-        "build:css": "tailwindcss -i ./resources/css/app.css -o ./public/css/app.css --minify",
-        "build:js": "vite build --config vite.config.js",
-        "build:assets": "npm run build:css && npm run build:js",
-        "build:all": "npm run build:assets",
-        "dev:all": "concurrently \"npm run dev\" \"npm run watch\"",
-        "dev:css": "tailwindcss -i ./resources/css/app.css -o ./public/css/app.css --watch",
-        "dev:js": "vite --config vite.config.js",
-        "dev:assets": "npm run dev:css && npm run dev:js",
-        "dev:all:css": "concurrently \"npm run dev:css\" \"npm run dev:js\"",
-        "dev:all:js": "concurrently \"npm run dev\" \"npm run dev:js\"",
-        "dev:all:assets": "concurrently \"npm run dev\" \"npm run dev:css\" \"npm run dev:js\"",
-        "dev:all:assets:css": "concurrently \"npm run dev\" \"npm run dev:css\" \"npm run dev:js\""
+        "preview": "vite preview"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.7",

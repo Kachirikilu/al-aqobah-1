@@ -12,7 +12,10 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5173,
         cors: {
-            origin: 'https://tjgm14r9-8000.asse.devtunnels.ms',
+            origin: [
+                'https://tjgm14r9-8000.asse.devtunnels.ms',
+                // 'https://8c22-101-128-109-80.ngrok-free.app',
+            ],
             methods: ['GET', 'HEAD', 'POST', 'OPTIONS'],
             credentials: true,
         }, 
