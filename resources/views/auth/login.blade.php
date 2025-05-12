@@ -3,6 +3,9 @@
         <x-slot name="logo">
             {{-- <x-authentication-card-logo /> --}}
         </x-slot>
+        <div class="mb-3">
+            <img src="/images/masjid/Logo PT PUSRI.png" alt="PT. PUSRI" class="h-20 mx-auto">
+        </div>
 
         <x-validation-errors class="mb-4" />
 
@@ -14,9 +17,6 @@
 
         <form method="POST" action="/login">
             @csrf
-            <div class="mb-3">
-                <img src="/images/masjid/Logo PT PUSRI.png" alt="PT. PUSRI" class="h-20 mx-auto">
-            </div>
 
             <div>
                 <x-label for="email" value="{{ __('Email') }}" />

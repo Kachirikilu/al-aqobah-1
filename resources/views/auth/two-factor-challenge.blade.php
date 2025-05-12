@@ -1,8 +1,11 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+            {{-- <x-authentication-card-logo /> --}}
         </x-slot>
+        <div class="mb-3">
+            <img src="/images/masjid/Logo PT PUSRI.png" alt="PT. PUSRI" class="h-20 mx-auto">
+        </div>
 
         <div x-data="{ recovery: false }">
             <div class="mb-4 text-sm text-gray-600" x-show="! recovery">

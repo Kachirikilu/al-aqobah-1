@@ -1,8 +1,11 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+            {{-- <x-authentication-card-logo /> --}}
         </x-slot>
+        <div class="mb-3">
+            <img src="/images/masjid/Logo PT PUSRI.png" alt="PT. PUSRI" class="h-20 mx-auto">
+        </div>
 
         <div class="mb-4 text-sm text-gray-600">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
