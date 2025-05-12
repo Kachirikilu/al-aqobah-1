@@ -8,16 +8,16 @@
                     <span class="ml-2 text-xl font-bold text-gray-800">PT. PUSRI</span>
                 </a>
                 <div class="hidden md:ml-6 md:flex md:space-x-8">
-                    <a href="#scroll-home" id="scroll-ke-home" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="/" id="scroll-ke-home" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Home
                     </a>
-                    <a href="#grup-jadwal" id="scroll-ke-grup-jadwal" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="/#grup-jadwal" id="scroll-ke-grup-jadwal" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Kegiatan
                     </a>
-                    <a href="#scroll-jadwal-sholat" id="scroll-ke-jadwal-sholat" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="/#scroll-jadwal-sholat" id="scroll-ke-jadwal-sholat" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Waktu Sholat
                     </a>
-                    <a href="#scroll-galery" id="scroll-ke-galery" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="/#scroll-galery" id="scroll-ke-galery" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Galery
                     </a>
                     <a href="#scroll-footer" id="scroll-ke-footer" class="hover:text-blue-600 hover:border-blue-500 transition-colors duration-300 border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -50,16 +50,16 @@
     <!-- Mobile menu, show/hide based on menu state -->
     <div class="md:hidden hidden" id="mobile-menu">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="#scroll-home" id="scroll-ke-home-2" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a href="/" id="scroll-ke-home-2" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Home
             </a>
-            <a id="scroll-ke-grup-jadwal-2" href="#grup-jadwal" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a id="scroll-ke-grup-jadwal-2" href="/#grup-jadwal" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Kegiatan
             </a>
-            <a id="scroll-ke-jadwal-sholat-2" href="#scroll-jadwal-sholat" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a id="scroll-ke-jadwal-sholat-2" href="/#scroll-jadwal-sholat" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Waktu Sholat
             </a>
-            <a id="scroll-ke-galery-2" href="#scroll-galery" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a id="scroll-ke-galery-2" href="/#scroll-galery" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Galery
             </a>
             <a id="scroll-ke-footer-2" href="#scroll-footer" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">

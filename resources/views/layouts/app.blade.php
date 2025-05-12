@@ -44,6 +44,7 @@
 
         @stack('modals')
         @vite('resources/js/app.js')
+        <script src="{{ asset('js/my.js') }}"></script>
 
         @livewireScripts
     </body>

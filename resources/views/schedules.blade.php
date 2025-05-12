@@ -13,9 +13,11 @@
             <x-schedules.update :jadwalCeramah="$jadwalCeramah" />
         @elseif (request()->is('schedules/create'))
             <x-schedules.create />
-        @elseif (preg_match('#^schedules/[^/]+$#', request()->path()))
+        @else
             <x-schedules.show :jadwalCeramah="$jadwalCeramah" />
         @endif
     </div>
+
+    <x-home.footer />
 
 </x-app-layout>

@@ -2,9 +2,9 @@
 
     <nav class="flex justify-center flex-wrap gap-6 text-gray-500 font-medium">
         <a class="hover:text-gray-900" href="#scroll-home" id="scroll-ke-home-3">Home</a>
-        <a class="hover:text-gray-900" href="#group-jadwal" id="scroll-ke-grup-jadwal-4">Kegiatan</a>
-        <a class="hover:text-gray-900" href="#scroll-jadwal-sholat" id="scroll-ke-jadwal-sholat-3">Waktu Sholat</a>
-        <a class="hover:text-gray-900" href="#scroll-galery" id="scroll-ke-galery-3">Gallery</a>
+        <a class="hover:text-gray-900" href="/#group-jadwal" id="scroll-ke-grup-jadwal-4">Kegiatan</a>
+        <a class="hover:text-gray-900" href="/#scroll-jadwal-sholat" id="scroll-ke-jadwal-sholat-3">Waktu Sholat</a>
+        <a class="hover:text-gray-900" href="/#scroll-galery" id="scroll-ke-galery-3">Gallery</a>
         <a class="hover:text-gray-900" href="/login">
             @if(Auth::check())
                 Dashboard

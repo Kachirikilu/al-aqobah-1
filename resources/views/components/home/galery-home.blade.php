@@ -1,4 +1,4 @@
-<section id="scroll-galery" class="bg-white shadow-md rounded-md">
+<section id="scroll-galery" class="scroll-mt-20 bg-white shadow-md rounded-md">
     <div class="py-4 px-2 mx-auto max-w-screen-xl sm:px-4 lg:px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 h-full">
             <div class="col-span-2 sm:col-span-2 bg-gray-50 h-[20rem] lg:h-full flex flex-col">
