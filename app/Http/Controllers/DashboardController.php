@@ -48,7 +48,6 @@ class DashboardController extends Controller
         $this->endOfLastWeek = $lastWeek->endOfWeek()->format('Y-m-d');
 
         $this->jadwalHariIni = JadwalCeramah::where('tanggal_ceramah', $this->today)
-            ->where('jam_selesai', '>', $this->nowTime)
             ->orderBy('jam_mulai')
             ->get();
 
