@@ -4,7 +4,7 @@
             {{-- <x-authentication-card-logo /> --}}
         </x-slot>
         <div class="mb-3">
-            <img src="/images/masjid/Logo PT PUSRI.png" alt="PT. PUSRI" class="h-20 mx-auto">
+            <img src="/images/masjid/Logo PT PUSRI.png" alt="PT. PUSRI" class="h-32 mx-auto">
         </div>
 
         <x-validation-errors class="mb-4" />
