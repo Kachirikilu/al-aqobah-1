@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use Illuminate\Support\Facades\Http;
+
 use App\Http\Controllers\Admin\JadwalCeramahController;
+use App\Http\Controllers\Admin\APIController;
 use App\Http\Controllers\DashboardController;
-// use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -17,6 +17,9 @@ use App\Http\Controllers\DashboardController;
 //     $response = Http::get("https://api.myquran.com/v2/sholat/jadwal/{$idKota}/{$today}");
 //     return $response->json();
 // });
+Route::get('/api/jadwal-ceramahs', [APIController::class, 'index']);
+Route::get('/api/jadwal-ceramahs/{slug}', [APIController::class, 'show']);
+
 
 Route::get('/', [DashboardController::class, 'user'])->name('user');
 Route::get('/schedules/show/{slug}', [JadwalCeramahController::class, 'show'])->name('admin.schedules.show');
