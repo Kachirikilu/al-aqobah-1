@@ -3,9 +3,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 h-full">
             <div class="col-span-2 sm:col-span-2 bg-gray-50 h-[20rem] lg:h-full flex flex-col">
                 <a href="" class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40 flex-grow">
-                    <img src="/images/masjid/Pic 1_Al-Aqobah 1.jpg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                    <img src="/images/masjid/Pic 9_Al-Aqobah 1.jpg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
                     <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
-                    <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Al-Aqobah 1</h3>
+                    <h3 class="text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Al-Aqobah 1</h3>
                 </a>
             </div>
             <div class="col-span-2 md:col-span-1 lg:col-span-2 bg-stone-50">
@@ -16,7 +16,7 @@
                 </a>
                 <div class="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-2 h-[20rem] md:h-auto">
                     <a href="" class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40">
-                        <img src="/images/masjid/Pic 2_Al-Aqobah 1.jpg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                        <img src="/images/masjid/Pic 7_Al-Aqobah 1.jpg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
                         <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
                         {{-- <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl"></h3> --}}
                     </a>
