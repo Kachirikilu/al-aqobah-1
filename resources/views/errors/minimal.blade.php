@@ -114,18 +114,21 @@
                 }
             }
 
-            @media screen and (min-width: 768px) {
+            @media screen and (min-width: 748px) {
                 .divError div h1 {
                     font-size: 3rem;
                 }
             }
 
-            @media screen and (max-width: 767px) {
+            @media screen and (max-width: 747px) {
                 .divError div h1 {
                     font-size: 2rem;
                 }
                 .divBody2 {
                     transform: translateY(-20px) scale(80%);
+                }
+                .divRight h2 a {
+                    font-size: 20px; 
                 }
             }
 
