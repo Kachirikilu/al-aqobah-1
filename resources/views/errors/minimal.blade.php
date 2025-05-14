@@ -22,9 +22,9 @@
                 <div class="divRight">
                     <h1>Instagram</h1>
                     <h2>
-                        <a href="https://www.instagram.com/athif_kyuziera/profilecard/?igsh=NHFsazN2a2diM3Rp" target="_blank">
+                        <p>
                             athif_kyuziera
-                        </a>
+                        </p>
                     </h2>
                 </div>
             </div>  
@@ -56,18 +56,26 @@
                 </div>
             </div>
         </div>
+        <div class="divBg"></div>
 
         <style>
             * {
                 background: #f6ffa9;
                 margin: 0;
             }
-
-            .divError {
+            .divBg {
                 z-index: 10;
                 position: fixed;
                 background: #00000080;
                 backdrop-filter: blur(8px);
+                width: 100%;
+                height: 100vh;
+                animation: animasiError 1.2s ease-in;
+            }
+            .divError {
+                z-index: 30;
+                position: fixed;
+                background: none;
                 width: 100%;
                 height: 100vh;
                 display: flex;
@@ -127,7 +135,7 @@
                 .divBody2 {
                     transform: translateY(-20px) scale(80%);
                 }
-                .divRight h2 a {
+                .divRight h2 p {
                     font-size: 20px; 
                 }
             }
@@ -202,10 +210,9 @@
                 border-radius: 2em;
                 animation: animasiText1 5.6s ease-in;
             }
-            .divRight h2 a {
+            .divRight h2 p {
                 color: #bc1888;
                 background: none;
-                text-decoration: none;
             }
             @keyframes animasiText1 {
                 0% {
