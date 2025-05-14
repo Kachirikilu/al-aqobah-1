@@ -18,7 +18,7 @@
         <a href="https://www.facebook.com/share/19SofgsQFs/" target="_blank" rel="noopener noreferrer">
             <img src="/images/icons/facebook.png" class="w-9" />
         </a>
-        <a href="https://www.instagram.com/athif_kyuziera/profilecard/?igsh=NHFsazN2a2diM3Rp " target="_blank" rel="noopener noreferrer">
+        <a href="https://www.instagram.com/athif_kyuziera/profilecard/?igsh=NHFsazN2a2diM3Rp" target="_blank" rel="noopener noreferrer">
             <img src="/images/icons/instagram.png" class="w-9" />
         </a>
         <a href="https://wa.me/628985655826" target="_blank" rel="noopener noreferrer">
