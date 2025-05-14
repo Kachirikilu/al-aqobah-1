@@ -32,7 +32,8 @@
         <div class="divError">
             <div class="divError2">
                 <h1>@yield('message') @yield('code')</h1>
-                <p>Sedang ada perubahan atau perbaikan pada website, mohon tunggu sebentar ya, adik-adik!
+                <p>
+                    Sedang ada perubahan atau perbaikan pada website, mohon tunggu sebentar ya, adik-adik!
                     <br>
                     Hubungi saya, Wildan Athif Muttaqien:
                 </p>
@@ -75,13 +76,14 @@
                 animation: animasiError 1.2s ease-in;
             }
             .divError2 {
+                padding: 20px;
                 transform: translateY(-108px);
             }
             .divError div h1 {
                 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
                 background: none;
                 color: white;
-                font-size: 3rem;
+                margin-bottom: 3px;
                 animation: textError 2s infinite alternate;
             }
             .divError div p {
@@ -112,7 +114,20 @@
                 }
             }
 
+            @media screen and (min-width: 768px) {
+                .divError div h1 {
+                    font-size: 3rem;
+                }
+            }
 
+            @media screen and (max-width: 767px) {
+                .divError div h1 {
+                    font-size: 2rem;
+                }
+                .divBody2 {
+                    transform: translateY(-20px) scale(80%);
+                }
+            }
 
             @keyframes animasiError {
             0% {
