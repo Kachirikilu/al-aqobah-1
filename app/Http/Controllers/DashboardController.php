@@ -99,7 +99,6 @@ class DashboardController extends Controller
     
     public function user()
     {
-
         return view('user-interface', [
             'jadwalBelumTerlaksanaCount' => $this->jadwalBelumTerlaksanaCount,
             'jadwalSudahTerlaksanaCount' => $this->jadwalSudahTerlaksanaCount,

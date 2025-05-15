@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\JadwalCeramah;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 class APIController extends Controller
 {
+    protected $today;
     /**
      * Menampilkan semua data jadwal ceramah dalam format JSON.
      *
@@ -15,10 +17,14 @@ class APIController extends Controller
      */
     public function index(): JsonResponse
     {
-        $jadwalCeramahs = JadwalCeramah::all(); // Ambil semua data dari tabel jadwal_ceramahs
+        $jadwalCeramahs = JadwalCeramah::all();
+
+        $now = Carbon::now();
+        $this->today = $now->toDateString();
 
         $data = $jadwalCeramahs->map(function ($jadwal) {
             return [
+                'today' => $this->today,
                 'slug' => $jadwal->slug,
                 'judul_ceramah' => $jadwal->judul_ceramah,
                 'nama_ustadz' => $jadwal->nama_ustadz,
