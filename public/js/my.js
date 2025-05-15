@@ -48,18 +48,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-let year,
-    month,
-    day,
-    yearNext,
-    monthNext,
-    dayNext,
-    dayOfWeek,
-    tomorow,
-    hours,
-    minutes,
-    seconds,
-    today,
-    todayNext,
-    clock;
-

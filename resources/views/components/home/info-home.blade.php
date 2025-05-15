@@ -48,6 +48,23 @@
 </div>
 
 <script>
+
+    let year,
+        month,
+        day,
+        yearNext,
+        monthNext,
+        dayNext,
+        monthName,
+        dayOfWeek,
+        tomorow,
+        hours,
+        minutes,
+        seconds,
+        today,
+        todayNext,
+        clock;
+
     function updateClock() {
         const date = new Date();
         // date.setHours(date.getHours() - 6);
@@ -55,7 +72,10 @@
         month = String(date.getMonth() + 1).padStart(2, "0");
         day = String(date.getDate()).padStart(2, "0");
 
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const daysOfWeek = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        monthName = monthNames[date.getMonth()];
         dayOfWeek = daysOfWeek[date.getDay()];
 
         tomorow = new Date(date.getTime() + 24 * 60 * 60 * 1000);
@@ -151,7 +171,7 @@
                 jadwalHTML += `<p class="text-sm text-blue-600 font-bold">Subuh Besok: ${dataNext.data.jadwal.subuh}</p>`;
             }
 
-            jadwalSholatHariIni.innerHTML = `Jadwal Sholat | ${day}/${month}/${year}`;
+            jadwalSholatHariIni.innerHTML = `Hari ${dayOfWeek}, ${day} ${monthName} ${year}`;
             jadwalSholatDiv.innerHTML = jadwalHTML;
 
 
