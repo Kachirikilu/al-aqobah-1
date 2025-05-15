@@ -96,8 +96,8 @@ function updateClock() {
 
 setInterval(updateClock, 1000);
 document.addEventListener("DOMContentLoaded", () => {
-    updateClock(); // Panggil sekali saat DOMContentLoaded
-    fetchJadwalSholat(); // Panggil untuk mendapatkan data jadwal
+    updateClock();
+    fetchJadwalSholat();
 });
 
 async function fetchJadwalSholat() {
