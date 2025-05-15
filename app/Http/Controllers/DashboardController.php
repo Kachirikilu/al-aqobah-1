@@ -47,33 +47,63 @@ class DashboardController extends Controller
         $this->startOfLastWeek = $lastWeek->startOfWeek()->format('Y-m-d');
         $this->endOfLastWeek = $lastWeek->endOfWeek()->format('Y-m-d');
 
-        $this->jadwalHariIni = JadwalCeramah::where('tanggal_ceramah', $this->today)
+        // $this->jadwalHariIni = JadwalCeramah::where('tanggal_ceramah', $this->today)
+        //     ->orderBy('jam_mulai')
+        //     ->get();
+       $this->jadwalHariIni = JadwalCeramah::whereRaw("DATE(tanggal_ceramah) = ?", [$this->today])
             ->orderBy('jam_mulai')
             ->get();
+
 
         $this->jadwalBelumTerlaksanaCount = JadwalCeramah::where('tanggal_ceramah', '>=', $this->today)->count();
         $this->jadwalSudahTerlaksanaCount = JadwalCeramah::where('tanggal_ceramah', '<', $this->today)->count();
         $this->totalJadwalCount = JadwalCeramah::count();
 
-        $this->jadwalMingguIni = JadwalCeramah::whereBetween('tanggal_ceramah', [$this->startOfWeek, $this->endOfWeek])
+        // $this->jadwalMingguIni = JadwalCeramah::whereBetween('tanggal_ceramah', [$this->startOfWeek, $this->endOfWeek])
+        //     ->orderByDesc('tanggal_ceramah')
+        //     ->orderByDesc('jam_mulai')
+        //     ->get();
+
+        // $this->jadwalMingguDepan = JadwalCeramah::whereBetween('tanggal_ceramah', [$this->startOfNextWeek, $this->endOfNextWeek])
+        //     ->orderByDesc('tanggal_ceramah')
+        //     ->orderByDesc('jam_mulai')
+        //     ->get();
+
+        // $this->jadwalMingguSelanjutnya = JadwalCeramah::where('tanggal_ceramah', '>', $this->endOfNextWeek)
+        //     ->orderByDesc('tanggal_ceramah')
+        //     ->orderByDesc('jam_mulai')
+        //     ->paginate(9);
+
+        // $this->jadwalSudahTerlaksana = JadwalCeramah::where(function ($query) {
+        //     $query->where('tanggal_ceramah', '<', $this->today)
+        //         ->orWhere(function ($q) {
+        //             $q->where('tanggal_ceramah', $this->today)
+        //                 ->where('jam_mulai', '<=', $this->nowTime);
+        //         });
+        // })
+        //     ->orderByDesc('tanggal_ceramah')
+        //     ->orderByDesc('jam_mulai')
+        //     ->paginate(10);
+
+        $this->jadwalMingguIni = JadwalCeramah::whereRaw("DATE(tanggal_ceramah) BETWEEN ? AND ?", [$this->startOfWeek, $this->endOfWeek])
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
             ->get();
 
-        $this->jadwalMingguDepan = JadwalCeramah::whereBetween('tanggal_ceramah', [$this->startOfNextWeek, $this->endOfNextWeek])
+        $this->jadwalMingguDepan = JadwalCeramah::whereRaw("DATE(tanggal_ceramah) BETWEEN ? AND ?", [$this->startOfNextWeek, $this->endOfNextWeek])
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
             ->get();
 
-        $this->jadwalMingguSelanjutnya = JadwalCeramah::where('tanggal_ceramah', '>', $this->endOfNextWeek)
+        $this->jadwalMingguSelanjutnya = JadwalCeramah::whereRaw("DATE(tanggal_ceramah) > ?", [$this->endOfNextWeek])
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
             ->paginate(9);
 
         $this->jadwalSudahTerlaksana = JadwalCeramah::where(function ($query) {
-            $query->where('tanggal_ceramah', '<', $this->today)
+            $query->whereRaw("DATE(tanggal_ceramah) < ?", [$this->today])
                 ->orWhere(function ($q) {
-                    $q->where('tanggal_ceramah', $this->today)
+                    $q->whereRaw("DATE(tanggal_ceramah) = ?", [$this->today])
                         ->where('jam_mulai', '<=', $this->nowTime);
                 });
         })

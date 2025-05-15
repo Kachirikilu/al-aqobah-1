@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class APIController extends Controller
 {
     protected $today;
+    protected $jadwalHariIni;
     /**
      * Menampilkan semua data jadwal ceramah dalam format JSON.
      *
@@ -18,9 +19,6 @@ class APIController extends Controller
     public function index(): JsonResponse
     {
         $jadwalCeramahs = JadwalCeramah::all();
-
-        $now = Carbon::now();
-        $this->today = $now->toDateString();
 
         $data = $jadwalCeramahs->map(function ($jadwal) {
             return [

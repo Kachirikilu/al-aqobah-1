@@ -54,9 +54,7 @@ class JadwalCeramahController extends Controller
         }
 
         $data = $request->all();
-
-        $slug = Str::slug($request->judul_ceramah) . '_' . Str::slug($request->nama_ustadz) . '_' . now()->format('YmdHisu');
-        $data['slug'] = $slug;
+        $data['slug'] = Str::slug($request->judul_ceramah) . '_' . Str::slug($request->nama_ustadz) . '_' . now()->format('YmdHisu');
 
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
@@ -112,7 +110,6 @@ class JadwalCeramahController extends Controller
         //     'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk gambar
         // ]);
 
-
         $validator = Validator::make($request->all(), [
             'judul_ceramah' => 'required|string|max:255',
             'nama_ustadz' => 'required|string|max:255',
@@ -131,14 +128,8 @@ class JadwalCeramahController extends Controller
                 ->withInput();
         }
 
-        // Generate slug
-
-        $slug_20 = substr($jadwalCeramah->slug, -20);
-        $slug = Str::slug($request->judul_ceramah) . '_' . Str::slug($request->nama_ustadz) . '_' . $slug_20;
-        $data['slug'] = $slug;
-
+        
         $data = $request->except('gambar');
-        // $pathGambarDatabase = null;
 
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
@@ -155,6 +146,9 @@ class JadwalCeramahController extends Controller
                 }
             }
         }
+
+        $slug_20 = substr($jadwalCeramah->slug, -20);
+        $data['slug'] = Str::slug($request->judul_ceramah) . '_' . Str::slug($request->nama_ustadz) . '_' . $slug_20;
 
         $jadwalCeramah->update($data);
 
