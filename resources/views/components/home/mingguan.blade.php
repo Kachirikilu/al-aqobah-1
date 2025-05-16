@@ -1,14 +1,11 @@
-<div id="jadwal-minggu-ini" class=" scroll-mt-20 mt-8 mb-4">
-    <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Jadwal Minggu Ini</h2>
-    @if($jadwalMingguIni->isEmpty())
-        <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal untuk minggu ini.</p>
+<div id="jadwal-minggu-ini" class="scroll-mt-20 mx-2 md:mx-0 mt-6 mb-4">
+    <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Jadwal Minggu {{ $name }}</h2>
+    @if($jadwalMingguan->isEmpty())
+        <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal untuk minggu {{strtolower($name) }}.</p>
     @else
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-            @foreach($jadwalMingguIni as $jadwal)
-                <a 
-                {{-- href="/schedules/show/{{ $jadwal->slug }}" --}}
-                href="/schedules/show/{{ $jadwal->slug }}"
-                class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
+            @foreach($jadwalMingguan as $jadwal)
+                <a href="/schedules/show/{{ $jadwal->slug }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
                     @if($jadwal->gambar)
                         <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full aspect-square object-cover">
                     @else

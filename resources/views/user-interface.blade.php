@@ -21,7 +21,9 @@
                     <x-home.hari-ini :jadwalHariIni="$jadwalHariIni" />
                 @endif
                 @if(!$jadwalMingguIni->isEmpty())
-                    <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" />
+                    {{-- <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" /> --}}
+                    <x-home.mingguan :jadwalMingguan="$jadwalMingguIni" :name="$Ini='Ini'" />
+                    <x-home.mingguan :jadwalMingguan="$jadwalMingguDepan" :name="$Depan='Depan'" />
                 @endif
 
                 <x-home.terlaksana-user :jadwalSudahTerlaksana="$jadwalSudahTerlaksana" />

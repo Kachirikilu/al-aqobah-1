@@ -12,8 +12,11 @@
         />
         <x-home.galery-home />
         <x-home.hari-ini :jadwalHariIni="$jadwalHariIni" />
-        <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" />
-        <x-home.minggu-depan :jadwalMingguDepan="$jadwalMingguDepan" />
+        <x-home.mingguan :jadwalMingguan="$jadwalMingguIni" :name="$Ini='Ini'" />
+        <x-home.mingguan :jadwalMingguan="$jadwalMingguDepan" :name="$Depan='Depan'" />
+
+        {{-- <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" />
+        <x-home.minggu-depan :jadwalMingguDepan="$jadwalMingguDepan" /> --}}
         <x-home.minggu-selanjutnya :jadwalMingguSelanjutnya="$jadwalMingguSelanjutnya" />
         <x-home.maps />
         <x-home.terlaksana :jadwalSudahTerlaksana="$jadwalSudahTerlaksana" />

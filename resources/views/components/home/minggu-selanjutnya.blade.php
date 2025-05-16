@@ -1,9 +1,9 @@
-<div>
+<div class="scroll-mt-20 mx-2 md:mx-0 mt-8 mb-4">
     <h2 class="text-xl font-semibold mt-8 mb-4 border-b border-gray-200 pb-2">Jadwal Minggu Selanjutnya</h2>
     @if($jadwalMingguSelanjutnya->isEmpty())
         <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal minggu selanjutnya.</p>
     @else
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
             @foreach($jadwalMingguSelanjutnya as $jadwal)
                 <a href="/schedules/show/{{ $jadwal->slug }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
                     @if($jadwal->gambar)
@@ -19,7 +19,6 @@
                 </a>
             @endforeach
         </div>
-
         {{ $jadwalMingguSelanjutnya->links() }}
     @endif
 </div>
