@@ -2,7 +2,7 @@
 
     <x-admin.menu />
 
-    <div class="max-w-[1080px] mx-auto flex-1 p-4 md:p-8 overflow-y-auto">
+    <div class="max-w-[1080px] mx-auto flex-1 p-1 sm:p-3 md:p-6 lg:p-8 overflow-y-auto">
         <x-home.welcome-home />
         <x-home.info-home 
             :jadwalHariIni="$jadwalHariIni"

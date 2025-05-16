@@ -5,7 +5,7 @@
     <div>
         <x-home.protofolio />
 
-        <div class="max-w-[1360px] mx-auto flex-1 p-4 md:p-8 overflow-y-auto">
+        <div class="max-w-[1360px] mx-auto flex-1 px-1 py-3 sm:p-3 md:p-6 lg:p-8 overflow-y-auto">
             <x-home.welcome-home />
 
             <x-home.info-home 

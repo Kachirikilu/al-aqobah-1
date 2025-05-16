@@ -1,8 +1,8 @@
-<div class="flex-1 p-8 overflow-y-auto">
+<div class="flex-1 p-1 sm:p-3 md:p-6 lg:p-8 mt-5 md:mt-0 overflow-y-auto">
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-1 sm:px-3 md:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                <div class="p-3 sm:p-4 lg:p-6 bg-white border-b border-gray-200">
                     <h1 class="text-2xl font-semibold mb-4">{{ $jadwalCeramah->judul_ceramah }}</h1>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

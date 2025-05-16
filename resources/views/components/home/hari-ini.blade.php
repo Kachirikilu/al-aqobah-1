@@ -13,8 +13,8 @@
                             @else
                                 <div class="w-full sm:w-32 aspect-[3/2] sm:aspect-square text-center bg-gray-100 flex items-center justify-center text-gray-500 rounded-md sm:mr-4 mb-2 sm:mb-0">Tidak Ada Gambar</div>
                             @endif
-                            <div class="pt-0 pl-4 mb-3 sm:mb-5 md:mb-0 sm:pl-0 sm:pt-5">
-                                <h3 class="font-semibold text-sm sm:text-lg group-focus:underline mb-2">{{ $jadwal->judul_ceramah }}</h3>
+                            <div class="pt-0 px-4 mb-3 sm:mb-5 md:mb-0 sm:px-0 sm:pt-5">
+                                <h3 class="font-semibold sm:text-lg group-focus:underline mb-2">{{ $jadwal->judul_ceramah }}</h3>
                                 <p class="text-gray-600 text-xs sm:text-sm group-focus:underline">{{ \Carbon\Carbon::parse($jadwal->tanggal_ceramah)->locale('id')->isoFormat('D MMMM Y') }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} WIB</p>
                                 <p class="text-gray-500 text-xs sm:text-sm group-focus:underline">{{ $jadwal->nama_ustadz }}</p>
                             </div>

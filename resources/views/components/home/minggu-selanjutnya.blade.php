@@ -11,8 +11,8 @@
                     @else
                         <div class="w-full h-32 bg-gray-100 flex items-center justify-center text-gray-500">Tidak Ada Gambar</div>
                     @endif
-                    <div class="p-4">
-                        <h3 class="font-semibold text:sm sm:text-lg">{{ $jadwal->judul_ceramah }}</h3>
+                    <div class="p-3">
+                        <h3 class="font-semibold sm:text-lg mb-2">{{ $jadwal->judul_ceramah }}</h3>
                         <p class="text-gray-600 text-xs sm:text-sm">{{ \Carbon\Carbon::parse($jadwal->tanggal_ceramah)->locale('id')->isoFormat('D MMMM Y') }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} WIB</p>
                         <p class="text-gray-500 text-xs sm:text-sm">{{ $jadwal->nama_ustadz }}</p>
                     </div>

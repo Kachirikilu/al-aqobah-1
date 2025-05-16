@@ -6,7 +6,7 @@
         <x-home.navbar />
     @endif
 
-    <div class="max-w-[1080px] mx-auto flex-1 p-4 md:p-8 overflow-y-auto">
+    <div class="max-w-[1080px] mx-auto flex-1 p-1 sm:p-3 md:p-6 lg:p-8 overflow-y-auto">
         @if (request()->is('schedules'))
             <x-schedules.view :jadwalCeramahs="$jadwalCeramahs" />
         @elseif (preg_match('#^schedules/[^/]+/edit$#', request()->path()))
@@ -16,8 +16,9 @@
         @else
             <x-schedules.show :jadwalCeramah="$jadwalCeramah" />
         @endif
+
+        <x-home.footer />
     </div>
 
-    <x-home.footer />
 
 </x-app-layout>
