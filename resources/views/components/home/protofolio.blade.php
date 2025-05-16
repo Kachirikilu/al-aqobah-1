@@ -26,7 +26,7 @@
 
 
 <div id="scroll-home" class="scroll-mt-20 bg-gray-200 mt-16">
-    <div class="container mx-auto py-8 px-9 lg:px-40 md:flex md:justify-center md:items-center">
+    <div class="container mx-auto py-8 px-4 sm:px-6 md:px-0 lg:px-20 xl:px-40 md:flex md:justify-center md:items-center">
         <div class="md:w-1/2 md:mr-8">
             <h1 class="text-3xl font-bold mb-4">Al-Aqobah 1</h1>
             <p class="text-lg mb-4 text-justify mr-3">
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="md:w-1/2 mt-8 md:mt-0">
-            <img src="/images/masjid/Pic 1_Al-Aqobah 1.jpg" alt="Responsive Design" class="w-full h-full object-cover rounded-sm shadow-md">
+            <img src="/images/masjid/Pic 1_Al-Aqobah 1.jpg" alt="Responsive Design" class="w-full h-full object-cover rounded-md shadow-md">
         </div>
     </div>
 
