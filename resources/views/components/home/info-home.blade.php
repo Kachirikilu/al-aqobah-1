@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 {{ request()->is('dashboard') ? 'lg:grid-cols-3' : 'lg:grid-cols-4' }} xl:grid-cols-4 gap-3 mb-6">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 {{ request()->is('dashboard') ? 'lg:grid-cols-3' : 'lg:grid-cols-4' }} xl:grid-cols-4 gap-3 mx-2 sm:mx-0 mb-6">
     <a href="#jadwal-hari-ini" id="scroll-ke-hari-ini" class="bg-white hover:bg-green-200 hover:shadow-lg transition duration-300 aspect-auto sm:aspect-square md:aspect-auto lg:aspect-[4/3] xl:aspect-[3/2] shadow-md rounded-md p-6">
         <h3 class="text-lg font-semibold mb-2">Jadwal Hari Ini</h3>
         @if($jadwalHariIni->isEmpty())
