@@ -22,11 +22,12 @@
                 @endif
                 @if(!$jadwalMingguIni->isEmpty())
                     {{-- <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" /> --}}
-                    <x-home.mingguan :jadwalMingguan="$jadwalMingguIni" :name="$Ini='Ini'" />
-                    <x-home.mingguan :jadwalMingguan="$jadwalMingguDepan" :name="$Depan='Depan'" />
+                    <x-home.mingguan :jadwalMingguan="$jadwalMingguIni" :name="$x='Minggu Ini'" />
+                    <x-home.mingguan :jadwalMingguan="$jadwalMingguDepan" :name="$x='Minggu Depan'" />
                 @endif
-
-                <x-home.terlaksana-user :jadwalSudahTerlaksana="$jadwalSudahTerlaksana" />
+                
+                <x-home.mingguan :jadwalMingguan="$jadwalSudahTerlaksana" :name="$x='Sudah Terlaksana'" />
+                {{-- <x-home.terlaksana-user :jadwalSudahTerlaksana="$jadwalSudahTerlaksana" /> --}}
             </div>
 
             <x-home.maps />

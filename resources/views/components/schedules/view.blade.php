@@ -1,5 +1,5 @@
-<div class="flex-1 overflow-y-auto py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="flex-1 overflow-y-auto">
+    <div class="max-w-7xl mx-auto px-1 sm:px-2">
         <div class="bg-white shadow-xl sm:rounded-lg">
             <div class="p-6">
                 <h3 class="text-lg font-semibold mb-4">Daftar Jadwal Ceramah</h3>

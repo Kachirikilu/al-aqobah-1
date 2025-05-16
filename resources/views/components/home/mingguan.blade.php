@@ -1,7 +1,7 @@
-<div id="jadwal-minggu-ini" class="scroll-mt-20 mx-2 md:mx-0 mt-6 mb-4">
-    <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Jadwal Minggu {{ $name }}</h2>
+<div id="{{ $name == "Sudah Terlaksana" ? 'jadwal-sudah-terlaksana' : 'jadwal-minggu-ini' }}" class="scroll-mt-20 mx-2 md:mx-0 mt-6 mb-4">
+    <h2 class="text-xl font-semibold mb-4 border-b border-gray-200 pb-2">Jadwal {{ $name }}</h2>
     @if($jadwalMingguan->isEmpty())
-        <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal untuk minggu {{strtolower($name) }}.</p>
+        <p class="text-gray-600 text-xs sm:text-sm text-center py-20 mt-3">Tidak ada jadwal untuk {{strtolower($name) }}.</p>
     @else
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
             @foreach($jadwalMingguan as $jadwal)
@@ -19,5 +19,8 @@
                 </a>
             @endforeach
         </div>
+        @if($name == "Sudah Terlaksana")
+            {{ $jadwalMingguan->links() }}
+        @endif
     @endif
 </div>
