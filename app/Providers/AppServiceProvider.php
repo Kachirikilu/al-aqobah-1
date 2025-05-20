@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use App\Jobs\MqttSubcriberJob;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -19,13 +20,17 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot()
-    {
+    // public function boot()
+    // {
         // if (env('APP_URL')) {
         //     URL::forceRootUrl(env('APP_URL'));
         // }
         // if (env('APP_ENV') !== 'local') {
         //     URL::forceScheme('https');
         // }
+    // }
+    public function boot(): void
+    {
+        MqttSubcriberJob::dispatch();
     }
 }

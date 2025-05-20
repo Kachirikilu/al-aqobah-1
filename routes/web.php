@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\JadwalCeramahController;
-use App\Http\Controllers\Admin\APIController;
+use App\Http\Controllers\Admin\JsonController;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\DashboardController;
 
 // Route::get('/', function () {
@@ -17,8 +18,8 @@ use App\Http\Controllers\DashboardController;
 //     $response = Http::get("https://api.myquran.com/v2/sholat/jadwal/{$idKota}/{$today}");
 //     return $response->json();
 // });
-Route::get('/api/jadwal-ceramahs', [APIController::class, 'index']);
-Route::get('/api/jadwal-ceramahs/{slug}', [APIController::class, 'show']);
+Route::get('/api/jadwal-ceramahs', [JsonController::class, 'index']);
+Route::get('/api/jadwal-ceramahs/{slug}', [JsonController::class, 'show']);
 
 
 Route::get('/', [DashboardController::class, 'user'])->name('user');
@@ -40,4 +41,6 @@ Route::middleware([
         'destroy' => 'admin.schedules.destroy',
     ]);
 
+    Route::get('/esp32Cam', [ApiController::class, 'getData']);
+    Route::get('/esp32Cam_motion', [ApiController::class, 'getMotion']);
 });

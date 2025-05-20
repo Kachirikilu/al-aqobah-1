@@ -10,6 +10,9 @@
             :jadwalSudahTerlaksanaCount="$jadwalSudahTerlaksanaCount"
             :totalJadwalCount="$totalJadwalCount"
         />
+
+        @livewire('data-device.camera')
+
         <x-home.galery-home />
         <x-home.hari-ini :jadwalHariIni="$jadwalHariIni" />
 

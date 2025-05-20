@@ -7,7 +7,7 @@ use App\Models\JadwalCeramah;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 
-class APIController extends Controller
+class JsonController extends Controller
 {
     protected $today;
     protected $jadwalHariIni;
