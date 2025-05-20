@@ -6,6 +6,8 @@ use Livewire\Component;
 // use Illuminate\Support\Facades\Http;
 use PhpMqtt\Client\Facades\MQTT;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\MqttSubcriberJob;
+
 
 
 
@@ -25,6 +27,7 @@ class Camera extends Component
 
     public function loadData()
     {
+        MqttSubcriberJob::dispatch();
         $jd = cache()->get('esp32Cam');
         if ($jd) {
             $this->id = $jd['id'] ?? null;
