@@ -21,7 +21,7 @@ class ApiController extends Controller
         cache()->put('esp32Cam', $jsonData, now()->addMinutes(30));
 
         if ($data['message'] == "Gerakan terdeteksi!") {
-            cache()->put('esp32Cam_motion', $data['message'], now()->addSeconds(3));
+            cache()->put('esp32Cam_motion', $data['message'], now()->addSeconds(30));
         }
     }
 
