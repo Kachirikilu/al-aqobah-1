@@ -56,6 +56,21 @@ class Camera extends Component
             session()->flash('error', 'Gagal mengirim pesan: ' . $e->getMessage());
         }
     }
+
+    public function sendCapture()
+    {
+        try {
+            $message = 'Capture';
+
+            MQTT::connection()->publish('iot/PlantCare', $message);
+
+            $this->inputMessage = '';
+            session()->flash('success', 'Pesan berhasil dikirim');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Gagal mengirim pesan: ' . $e->getMessage());
+        }
+    }
+
     
     public function render()
     {

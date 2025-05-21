@@ -11,6 +11,7 @@
             :totalJadwalCount="$totalJadwalCount"
         />
 
+        <x-mqtt.camera />
         @livewire('data-device.camera')
 
         <x-home.galery-home />
