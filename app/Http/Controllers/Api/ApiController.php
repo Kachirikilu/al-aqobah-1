@@ -75,13 +75,13 @@ class ApiController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => 'error', 'message' => $validator->errors()], 400);
         }
+
         $validatedData = $validator->validated();
 
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            // $imageFileName = $file->hashName();
-            $imageFileName = 'ESP32_' . $validator['id_device'] . '_' . $file->getClientOriginalName() . '_' . time(); // Gunakan timestamp + nama asli
+            $imageFileName = 'ESP32_' . $validatedData['id_device'] . '_' . $file->getClientOriginalName() . '_' . time();
             $imagePath = $file->move(public_path('images/iot'), $imageFileName);
         }
 
@@ -99,6 +99,7 @@ class ApiController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Data and image received successfully'], 200);
     }
+
 
 
 }
