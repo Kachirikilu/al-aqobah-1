@@ -54,28 +54,22 @@
     let soundTimeout;
     let audioUnlocked = false; // Flag untuk melacak status aktivasi audio
 
-    // Fungsi untuk mengaktifkan audio
     function unlockAudio() {
         if (!audioUnlocked) {
-            // Coba putar suara sebentar dan langsung pause
-            // Ini akan "membuka" kunci audio di browser
             alertSound.play().then(() => {
                 alertSound.pause();
                 alertSound.currentTime = 0;
                 audioUnlocked = true;
                 console.log('Audio unlocked!');
-                // Sembunyikan tombol setelah audio diaktifkan
                 if (audioEnableContainer) {
                     audioEnableContainer.style.display = 'none';
                 }
             }).catch(e => {
                 console.error("Failed to unlock audio immediately:", e);
-                // Jika masih gagal (misal, browser masih memblokir), biarkan tombol terlihat
             });
         }
     }
 
-    // Tambahkan event listener ke tombol untuk mengaktifkan audio
     if (enableAudioButton) {
         enableAudioButton.addEventListener('click', unlockAudio);
     }
@@ -102,7 +96,7 @@
                 displayMqttData(data);
 
                 // Cek pesan untuk memutar suara
-                if (data.message && data.message === "Gerakan terdeteksi!") {
+                if (data.message && (data.message === "Gerakan terdeteksi!" || data.message === "-")) {
                     console.log("Gerakan terdeteksi! Memutar file audio selama 5 detik.");
                     if (alertSound && audioUnlocked) { // Pastikan audio sudah di-unlock
                         // Hentikan suara jika sedang bermain
