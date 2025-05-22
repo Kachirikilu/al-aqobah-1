@@ -14,6 +14,9 @@
                 :jadwalSudahTerlaksanaCount="$jadwalSudahTerlaksanaCount"
                 :totalJadwalCount="$totalJadwalCount"
             />
+            <x-mqtt.camera />
+            @livewire('data-device.camera')
+
             <x-home.galery-home />
 
             <div id="grup-jadwal" class="scroll-mt-20">
