@@ -62,7 +62,7 @@ class Camera extends Component
         try {
             $message = 'Capture';
 
-            MQTT::connection()->publish('iot/PlantCare', $message);
+            MQTT::connection()->publish('iot/SendCapture', $message);
 
             $this->inputMessage = '';
             session()->flash('success', 'Pesan berhasil dikirim');

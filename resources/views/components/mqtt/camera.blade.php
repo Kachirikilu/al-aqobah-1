@@ -37,7 +37,9 @@
 <script src="https://cdn.jsdelivr.net/npm/mqtt@4.3.7/dist/mqtt.min.js"></script>
 <script>
     const brokerUrl = "{{ env('MQTT_BROKER_URL') }}";
-    const topic = "{{ env('MQTT_TOPIC') }}";
+    const topicPubs = "{{ env('MQTT_TOPIC_PUBS') }}";
+    const topicSubs = "{{ env('MQTT_TOPIC_SUBS') }}";
+
     const client = mqtt.connect(brokerUrl, {
         username: "{{ env('MQTT_AUTH_USERNAME') }}",
         password: "{{ env('MQTT_AUTH_PASSWORD') }}",

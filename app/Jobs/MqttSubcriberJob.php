@@ -32,7 +32,7 @@ class MqttSubcriberJob implements ShouldQueue
             Cache::forever('mqtt_connected', 'Terhubung dengan Broker MQTT');
             
             try {
-                $topic = env('MQTT_TOPIC', 'iot/PlantCare');
+                $topic = env('MQTT_TOPIC_SUBS', 'iot/SubsMessage');
                 $mqtt->subscribe($topic, function (string $topic, string $message) use ($mqtt) {
                     $decodedMessage = json_decode($message, true);
             
