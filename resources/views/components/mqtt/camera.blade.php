@@ -80,18 +80,18 @@
     client.on('connect', function () {
         console.log('Terhubung ke broker MQTT');
         statusIndicator.textContent = 'Connected to MQTT Broker';
-        client.subscribe(topic, function (err) {
+        client.subscribe(topicSubs, function (err) {
             if (err) {
-                console.error(`Gagal berlangganan ke topik: ${topic}`, err);
+                console.error(`Gagal berlangganan ke topik: ${topicSubs}`, err);
                 statusIndicator.textContent = `Error subscribing: ${err.message}`;
             } else {
-                console.log(`Berlangganan ke topik: ${topic}`);
+                console.log(`Berlangganan ke topik: ${topicSubs}`);
             }
         });
     });
 
     client.on('message', function (receivedTopic, message) {
-        if (receivedTopic === topic) {
+        if (receivedTopic === topicSubs) {
             try {
                 const data = JSON.parse(message.toString());
                 console.log('Data MQTT diterima:', data);
@@ -192,7 +192,7 @@
     }
 
     function sendCommand(command) {
-        client.publish(topic, command, { qos: 0 }, (err) => {
+        client.publish(topicPubs, command, { qos: 0 }, (err) => {
             if (err) {
                 alert('Gagal mengirim perintah Capture.');
                 console.error(err);
@@ -209,7 +209,7 @@
             alert('Pesan tidak boleh kosong!');
             return;
         }
-        client.publish(topic, msg, { qos: 0 }, (err) => {
+        client.publish(topicPubs, msg, { qos: 0 }, (err) => {
             if (err) {
                 alert('Gagal mengirim pesan custom.');
                 console.error(err);
