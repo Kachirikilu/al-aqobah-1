@@ -39,17 +39,6 @@
         </button>
     </div>
 
-    {{-- Form Pesan Manual (opsional) --}}
-    {{--
-    <form wire:submit.prevent="sendMessage" class="space-y-3 pt-4 border-t border-gray-200">
-        <input type="text" wire:model.defer="inputMessage" placeholder="Ketik pesan..."
-               class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300" required>
-        <button type="submit"
-                class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-            Kirim Pesan
-        </button>
-    </form>
-    --}}
 </div>
 
 <script>

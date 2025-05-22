@@ -173,12 +173,12 @@
 
         const idParagraph = document.createElement('p');
         idParagraph.className = 'text-gray-700 mb-2';
-        idParagraph.textContent = `ID: ${data.id}`;
+        idParagraph.textContent = `ID: ${data.id_device}`;
 
         const imageElement = document.createElement('img');
         imageElement.className = 'rounded-md mb-2 w-full h-auto';
         imageElement.src = `data:image/jpeg;base64,${data.image}`;
-        imageElement.alt = `Gambar dengan ID ${data.id}`;
+        imageElement.alt = `Gambar dengan ID ${data.id_device}`;
 
         const messageParagraph = document.createElement('p');
         messageParagraph.className = 'text-gray-800';
