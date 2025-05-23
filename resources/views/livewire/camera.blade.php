@@ -16,7 +16,7 @@
 
     <div class="flex justify-center">
         <button type="button" wire:click="sendCapture"
-                class="w-64 px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition">
+                class="w-64 px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 active:bg-red-700 transition">
             Kirim Perintah Capture
         </button>
     </div>
