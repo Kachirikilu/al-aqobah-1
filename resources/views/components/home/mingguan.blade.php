@@ -36,7 +36,9 @@
             @endforeach
         </div>
         @if($name == "Sudah Terlaksana")
-            {{ $jadwalMingguan->links() }}
+            <div class="mt-4">
+                {{ $jadwalMingguan->links() }}
+            </div>
         @endif
     @endif
 </div>
