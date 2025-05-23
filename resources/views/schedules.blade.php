@@ -13,8 +13,11 @@
             <x-schedules.update :jadwalCeramah="$jadwalCeramah" />
         @elseif (request()->is('schedules/create'))
             <x-schedules.create />
-        @else
+        @elseif (request()->is('schedules/show/*'))
             <x-schedules.show :jadwalCeramah="$jadwalCeramah" />
+        @elseif (request()->is('iot/all-data/*'))
+            {{-- <x-schedules.all-data :iotCamera="$iotCamera"  /> --}}
+            <x-home.mingguan :jadwalMingguan="$iotCamera" :name="$x='IoT Camera'" />
         @endif
 
         <x-home.footer />

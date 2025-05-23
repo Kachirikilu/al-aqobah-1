@@ -14,7 +14,7 @@ use App\Models\IoTCamera;
 
 class Camera extends Component
 {
-    public $id_device;
+    public $id;
     public $message;
     public $image;
     
@@ -35,7 +35,7 @@ class Camera extends Component
         MqttSubcriberJob::dispatch();
         $jd = cache()->get('esp32Cam');
         if ($jd) {
-            $this->id_device = $jd['id_device'] ?? null;
+            $this->id = $jd['id'] ?? null;
             $this->message = $jd['message'] ?? null;
             $this->image = $jd['image'] ?? null;
         }
@@ -47,6 +47,8 @@ class Camera extends Component
             $this->motion = null;
         }
 
+        // $this->iotCamera = IoTCamera::latest()->get();
+        // $this->iotCamera = IoTCamera::latest()->get();
         $this->iotCamera = IoTCamera::latest()->take(12)->get();
 
     }
@@ -56,8 +58,7 @@ class Camera extends Component
         try {
             $message = $this->inputMessage;
 
-            $topic = env('MQTT_TOPIC_PUBS', 'iot/PlantCare');
-            MQTT::connection()->publish($topic, $message);
+            MQTT::connection()->publish('iot/PlantCare', $message);
 
             $this->inputMessage = '';
             session()->flash('success', 'Pesan berhasil dikirim');
@@ -71,8 +72,7 @@ class Camera extends Component
         try {
             $message = 'Capture';
 
-            $topic = env('MQTT_TOPIC_PUBS', 'iot/PlantCare');
-            MQTT::connection()->publish($topic, $message);
+            MQTT::connection()->publish('iot/SendCapture', $message);
 
             $this->inputMessage = '';
             session()->flash('success', 'Pesan berhasil dikirim');

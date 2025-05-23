@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\JadwalCeramah;
+// use App\Models\IoTCamera;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -24,6 +25,7 @@ class DashboardController extends Controller
     protected $jadwalMingguDepan;
     protected $jadwalMingguSelanjutnya;
     protected $jadwalSudahTerlaksana;
+    // protected $iotCamera;
 
     public function __construct()
     {
@@ -98,7 +100,7 @@ class DashboardController extends Controller
         $this->jadwalMingguSelanjutnya = JadwalCeramah::whereRaw("DATE(tanggal_ceramah) > ?", [$this->endOfNextWeek])
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
-            ->paginate(12);
+            ->paginate(2);
 
         $this->jadwalSudahTerlaksana = JadwalCeramah::where(function ($query) {
             $query->whereRaw("DATE(tanggal_ceramah) < ?", [$this->today])
@@ -109,7 +111,9 @@ class DashboardController extends Controller
         })
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
-            ->paginate(12);
+            ->paginate(2);
+
+        // $this->iotCamera = IoTCamera::orderByDesc('created_at')->paginate(2);
     }
 
     public function index()
@@ -123,6 +127,7 @@ class DashboardController extends Controller
             'jadwalMingguSelanjutnya' => $this->jadwalMingguSelanjutnya,
             'jadwalSudahTerlaksana' => $this->jadwalSudahTerlaksana,
             'jadwalHariIni' => $this->jadwalHariIni,
+            // 'iotCamera' => $this->iotCamera
         ]);
     }
 
@@ -138,6 +143,7 @@ class DashboardController extends Controller
             'jadwalMingguSelanjutnya' => $this->jadwalMingguSelanjutnya,
             'jadwalSudahTerlaksana' => $this->jadwalSudahTerlaksana,
             'jadwalHariIni' => $this->jadwalHariIni,
+            // 'iotCamera' => $this->iotCamera
         ]);
     }
 }

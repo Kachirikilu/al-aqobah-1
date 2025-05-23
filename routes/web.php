@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\JadwalCeramahController;
 use App\Http\Controllers\Admin\JsonController;
-use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Api\ApiController;
+
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -24,6 +25,8 @@ Route::get('/api/jadwal-ceramahs/{slug}', [JsonController::class, 'show']);
 
 Route::get('/', [DashboardController::class, 'user'])->name('user');
 Route::get('/schedules/show/{slug}', [JadwalCeramahController::class, 'show'])->name('admin.schedules.show');
+Route::get('/iot/all-data/{id}', [ApiController::class, 'allData'])->name('admin.iot.allData');
+
 
 Route::middleware([
     'auth:sanctum',

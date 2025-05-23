@@ -14,7 +14,7 @@
                 :jadwalSudahTerlaksanaCount="$jadwalSudahTerlaksanaCount"
                 :totalJadwalCount="$totalJadwalCount"
             />
-            <x-mqtt.camera />
+            {{-- <x-mqtt.camera /> --}}
             @livewire('data-device.camera')
 
             <x-home.galery-home />
@@ -26,6 +26,8 @@
                 @if(!$jadwalMingguIni->isEmpty())
                     {{-- <x-home.minggu-ini :jadwalMingguIni="$jadwalMingguIni" /> --}}
                     <x-home.mingguan :jadwalMingguan="$jadwalMingguIni" :name="$x='Minggu Ini'" />
+                @endif
+                @if(!$jadwalMingguDepan->isEmpty())
                     <x-home.mingguan :jadwalMingguan="$jadwalMingguDepan" :name="$x='Minggu Depan'" />
                 @endif
                 

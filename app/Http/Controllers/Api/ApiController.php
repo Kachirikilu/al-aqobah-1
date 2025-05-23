@@ -7,16 +7,12 @@ use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\Facades\MQTT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\IoTCamera;
 
 
 
 class ApiController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:sanctum')->except(['handleHttpData']); // Tambahkan 'except'
-    // }
-
     public function handleMqttData(array $data)
     {
         $jsonData = [
@@ -81,7 +77,7 @@ class ApiController extends Controller
         $imageFileName = null;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $imageFileName = 'ESP32_' . $validatedData['id_device'] . '_' . $file->getClientOriginalName() . '_' . time();
+            $imageFileName = 'images/iot/ESP32_' . $validatedData['id_device'] . '_' . $file->getClientOriginalName();
             $imagePath = $file->move(public_path('images/iot'), $imageFileName);
         }
 
@@ -97,7 +93,34 @@ class ApiController extends Controller
             cache()->put('esp32Cam_motion', $validatedData['message'], now()->addSeconds(30));
         }
 
+        try {
+            IoTCamera::create([
+                'id_device' => $validatedData['id_device'],
+                'message' => $validatedData['message'],
+                'image' => $imageFileName,
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data and image received and saved successfully'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to save data to database',
+                'details' => $e->getMessage()
+            ], 500);
+        }
+
         return response()->json(['status' => 'success', 'message' => 'Data and image received successfully'], 200);
+    }
+
+
+    public function allData($id)
+    {
+        $iotCamera = IoTCamera::where('id_device', $id)->latest()->get();
+        return view('schedules', compact('iotCamera'));
     }
 
 
