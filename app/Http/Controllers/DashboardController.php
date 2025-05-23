@@ -100,7 +100,7 @@ class DashboardController extends Controller
         $this->jadwalMingguSelanjutnya = JadwalCeramah::whereRaw("DATE(tanggal_ceramah) > ?", [$this->endOfNextWeek])
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
-            ->paginate(2);
+            ->paginate(12);
 
         $this->jadwalSudahTerlaksana = JadwalCeramah::where(function ($query) {
             $query->whereRaw("DATE(tanggal_ceramah) < ?", [$this->today])
@@ -111,9 +111,9 @@ class DashboardController extends Controller
         })
             ->orderByDesc('tanggal_ceramah')
             ->orderByDesc('jam_mulai')
-            ->paginate(2);
+            ->paginate(12);
 
-        // $this->iotCamera = IoTCamera::orderByDesc('created_at')->paginate(2);
+        // $this->iotCamera = IoTCamera::orderByDesc('created_at')->paginate(12);
     }
 
     public function index()
