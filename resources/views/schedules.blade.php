@@ -16,8 +16,13 @@
         @elseif (request()->is('schedules/show/*'))
             <x-schedules.show :jadwalCeramah="$jadwalCeramah" />
         @elseif (request()->is('iot/all-data/*'))
-            {{-- <x-schedules.all-data :iotCamera="$iotCamera"  /> --}}
-            <x-home.mingguan :jadwalMingguan="$iotCamera" :name="$x='IoT Camera'" />
+            @if (Auth::check())
+                <div class="lg:mt-16">
+            @else
+                <div class="mt-24 sm:mt-20 lg:mt-16">
+            @endif
+                <x-home.mingguan :jadwalMingguan="$iotCamera" :name="$x='IoT Camera'" />
+            </div>
         @endif
 
         <x-home.footer />

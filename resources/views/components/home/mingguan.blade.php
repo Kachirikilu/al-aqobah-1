@@ -5,7 +5,7 @@
     @else
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
             @foreach($jadwalMingguan as $jadwal)
-                <a href="/schedules/show/{{ $jadwal->slug }}" class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
+                <a @if($jadwal->slug) href="{{ url('/schedules/show/' . $jadwal->slug) }}" @endif class="block bg-white rounded-md shadow-md overflow-hidden hover:scale-105 hover:shadow-lg  transition duration-300">
                     @if($jadwal->gambar)
                         <img src="{{ asset($jadwal->gambar) }}" alt="{{ $jadwal->judul_ceramah }}" class="w-full aspect-square object-cover">
                     @elseif($jadwal->image)
@@ -17,8 +17,20 @@
                         <h3 class="font-semibold sm:text-lg mb-2">
                             {{ $jadwal->judul_ceramah ?? 'Device ID: ' . $jadwal->id_device }}
                         </h3>
-                        <p class="text-gray-600 text-xs sm:text-sm">{{ \Carbon\Carbon::parse($jadwal->tanggal_ceramah)->locale('id')->isoFormat('D MMMM Y') }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} WIB</p>
-                        <p class="text-gray-500 text-xs sm:text-sm">{{ $jadwal->nama_ustadz }}</p>
+                        <p class="text-gray-600 text-xs sm:text-sm">
+                            @if($jadwal->tanggal_ceramah)
+                                {{ \Carbon\Carbon::parse($jadwal->tanggal_ceramah)->locale('id')->isoFormat('D MMMM Y') }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} WIB
+                            @else
+                                Pesan: {{ $jadwal->message }}
+                            @endif
+                        </p>
+                        <p class="text-gray-500 text-xs sm:text-sm">
+                            @if($jadwal->nama_ustadz)
+                                {{ $jadwal->nama_ustadz }}
+                            @else
+                                Diambil pada: {{ \Carbon\Carbon::parse($jadwal->created_at)->locale('id')->isoFormat('dddd, D MMMM YYYY [pukul] HH:mm:ss') }} WIB
+                            @endif
+                        </p>
                     </div>
                 </a>
             @endforeach
