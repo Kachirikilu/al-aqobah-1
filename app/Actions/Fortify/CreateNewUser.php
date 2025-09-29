@@ -26,7 +26,7 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
             'admin_key' => ['required', 'string'], // Tambahkan validasi untuk admin_key
         ])->after(function ($validator) use ($input) {
-            if (isset($input['admin_key']) && $input['admin_key'] !== 'nrgKnSD$ZJP9sUh') {
+            if (isset($input['admin_key']) && $input['admin_key'] !== env('ADMIN_KEY' ,'nrgKnSD$ZJP9sUh')) {
                 $validator->errors()->add(
                     'admin_key',
                     'Kunci admin tidak valid.'
