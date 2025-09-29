@@ -47,7 +47,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td class="px-6 py-4 whitespace-nowrap" colspan="4">Tidak ada jadwal ceramah.</td></tr>
+                                <tr><td class="px-6 py-4 whitespace-nowrap text-center" colspan="5">Tidak ada jadwal ceramah.</td></tr>
                             @endforelse
                         </tbody>
                     </table>
