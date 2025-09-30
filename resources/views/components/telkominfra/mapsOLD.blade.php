@@ -1,27 +1,13 @@
-@props(['visualData', 'centerCoords'])
+{{-- 1. STYLING: Pindahkan CSS Leaflet ke stack CSS --}}
+@props(['visualData'])
 
-{{-- 1. STYLING: Pindahkan CSS Leaflet ke stack CSS dan Tambahkan Perbaikan CSS --}}
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    
-    {{-- PERBAIKAN: CSS KUSTOM untuk Mengatasi Konflik Leaflet Control/Legenda --}}
-    <style>
-        /* Memastikan Legenda (L.control) terlihat jelas di atas peta */
-        .leaflet-control.info {
-            z-index: 1000; /* Prioritas di atas elemen lain */
-            /* Tailwind classes (p-2, bg-white, dll.) akan melengkapi ini */
-        }
-        
-        /* Memastikan ikon warna di dalam legenda (tag <i>) ditampilkan dengan benar */
-        .info i {
-            display: inline-block !important; /* Wajib agar elemen inline terlihat */
-        }
-    </style>
     {{-- CATATAN: Pastikan Tailwind CSS sudah dimuat di layout utama Anda --}}
 @endpush
 
 {{-- 2. KONTEN HTML --}}
-<div class="bg-gray-90 font-sans pt-2 pb-1 px-4">
+<div class="bg-gray-50 font-sans pt-2 pb-1 px-4">
 
     <div style="padding: 20px;">
         <h2>Unggah Data Perjalanan (GPX & NMF)</h2>
@@ -34,7 +20,7 @@
             <div style="margin-bottom: 15px;">
                 <label for="nama_pengguna">Nama Pengguna:</label>
                 <input type="text" id="nama_pengguna" name="nama_pengguna" required 
-                        style="width: 100%; padding: 8px;">
+                       style="width: 100%; padding: 8px;">
             </div>
 
             <div style="margin-bottom: 15px;">
@@ -72,39 +58,63 @@
 
 </div>
 
----
 
 {{-- 3. SCRIPTS: Pindahkan JS Leaflet dan Logika Peta ke stack JS --}}
 @push('scripts')
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        // Memastikan variabel centerCoords di-set
-        var centerCoords = @json($centerCoords ?? [-6.200000, 106.816666]); 
-        var map = L.map('map').setView(centerCoords, 18);
+        // Koordinat Pusat (Jakarta) dan Zoom Level
+        var initialCoords = [-2.9105859, 104.8536157
+];  
+        var map = L.map('map').setView(initialCoords, 14);
 
+        // Tambahkan Tile Layer (Peta Dasar)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        
 
 // ----------------------------------------------------------------------
-// A. DATA SIMULASI TOWER (eNodeB) - Di-comment, tidak ada perubahan
+// A. DATA SIMULASI TOWER (eNodeB)
 // ----------------------------------------------------------------------
         
+        var towerData = [
+            [-6.200000, 106.816666, "eNB-001 | Pusat"],  
+            [-6.195000, 106.825000, "eNB-002 | Timur Laut"],
+            [-6.205000, 106.808000, "eNB-003 | Barat Daya"],
+            [-6.190000, 106.810000, "eNB-004 | Utara"],
+            [-6.210000, 106.820000, "eNB-005 | Selatan"],
+            [-6.200000, 106.800000, "eNB-006 | Jauh Barat"],
+        ];
+
+        var towerIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34]
+        });
+
+        towerData.forEach(function(tower) {
+            L.marker([tower[0], tower[1]], {icon: towerIcon})
+                .addTo(map)
+                .bindPopup("<b>" + tower[2] + "</b><br>Frekuensi: 1800 MHz");
+        });
+
 // ----------------------------------------------------------------------
 // B. FUNGSI PENENTU WARNA RSRQ
 // ----------------------------------------------------------------------
         
         function getColorByRSRQ(rsrq) {
-            if (rsrq >= -70) {
+            if (rsrq >= -10) {
                 return '#2ECC71'; // Hijau (Sangat Baik)
-            } else if (rsrq >= -90) {
+            } else if (rsrq >= -15) {
                 return '#F4D03F'; // Kuning (Baik/Sedang)
             } else {
                 return '#E74C3C'; // Merah (Buruk)
             }
         }
+
+// ... [Bagian A & B JavaScript Anda]
 
 // ----------------------------------------------------------------------
 // C. DATA DRIVE TEST (DINAMIS DARI DATABASE)
@@ -113,29 +123,28 @@
 // Inisialisasi array data dari PHP
 var measurementPoints = []; 
 
+// Menggunakan Blade untuk loop data dari Controller
 @foreach($visualData as $data)
     measurementPoints.push([
-        {{ json_encode($data['latitude']) }}, 
-        {{ json_encode($data['longitude']) }}, 
-        {{ json_encode($data['rsrp'] ?? null) }}, 
-        {{ json_encode($data['rsrq'] ?? null) }}, 
-        {!! json_encode("PCI: {$data['pci']} | SINR: {$data['sinr']}") !!}
+        // Format: [latitude, longitude, rsrp, rsrq]
+        {{ $data->latitude }}, 
+        {{ $data->longitude }}, 
+        {{ $data->rsrp ?? 'null' }}, // Jika RSRP null, gunakan null
+        {{ $data->rsrq ?? 'null' }}, // Jika RSRQ null, gunakan null
+        "PCI: {{ $data->pci ?? '-' }} | SINR: {{ $data->sinr ?? '-' }}" // Tambahan info popup
     ]);
 @endforeach
 
-
 // ----------------------------------------------------------------------
-// D. LOGIKA SEGMENTED POLYLINE 
+// D. LOGIKA SEGMENTED POLYLINE (Diperbarui untuk indeks baru)
 // ----------------------------------------------------------------------
 
 for (var i = 1; i < measurementPoints.length; i++) {
     var startPoint = measurementPoints[i - 1]; 
-    var endPoint = measurementPoints[i]; 
+    var endPoint = measurementPoints[i];     
     
     // RSRQ sekarang berada di indeks 3
     var rsrq = endPoint[3]; 
-    var latitude = endPoint[0];
-    var longitude = endPoint[1];
     var segmentColor = getColorByRSRQ(rsrq);
     
     var segment = L.polyline([
@@ -147,23 +156,20 @@ for (var i = 1; i < measurementPoints.length; i++) {
         opacity: 0.9
     }).addTo(map);
 
-    segment.bindPopup(
-    "Segmen Drive Test<br>" +
-    "RSRQ di Titik Akhir: <b>" + rsrq + " dB</b><br>" +
-    "Koordinat: " + latitude.toFixed(6) + ", " + longitude.toFixed(6)
-);
-
+    segment.bindPopup("Segmen Drive Test<br>RSRQ di Titik Akhir: *" + rsrq + " dB*");
 }
 
+// ...
+
 // ----------------------------------------------------------------------
-// E. MARKER PENGUKURAN (Titik Data)
+// E. MARKER PENGUKURAN (Titik Data) (Diperbarui untuk indeks baru)
 // ----------------------------------------------------------------------
 
 var measurementIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-    iconSize: [0, 0], 
+    iconSize: [15, 25], 
     iconAnchor: [7, 25],
-    popupAnchor: [1, -90]
+    popupAnchor: [1, -15]
 });
 
 measurementPoints.forEach(function(point) {
@@ -173,15 +179,8 @@ measurementPoints.forEach(function(point) {
     var infoTambahan = point[4];
 
     L.marker([point[0], point[1]], {icon: measurementIcon})
-    .addTo(map)
-    .bindPopup(
-        "<b>Titik Data</b><br>" +
-        "RSRP: " + rsrp + " dBm<br>" +
-        "RSRQ: " + rsrq + " dB<br>" +
-        infoTambahan + "<br>" +
-        "Koordinat: " + point[0].toFixed(6) + ", " + point[1].toFixed(6)
-    );
-
+        .addTo(map)
+        .bindPopup("<b>Titik Data</b><br>RSRP: " + rsrp + " dBm<br>RSRQ: " + rsrq + " dB<br>" + infoTambahan);
 });
 
 // ----------------------------------------------------------------------
@@ -191,16 +190,15 @@ measurementPoints.forEach(function(point) {
         var legend = L.control({position: 'bottomright'});
 
         legend.onAdd = function (map) {
-            // Menggunakan kelas Tailwind: p-2, text-sm, bg-white, bg-opacity-90, shadow-md, rounded-md
-            // Kelas 'info' digunakan di CSS kustom di atas
-            var div = L.DomUtil.create('div', 'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md'),
+            // Menggunakan kelas Tailwind: p-2, text-sm, bg-white, bg-opacity-80, shadow-md, rounded-md
+            var div = L.DomUtil.create('div', 'info p-2 text-sm bg-white bg-opacity-80 shadow-md rounded-md'),
                 rsrq_colors = ['#E74C3C', '#F4D03F', '#2ECC71'];
-            var rsrq_labels = ["< -90 dB (Buruk)", "-90 s/d -70 dB (Sedang)", "> -70 dB (Baik)"];
+            var rsrq_labels = ["< -15 dB (Buruk)", "-15 s/d -10 dB (Sedang)", "> -10 dB (Baik)"];
             
             div.innerHTML += '<b class="font-bold">Kualitas RSRQ (dB)</b><br>';
 
             for (var i = 0; i < rsrq_colors.length; i++) {
-                // Styling ikon legenda diterapkan inline di JS (tag <i>)
+                // Styling ikon legenda diterapkan inline di JS
                 div.innerHTML +=
                     '<i style="background:' + rsrq_colors[i] + '; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; border-radius: 3px;"></i> ' +
                     rsrq_labels[i] + '<br>';

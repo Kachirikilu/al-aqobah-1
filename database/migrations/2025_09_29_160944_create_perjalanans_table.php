@@ -15,7 +15,9 @@ return new class extends Migration
             $table->string('id_perjalanan')->unique()->comment('ID unik sesi dari log NMF atau UUID');
             $table->string('nama_pengguna');
             $table->string('perangkat')->comment('Model perangkat, misal: samsung/SM-G973F');
-            
+            $table->string('file_nmf')->nullable();
+            $table->string('file_gpx')->nullable();
+
             // Tambahan info sesi
             $table->timestamp('timestamp_mulai')->nullable();
             $table->timestamp('timestamp_selesai')->nullable();

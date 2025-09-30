@@ -28,6 +28,8 @@ class Perjalanan extends Model
         'id_perjalanan',
         'nama_pengguna',
         'perangkat',
+        'file_nmf',
+        'file_gpx',
         'timestamp_mulai',
         'timestamp_selesai',
     ];
