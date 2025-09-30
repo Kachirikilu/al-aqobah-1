@@ -19,6 +19,8 @@
             </a>
         </li>
 
+        <li><a href="/telkominfra" class="{{ request()->is('telkominfra') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">Telkominfra</a></li>
+
         <li><a href="{{ route('profile.show') }}" class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a></li>
         <li>
             <form method="POST" action="{{ route('logout') }}" x-data>

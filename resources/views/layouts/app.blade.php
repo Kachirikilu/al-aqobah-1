@@ -14,6 +14,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        @stack('styles') 
+
         <!-- Styles -->
         @livewireStyles
     </head>
@@ -43,6 +45,7 @@
         </div>
 
         @stack('modals')
+        @stack('scripts') 
         @vite('resources/js/app.js')
         <script src="{{ asset('js/my.js') }}"></script>
 

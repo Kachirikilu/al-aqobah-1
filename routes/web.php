@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\JadwalCeramahController;
 use App\Http\Controllers\Admin\JsonController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\TelkominfraController;
 
 
 // Route::get('/', function () {
@@ -26,6 +27,11 @@ Route::get('/api/jadwal-ceramahs/{slug}', [JsonController::class, 'show']);
 Route::get('/', [DashboardController::class, 'user'])->name('user');
 Route::get('/schedules/show/{slug}', [JadwalCeramahController::class, 'show'])->name('admin.schedules.show');
 Route::get('/iot/all-data/{id}', [ApiController::class, 'allData'])->name('admin.iot.allData');
+
+Route::get('/telkominfra', [TelkominfraController::class, 'index'])->name('telkominfra.index');
+Route::get('/telkominfra/{id}', [TelkominfraController::class, 'show'])->name('telkominfra.show');
+Route::get('perjalanan/create', [TelkominfraController::class, 'create'])->name('perjalanan.create');
+Route::post('perjalanan', [TelkominfraController::class, 'store'])->name('perjalanan.store');
 
 
 Route::middleware([
