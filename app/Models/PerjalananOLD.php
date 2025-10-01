@@ -27,11 +27,26 @@ class Perjalanan extends Model
     protected $fillable = [
         'id_perjalanan',
         'nama_pengguna',
-        'nama_tempat',
+        'perangkat',
+        'file_nmf',
+        'file_gpx',
+        'timestamp_mulai',
+        'timestamp_selesai',
     ];
 
-    public function perjalananData(): HasMany
+    /**
+     * Definisi relasi: Satu Perjalanan memiliki banyak Titik GPS.
+     */
+    public function titikGps(): HasMany
     {
-        return $this->hasMany(PerjalananData::class, 'perjalanan_id');
+        return $this->hasMany(TitikGPS::class, 'perjalanan_id');
+    }
+
+    /**
+     * Definisi relasi: Satu Perjalanan memiliki banyak Pengukuran Sinyal.
+     */
+    public function pengukuranSinyal(): HasMany
+    {
+        return $this->hasMany(PengukuranSinyal::class, 'perjalanan_id');
     }
 }

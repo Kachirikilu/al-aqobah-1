@@ -28,11 +28,6 @@ Route::get('/', [DashboardController::class, 'user'])->name('user');
 Route::get('/schedules/show/{slug}', [JadwalCeramahController::class, 'show'])->name('admin.schedules.show');
 Route::get('/iot/all-data/{id}', [ApiController::class, 'allData'])->name('admin.iot.allData');
 
-Route::get('/telkominfra', [TelkominfraController::class, 'index'])->name('telkominfra.index');
-Route::get('/telkominfra/{id}', [TelkominfraController::class, 'show'])->name('telkominfra.show');
-Route::get('perjalanan/create', [TelkominfraController::class, 'create'])->name('perjalanan.create');
-Route::post('perjalanan', [TelkominfraController::class, 'store'])->name('perjalanan.store');
-
 
 Route::middleware([
     'auth:sanctum',
@@ -44,11 +39,18 @@ Route::middleware([
         'index' => 'admin.schedules.index',
         'create' => 'admin.schedules.create',
         'store' => 'admin.schedules.store',
-        // 'show' => 'admin.schedules.show',
         'edit' => 'admin.schedules.edit',
         'update' => 'admin.schedules.update',
         'destroy' => 'admin.schedules.destroy',
     ]);
+
+    Route::get('/telkominfra', [TelkominfraController::class, 'index'])->name('telkominfra.index');
+    Route::get('/telkominfra/{id}', [TelkominfraController::class, 'show'])->name('telkominfra.show');
+    // Route::get('perjalanan/create', [TelkominfraController::class, 'create'])->name('perjalanan.create');
+    Route::post('perjalanan', [TelkominfraController::class, 'store'])->name('perjalanan.store');
+    Route::put('perjalanan/{id}', [TelkominfraController::class, 'update'])->name('perjalanan.update');
+    Route::delete('perjalanan/{id}', [TelkominfraController::class, 'destroy'])->name('perjalanan.destroy');
+    Route::delete('perjalanan-data/{id}', [TelkominfraController::class, 'destroyPerjalananData'])->name('perjalananData.destroy');
 
     Route::get('/esp32Cam', [ApiController::class, 'getData']);
     Route::get('/esp32Cam_motion', [ApiController::class, 'getMotion']);

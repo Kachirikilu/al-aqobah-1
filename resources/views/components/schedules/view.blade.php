@@ -36,7 +36,7 @@
                                         <button onclick="window.location='/schedules/show/{{ $jadwal->slug }}'" class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring focus:ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150 mr-2">
                                             Lihat Detail
                                         </button>
-                                        <button onclick="window.location='{{ route('admin.schedules.edit', $jadwal->id) }}'" class="inline-flex items-center px-4 py-2 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-900 focus:outline-none focus:border-yellow-900 focus:ring focus:ring-yellow-300 disabled:opacity-25 transition ease-in-out duration-150 mr-2">
+                                        <button onclick="window.location='{{ route('admin.schedules.edit', $jadwal->id) }}'" class="inline-flex items-center px-4 py-2 bg-orange-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-orange-500 active:bg-orange-500 focus:outline-none focus:border-orange-900 focus:ring focus:ring-orange-300 disabled:opacity-25 transition ease-in-out duration-150 mr-2">
                                             Edit
                                         </button>
                                         <form action="{{ route('admin.schedules.destroy', $jadwal->id) }}" method="POST" class="inline-block">
