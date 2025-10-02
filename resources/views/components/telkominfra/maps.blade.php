@@ -1,5 +1,11 @@
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> --}}
+    <link rel="stylesheet" href="{{ secure_asset('css/leaflet/leaflet.css') }}" />
+     <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
 
     <style>
         .leaflet-control.info {
@@ -15,7 +21,7 @@
 <div class="mt-8">
     <h3 class="text-2xl font-extrabold text-gray-800 mb-6 border-b pb-2">Visualisasi Data Log</h3>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="grid grid-cols-1 gap-4">
             @forelse (collect($mapsData)->where('status', 'Before') as $mapItem)
                 <x-telkominfra.map.item-map :mapItem="$mapItem" />
@@ -42,7 +48,8 @@
 </div>
 
 @push('scripts')
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    {{-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> --}}
+    <script src="{{ secure_asset('js/leaflet/leaflet.js') }}"></script>
 
     <script>
         var allMapsData = @json($mapsData ?? []);
@@ -53,12 +60,26 @@
             // B. FUNGSI PENENTU WARNA RSRQ (Tetap sama)
             // ----------------------------------------------------------------------
             function getColorByRSRQ(rsrq) {
-                if (rsrq >= -70) {
-                    return '#2ECC71'; // Hijau (Sangat Baik)
-                } else if (rsrq >= -90) {
-                    return '#F4D03F'; // Kuning (Baik/Sedang)
-                } else {
-                    return '#E74C3C'; // Merah (Buruk)
+                if (rsrq >= -3) {
+                    return '#0051ff'; // Biru Tua
+                } else if (rsrq >= -5) {
+                    return '#16bef7'; // Biru Sedang
+                } else if (rsrq >= -7) {
+                    return '#00ffc8'; // Biru Muda
+                } else if (rsrq >= -9) {
+                    return '#2ECC71'; // Hijau
+                } else if (rsrq >= -11) {
+                    return '#F4D03E'; // Kuning Terang
+                } else if (rsrq >= -13) {
+                    return '#FF8C00'; // Kuning Tua
+                } else if (rsrq >= -15) {
+                    return '#FF4500'; // Orange
+                } else if (rsrq >= -17) {
+                    return '#d82a17'; // Merah
+                } else if (rsrq >= -19) {
+                    return '#800000'; // Merah Gelap
+                } else if (rsrq >= -20) {
+                    return '#000000'; // Hitam
                 }
             }
             
@@ -86,6 +107,21 @@
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(map);
 
+                // // ************ >>> PERBAIKAN KRITIS UNTUK DEV TUNNELS <<< ************
+                // setTimeout(function() {
+                //     if (map) { 
+                //         map.invalidateSize();
+                        
+                //         // Opsional: Coba fitBounds lagi setelah resize
+                //         if (visualData && visualData.length > 0) {
+                //             var latLngs = visualData.map(p => [p[0], p[1]]);
+                //             if (latLngs.length > 0) {
+                //                 map.fitBounds(L.polyline(latLngs).getBounds());
+                //             }
+                //         }
+                //     }
+                // }, 500); // 500ms (setengah detik) memberi waktu yang cukup.
+                
                 // --- Proses Data Visual (Polyline & Marker) hanya jika ada data ---
                 if (visualData.length > 0) {
                     // 2. Format Ulang Data Titik Pengukuran
@@ -94,6 +130,7 @@
                             data.latitude,
                             data.longitude,
                             data.rsrp,
+                            data.rssi,
                             data.rsrq,
                             data.sinr,
                             data.pci,
@@ -110,15 +147,16 @@
                         var endPoint = measurementPoints[i];
 
                         var rsrp = endPoint[2];
-                        var rsrq = endPoint[3];
-                        var sinr = endPoint[4];
-                        var pci = endPoint[5];
-                        var earfcn = endPoint[6];
-                        var band = endPoint[7];
-                        var frequency = endPoint[8];
+                        var rssi = endPoint[3];
+                        var rsrq = endPoint[4];
+                        var sinr = endPoint[5];
+                        var pci = endPoint[6];
+                        var earfcn = endPoint[7];
+                        var band = endPoint[8];
+                        var frequency = endPoint[9];
                         var latitude = endPoint[0];
                         var longitude = endPoint[1];
-                        var waktu = endPoint[9];
+                        var waktu = endPoint[10];
                         var segmentColor = getColorByRSRQ(rsrq);
 
                         var segment = L.polyline([
@@ -146,7 +184,8 @@
 
                     // 4. MARKER PENGUKURAN (Titik Data)
                     var measurementIcon = L.icon({
-                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+                        iconUrl: '{{ secure_asset("css/leaflet/images/marker-icon.png") }}',
+                        // iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
                         iconSize: [0, 0], // Marker size zeroed out because we mainly show polyline
                         iconAnchor: [7, 25],
                         popupAnchor: [1, -90]
@@ -181,20 +220,45 @@
                     position: 'bottomright'
                 });
                 legend.onAdd = function(map) {
-                    var div = L.DomUtil.create('div',
-                            'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md'),
-                        rsrq_colors = ['#E74C3C', '#F4D03F', '#2ECC71'];
-                    var rsrq_labels = ["< -90 dB (Buruk)", "-90 s/d -70 dB (Sedang)",
-                        "> -70 dB (Baik)"
-                    ];
+                    // var div = L.DomUtil.create('div',
+                    //         'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md'),
+                    //     rsrq_colors = ['#E74C3C', '#F4D03E', '#2ECC71'];
+                    // var rsrq_labels = ["< -90 dB (Buruk)", "-90 s/d -70 dB (Sedang)",
+                    //     "> -70 dB (Baik)"
+                    // ];
 
-                    div.innerHTML += '<b class="font-bold">Kualitas RSRQ (dB)</b><br>';
+                    var div = L.DomUtil.create('div',
+                                                'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md'),
+                        
+                        // rsrq_colors = ['#000000', '#800000', '#d82a17', '#FF4500', '#FF8C00', '#F4D03E', '#2ECC71'];
+                        rsrq_colors = ['#000000', '#800000', '#d82a17', '#FF4500', '#FF8C00', '#F4D03E', '#2ECC71', '#00ffc8', '#16bef7', '#0051ff']
+                        
+                        rsrq_labels = [
+                            "< -20",    // Hitam
+                            "-20 s/d -19", // Abu-abu Kemerahan
+                            "-19 s/d -17",    // Merah
+                            "-17 s/d -15",// Orange
+                            "-15 s/d -12",   // Kuning Tua
+                            "-12 s/d -9",      // Kuning Terang
+                            "-9 s/d -7",
+                            "-7 s/d -5",
+                            "-5 s/d -3",
+                            "-3 s/d 0"
+                ]       ;
+
+                    // for (var i = 0; i < rsrq_colors.length; i++) {
+                    //     div.innerHTML +=
+                    //         '<i style="background:' + rsrq_colors[i] + '"></i> ' +
+                    //         rsrq_labels[i] + '<br>';
+                    // }
+
+                    div.innerHTML += '<b class="font-bold" style="font-size: 12px;">RSRQ (dB)</b><br>';
 
                     for (var i = 0; i < rsrq_colors.length; i++) {
                         div.innerHTML +=
                             '<i style="background:' + rsrq_colors[i] +
-                            '; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; border-radius: 3px;"></i> ' +
-                            rsrq_labels[i] + '<br>';
+                            '; width: 12px; height: 12px; transform: translateY(4px); float: left; margin-right: 6px; opacity: 0.7; border-radius: 3px;"></i> ' +
+                            '<span style="font-size: 10px;">' + rsrq_labels[i] + '</span><br>'; 
                     }
 
                     return div;

@@ -27,12 +27,13 @@
             </div>
             <div class="flex items-center">
                 <div class="hidden md:ml-4 md:flex md:items-center">
-                    <a href="/login" class="bg-indigo-600 px-4 py-2 rounded-md text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        @if(Auth::check())
+                    @if(Auth::check())
+                    <a href="/dashboard" class="bg-indigo-600 px-4 py-2 rounded-md text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Dashboard
-                        @else
+                    @else
+                    <a href="/login" class="bg-indigo-600 px-4 py-2 rounded-md text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Login
-                        @endif
+                    @endif
                     </a>
                 </div>
                 <div class="flex items-center md:hidden">

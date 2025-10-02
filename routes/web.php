@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\JadwalCeramahController;
 use App\Http\Controllers\Admin\JsonController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Controllers\TelkominfraController;
+// use App\Http\Controllers\TelkominfraController;
+use App\Http\Controllers\Telkominfra\ViewTelkominfraController;
+use App\Http\Controllers\Telkominfra\DataTelkominfraController;
 
 
 // Route::get('/', function () {
@@ -44,13 +46,13 @@ Route::middleware([
         'destroy' => 'admin.schedules.destroy',
     ]);
 
-    Route::get('/telkominfra', [TelkominfraController::class, 'index'])->name('telkominfra.index');
-    Route::get('/telkominfra/{id}', [TelkominfraController::class, 'show'])->name('telkominfra.show');
+    Route::get('/telkominfra', [ViewTelkominfraController::class, 'index'])->name('telkominfra.index');
+    Route::get('/telkominfra/{id}', [ViewTelkominfraController::class, 'show'])->name('telkominfra.show');
     // Route::get('perjalanan/create', [TelkominfraController::class, 'create'])->name('perjalanan.create');
-    Route::post('perjalanan', [TelkominfraController::class, 'store'])->name('perjalanan.store');
-    Route::put('perjalanan/{id}', [TelkominfraController::class, 'update'])->name('perjalanan.update');
-    Route::delete('perjalanan/{id}', [TelkominfraController::class, 'destroy'])->name('perjalanan.destroy');
-    Route::delete('perjalanan-data/{id}', [TelkominfraController::class, 'destroyPerjalananData'])->name('perjalananData.destroy');
+    Route::post('perjalanan', [DataTelkominfraController::class, 'store'])->name('perjalanan.store');
+    Route::put('perjalanan/{id}', [DataTelkominfraController::class, 'update'])->name('perjalanan.update');
+    Route::delete('perjalanan/{id}', [DataTelkominfraController::class, 'destroy'])->name('perjalanan.destroy');
+    Route::delete('perjalanan-data/{id}', [DataTelkominfraController::class, 'destroyPerjalananData'])->name('perjalananData.destroy');
 
     Route::get('/esp32Cam', [ApiController::class, 'getData']);
     Route::get('/esp32Cam_motion', [ApiController::class, 'getMotion']);

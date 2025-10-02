@@ -152,7 +152,8 @@
 
                                         {{-- Form Hapus --}}
                                         <form action="{{ route('perjalanan.destroy', $perjalanan->id) }}"
-                                            method="POST" class="inline-block" onsubmit="return false;">
+                                            method="POST" class="inline-block" 
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data perjalanan ini? Data log yang terkait juga akan terhapus.');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"

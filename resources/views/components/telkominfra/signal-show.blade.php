@@ -2,7 +2,7 @@
     /**
      * Helper function untuk menghitung dan memformat selisih sinyal (RSRP, RSRQ, SINR).
      * Peningkatan (nilai yang lebih tinggi, atau kurang negatif) dianggap sebagai perbaikan.
-     * * @param float|null $beforeValue Nilai rata-rata sebelum.
+     * @param float|null $beforeValue Nilai rata-rata sebelum.
      * @param float|null $afterValue Nilai rata-rata sesudah.
      * @param string $unit Satuan (dBm atau dB).
      * @return string Output HTML yang diformat.
@@ -43,6 +43,9 @@
     $rsrpBefore = $signalAverages['Before']['rsrp_avg'] ?? null;
     $rsrpAfter = $signalAverages['After']['rsrp_avg'] ?? null;
 
+    $rssiBefore = $signalAverages['Before']['rssi_avg'] ?? null;
+    $rssiAfter = $signalAverages['After']['rssi_avg'] ?? null;
+
     $rsrqBefore = $signalAverages['Before']['rsrq_avg'] ?? null;
     $rsrqAfter = $signalAverages['After']['rsrq_avg'] ?? null;
 
@@ -67,6 +70,10 @@
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSRP</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $rsrpBefore ?? 'N/A' }} dBm</dd>
             </div>
+            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Rata-rata RSSI</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $rssiBefore ?? 'N/A' }} dBm</dd>
+            </div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSRQ</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $rsrqBefore ?? 'N/A' }} dB</dd>
@@ -81,12 +88,18 @@
         <div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">Status</dt>
-                <dd class="font-bold text-emerald-600 border-emerald-600 mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">After Maintenance</dd>
+                <dd class="font-bold text-green-600 border-green-600 mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">After Maintenance</dd>
             </div>
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSRP</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {!! $formatSignalDiff($rsrpBefore, $rsrpAfter, ' dBm') !!}
+                </dd>
+            </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Rata-rata RSSI</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {!! $formatSignalDiff($rssiBefore, $rssiAfter, ' dBm') !!}
                 </dd>
             </div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

@@ -6,8 +6,8 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit"
-                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded text-xs uppercase transition ease-in-out duration-150">Hapus
-                    Semua</button>
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded text-xs uppercase transition ease-in-out duration-150">
+                    Hapus Semua</button>
             </form>
         </div>
         <form action="{{ route('perjalanan.store') }}" method="POST" enctype="multipart/form-data">
