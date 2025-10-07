@@ -19,10 +19,6 @@
             transform: scale(0.88);
             /* border: 2px solid white; */
         }
-
-        .dot:checked {
-            transform: scale(0.5);
-        }
     </style>
 @endpush
 
@@ -59,22 +55,6 @@
             BW
         </button>
     </div>
-
-    <div class="flex justify-center mt-2 mb-4">
-        <label for="ratio-switch" class="flex items-center cursor-pointer select-none">
-            <span class="text-sm text-gray-600 mr-2 font-semibold">Detail</span>
-            <div class="relative">
-                <input type="checkbox" id="ratio-switch" class="sr-only peer">
-                <div class="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-green-400 transition-colors duration-300">
-                </div>
-                <div
-                    class="dot absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-6">
-                </div>
-            </div>
-            <span class="text-sm text-gray-600 ml-2 font-semibold">Ringkas</span>
-        </label>
-    </div>
-
 
     <div id="metric-keterangan" class="mb-3 ml-2"></div>
 
@@ -212,10 +192,10 @@
                     waktu = end[13];
 
                 let color;
-                if (selectedMetric === "rsrp") color = getMetricInfo('rsrp', rsrp).color;
-                if (selectedMetric === "rssi") color = getMetricInfo('rssi', rssi).color;
-                if (selectedMetric === "rsrq") color = getMetricInfo('rsrq', rsrq).color;
-                if (selectedMetric === "sinr") color = getMetricInfo('sinr', sinr).color;
+                if (selectedMetric === "rsrp") color = getColorByRSRP(rsrp);
+                if (selectedMetric === "rssi") color = getColorByRSSI(rssi);
+                if (selectedMetric === "rsrq") color = getColorByRSRQ(rsrq);
+                if (selectedMetric === "sinr") color = getColorBySINR(sinr);
                 if (selectedMetric === "serv") color = getColorBySERV(frequency);
                 if (selectedMetric === "bw") color = getColorByBW(bandwidth);
                 if (selectedMetric === "cell") color = getColorByCell(cell);
@@ -273,110 +253,61 @@
         }
 
         // ========== Warna Metric ==========
-
-        let isCompactRatio = false;
-
-        // Event Listener Switch
-        document.getElementById('ratio-switch').addEventListener('change', function() {
-            isCompactRatio = this.checked;
-            console.log('Mode Rasio:', isCompactRatio ? 'Ringkas (5 level)' : 'Detail (10 level)');
-            redrawMaps(); // panggil ulang render / chart kamu
-        });
-
-        // ========= FUNGSI GET METRIC INFO (versi efisien) =========
-        function getMetricInfo(metric, value = null, counters = null) {
-            const sharedColors = [
-                '#0652DD', '#1289A7', '#009432', '#A3CB38', '#C4E538',
-                '#FFC312', '#F79F1F', '#EE5A24', '#c23616', '#000000'
-            ];
-
-            const compactColors = [
-                '#0652DD', '#009432', '#C4E538', '#F79F1F', '#c23616'
-            ];
-
-            const metricConfigs = {
-                rsrp: {
-                    labels: isCompactRatio ?
-                        ['≥ -85', '-95 s/d -85', '-100 s/d -95', '-105 s/d -100', '≤ -105'] :
-                        ['≥ -80', '-85 s/d -80', '-90 s/d -85', '-95 s/d -90', '-100 s/d -95', '-105 s/d -100',
-                            '-110 s/d -105', '-115 s/d -110', '-120 s/d -115', '≤ -120'
-                        ],
-                    mins: isCompactRatio ?
-                        [-85, -95, -100, -105, -9999] :
-                        [-80, -85, -90, -95, -100, -105, -110, -115, -120, -9999]
-                },
-                rssi: {
-                    labels: isCompactRatio ?
-                        ['≥ -70', '-75 s/d -70', '-80 s/d -75', '-85 s/d -80', '≤ -85'] :
-                        ['≥ -52', '-58 s/d -52', '-64 s/d -58', '-70 s/d -64', '-76 s/d -70', '-82 s/d -76',
-                            '-88 s/d -82', '-94 s/d -88', '-100 s/d -94', '≤ -100'
-                        ],
-                    mins: isCompactRatio ?
-                        [-70, -75, -80, -85, -9999] :
-                        [-52, -58, -64, -70, -76, -82, -88, -94, -100, -9999]
-                },
-                rsrq: {
-                    labels: isCompactRatio ?
-                        ['≥ -10', '-14 s/d -10', '-16 s/d -14', '-20 s/d -16', '≤ -20'] :
-                        ['≥ -3', '-5 s/d -3', '-7 s/d -5', '-9 s/d -7', '-11 s/d -9', '-13 s/d -11', '-15 s/d -13',
-                            '-17 s/d -15', '-19 s/d -17', '≤ -19'
-                        ],
-                    mins: isCompactRatio ?
-                        [-10, -14, -16, -20, -9999] :
-                        [-3, -5, -7, -9, -11, -13, -15, -17, -19, -9999]
-                },
-                sinr: {
-                    labels: isCompactRatio ?
-                        ['≥ 20', '10 s/d 20', '0 s/d 10', '-10 s/d 0', '≤ -10'] :
-                        ['≥ 20', '15 s/d 20', '10 s/d 15', '5 s/d 10', '0 s/d 5', '-5 s/d 0', '-10 s/d -5',
-                            '-15 s/d -10', '-20 s/d -15', '≤ -20'
-                        ],
-                    mins: isCompactRatio ?
-                        [20, 10, 0, -5, -9999] :
-                        [20, 15, 10, 5, 0, -5, -10, -15, -20, -9999]
-                }
-            };
-
-            const config = metricConfigs[metric.toLowerCase()];
-            if (!config) return {
-                color: '#C0C0C0',
-                labels: [],
-                colors: []
-            };
-
-            const colors = isCompactRatio ? compactColors : sharedColors;
-            const ranges = config.mins.map((min, i) => ({
-                min,
-                color: colors[i] || '#000000'
-            }));
-
-            // Hanya label + warna
-            if (value === null) {
-                return {
-                    labels: config.labels,
-                    colors
-                };
-            }
-
-            // Jika ada nilai
-            for (let i = 0; i < ranges.length; i++) {
-                if (value >= ranges[i].min) {
-                    if (counters) counters[i]++;
-                    return {
-                        color: ranges[i].color,
-                        labels: config.labels,
-                        colors
-                    };
-                }
-            }
-
-            return {
-                color: '#C0C0C0',
-                labels: config.labels,
-                colors
-            };
+        function getColorByRSRP(rsrp) {
+            if (rsrp >= -80) return '#0652DD';
+            if (rsrp >= -85) return '#1289A7';
+            if (rsrp >= -90) return '#009432';
+            if (rsrp >= -95) return '#A3CB38';
+            if (rsrp >= -100) return '#C4E538';
+            if (rsrp >= -105) return '#FFC312';
+            if (rsrp >= -110) return '#F79F1F';
+            if (rsrp >= -115) return '#EE5A24';
+            if (rsrp > -120) return '#c23616';
+            if (rsrp <= -120) return '#000000';
+            return '#C0C0C0';
         }
 
+        function getColorByRSSI(rssi) {
+            if (rssi >= -52) return '#0652DD';
+            if (rssi >= -58) return '#1289A7';
+            if (rssi >= -64) return '#009432';
+            if (rssi >= -70) return '#A3CB38';
+            if (rssi >= -76) return '#C4E538';
+            if (rssi >= -82) return '#FFC312';
+            if (rssi >= -88) return '#F79F1F';
+            if (rssi >= -94) return '#EE5A24';
+            if (rssi > -100) return '#c23616';
+            if (rssi <= -100) return '#000000';
+            return '#C0C0C0';
+        }
+
+        function getColorByRSRQ(rsrq) {
+            if (rsrq >= -3) return '#0652DD';
+            if (rsrq >= -5) return '#1289A7';
+            if (rsrq >= -7) return '#009432';
+            if (rsrq >= -9) return '#A3CB38';
+            if (rsrq >= -11) return '#C4E538';
+            if (rsrq >= -13) return '#FFC312';
+            if (rsrq >= -15) return '#F79F1F';
+            if (rsrq >= -17) return '#EE5A24';
+            if (rsrq > -19) return '#c23616';
+            if (rsrq <= -19) return '#000000';
+            return '#C0C0C0';
+        }
+
+        function getColorBySINR(sinr) {
+            if (sinr >= 20) return '#0652DD';
+            if (sinr >= 15) return '#1289A7';
+            if (sinr >= 10) return '#009432';
+            if (sinr >= 5) return '#A3CB38';
+            if (sinr >= 0) return '#C4E538';
+            if (sinr >= -5) return '#FFC312';
+            if (sinr >= -10) return '#F79F1F';
+            if (sinr >= -15) return '#EE5A24';
+            if (sinr > -20) return '#c23616';
+            if (sinr <= -20) return '#000000';
+            return '#C0C0C0';
+        }
 
         function getColorBySERV(frequency) {
             if (frequency == 2300 || frequency == 2400) return '#0652DD';
@@ -414,6 +345,9 @@
 
             return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
+
+
+
 
         // function getColorByRSRP(rsrp) {
         //     if (rsrp >= -85) return '#1B1464';
@@ -453,179 +387,128 @@
             var legend = L.control({
                 position: 'bottomright'
             });
-
             legend.onAdd = function(map) {
-                const div = L.DomUtil.create(
-                    'div',
-                    'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md'
-                );
+                var div = L.DomUtil.create('div', 'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md');
 
-                const {
-                    labels,
-                    colors
-                } = getMetricInfo(metric);
+                let colors = [],
+                    labels = [];
 
-                const entry = mapRegistry[mapId];
-                const hasData = entry && entry.data && entry.data.length > 0;
-
-                function appendColorStat(div, labels, colors, data, calcFunc) {
-                    const total = data.length;
-                    const counts = Array(labels.length).fill(0);
-                    data.forEach(v => calcFunc(v, counts));
-
-                    div.innerHTML += `<div class="text-xs mt-1">Total data: ${total}</div>`;
-                    labels.forEach((label, i) => {
-                        const count = counts[i];
-                        const percent = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
-                        div.innerHTML += `
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-1">
-                            <i style="background:${colors[i]};
-                                width:12px;height:12px;
-                                display:inline-block;
-                                margin-right:4px;
-                                border-radius:2px;"></i>
-                            <span>${label}</span>
-                        </div>
-                        <span class="ml-2">(${percent}%)</span>
-                    </div>`;
-                    });
+                if (metric == "serv") {
+                    colors = [
+                        '#0652DD',
+                        '#009432',
+                        '#FFC312',
+                        '#c23616',
+                    ]
+                } else if (metric == "bw") {
+                    colors = [
+                        '#0652DD',
+                        '#009432',
+                        '#C4E538',
+                        '#F79F1F',
+                        '#c23616',
+                        '#000000',
+                    ]
+                } else if (metric !== "cell") {
+                    colors = [
+                        '#0652DD',
+                        '#1289A7',
+                        '#009432',
+                        '#A3CB38',
+                        '#C4E538',
+                        '#FFC312',
+                        '#F79F1F',
+                        '#EE5A24',
+                        '#c23616',
+                        '#000000',
+                    ]
                 }
 
-                // === RSRP ===
                 if (metric === "rsrp") {
+                    labels = [
+                        '≥ -80',
+                        '-85 s/d -80',
+                        '-90 s/d -85',
+                        '-95 s/d -90',
+                        '-100 s/d -95',
+                        '-105 s/d -100',
+                        '-110 s/d -105',
+                        '-115 s/d -110',
+                        '-120 s/d -115',
+                        '≤ -120'
+                    ];
                     div.innerHTML += '<b>RSRP (dBm)</b><br>';
-                    if (hasData) {
-                        const data = entry.data.map(d => d.rsrp).filter(v => v !== undefined && v !== null);
-                        appendColorStat(div, labels, colors, data, (v, c) => getMetricInfo('rsrp', v, c));
-                    } else {
-                        div.innerHTML += '<span class="text-gray-500 text-xs">Tidak ada data.</span>';
-                    }
-
-                    // === RSSI ===
                 } else if (metric === "rssi") {
+                    labels = [
+                        '≥ -52',
+                        '-58 s/d -52',
+                        '-64 s/d -58',
+                        '-70 s/d -64',
+                        '-76 s/d -70',
+                        '-82 s/d -76',
+                        '-88 s/d -82',
+                        '-94 s/d -88',
+                        '-100 s/d -94',
+                        '≤ -100'
+                    ];
                     div.innerHTML += '<b>RSSI (dBm)</b><br>';
-                    if (hasData) {
-                        const data = entry.data.map(d => d.rssi).filter(v => v !== undefined && v !== null);
-                        appendColorStat(div, labels, colors, data, (v, c) => getMetricInfo('rssi', v, c));
-                    } else {
-                        div.innerHTML += '<span class="text-gray-500 text-xs">Tidak ada data.</span>';
-                    }
-
-                    // === RSRQ ===
                 } else if (metric === "rsrq") {
+                    labels = [
+                        '≥ -3',
+                        '-5 s/d -3',
+                        '-7 s/d -5',
+                        '-9 s/d -7',
+                        '-11 s/d -9',
+                        '-13 s/d -11',
+                        '-15 s/d -13',
+                        '-17 s/d -15',
+                        '-19 s/d -17',
+                        '≤ -19',
+                    ];
                     div.innerHTML += '<b>RSRQ (dB)</b><br>';
-                    if (hasData) {
-                        const data = entry.data.map(d => d.rsrq).filter(v => v !== undefined && v !== null);
-                        appendColorStat(div, labels, colors, data, (v, c) => getMetricInfo('rsrq', v, c));
-                    } else {
-                        div.innerHTML += '<span class="text-gray-500 text-xs">Tidak ada data.</span>';
-                    }
-
-                    // === SINR ===
                 } else if (metric === "sinr") {
+                    labels = [
+                        '≥ 20',
+                        '15 s/d 20',
+                        '10 s/d 15',
+                        '5 s/d 10',
+                        '0 s/d 5',
+                        '-5 s/d 0',
+                        '-10 s/d -5',
+                        '-15 s/d -10',
+                        '-20 s/d -15',
+                        '≤ -20',
+                    ];
                     div.innerHTML += '<b>SINR (dB)</b><br>';
-                    if (hasData) {
-                        const data = entry.data.map(d => d.sinr).filter(v => v !== undefined && v !== null);
-                        appendColorStat(div, labels, colors, data, (v, c) => getMetricInfo('sinr', v, c));
-                    } else {
-                        div.innerHTML += '<span class="text-gray-500 text-xs">Tidak ada data.</span>';
-                    }
-
-                    // === SERVING SYSTEM ===
                 } else if (metric === "serv") {
+                    labels = [
+                        'L2300-2400 Band 40',
+                        'L2100 Band 1',
+                        'L1800 Band 3',
+                        'L900 Band 8',
+                    ];
                     div.innerHTML += '<b>Serving System</b><br>';
-                    let allBands = [];
-
-                    if (hasData) {
-                        entry.data.forEach(d => {
-                            if (d.frekuensi !== undefined && d.frekuensi !== null) {
-                                allBands.push(String(d.frekuensi));
-                            }
-                        });
-                    }
-
-                    const uniqueBands = [...new Set(allBands)];
-                    const bandLabelMap = {
-                        '2300': 'L2300-2400 Band 40',
-                        '2400': 'L2300-2400 Band 40',
-                        '2100': 'L2100 Band 1',
-                        '1800': 'L1800 Band 3',
-                        '900': 'L900 Band 8',
-                    };
-                    const bandColorMap = {
-                        '2300': '#0652DD',
-                        '2400': '#0652DD',
-                        '2100': '#009432',
-                        '1800': '#FFC312',
-                        '900': '#c23616',
-                    };
-
-                    uniqueBands.forEach(band => {
-                        const label = bandLabelMap[band] || `L${band}`;
-                        const color = bandColorMap[band] || '#000000';
-                        div.innerHTML += `
-                    <i style="background:${color};
-                        width:12px;height:12px;
-                        float:left;margin-right:6px;
-                        transform:translateY(4px);"></i>
-                    <span style="font-size:11px;">${label}</span><br>`;
-                    });
-
-                    if (uniqueBands.length === 0)
-                        div.innerHTML += `<span style="color:gray;font-size:11px;">Tidak ada data frequency</span><br>`;
-
-                    return div;
-
-                    // === BANDWIDTH ===
                 } else if (metric === "bw") {
+                    labels = [
+                        '20 MHz',
+                        '15 MHz',
+                        '10 MHz',
+                        '5 MHz',
+                        '3 MHz',
+                        '1.4 MHz',
+                    ];
                     div.innerHTML += '<b>Bandwidth</b><br>';
-                    let allBandwidths = [];
-
-                    if (hasData) {
-                        entry.data.forEach(d => {
-                            if (d.bandwidth !== undefined && d.bandwidth !== null)
-                                allBandwidths.push(String(d.bandwidth).trim());
-                        });
-                    }
-
-                    const uniqueBandwidths = [...new Set(allBandwidths)];
-                    const bwColorMap = {
-                        '20': '#0652DD',
-                        '15': '#009432',
-                        '10': '#C4E538',
-                        '5': '#F79F1F',
-                        '3': '#c23616',
-                        '1.4': '#000000',
-                    };
-
-                    const bwOrder = ['20', '15', '10', '5', '3', '1.4'];
-                    const sortedBandwidths = bwOrder.filter(bw => uniqueBandwidths.includes(bw));
-
-                    sortedBandwidths.forEach(bw => {
-                        const color = bwColorMap[bw] || '#000000';
-                        div.innerHTML += `
-                    <i style="background:${color};
-                        width:12px;height:12px;
-                        float:left;margin-right:6px;
-                        transform:translateY(4px);"></i>
-                    <span style="font-size:11px;">${bw} MHz</span><br>`;
-                    });
-
-                    if (sortedBandwidths.length === 0)
-                        div.innerHTML += `<span style="color:gray;font-size:11px;">Tidak ada data bandwidth</span><br>`;
-
-                    return div;
-
-                    // === CELL ID ===
                 } else if (metric === "cell") {
                     div.innerHTML += '<b>Cell ID</b><br>';
+
+                    const entry = mapRegistry[mapId];
                     let allCells = [];
 
-                    if (hasData) {
+                    if (entry && entry.data && entry.data.length > 0) {
                         entry.data.forEach(d => {
-                            if (d.cell_id !== undefined && d.cell_id !== null)
+                            if (d.cell_id !== undefined && d.cell_id !== null) {
                                 allCells.push(d.cell_id);
+                            }
                         });
                     }
 
@@ -633,22 +516,29 @@
                     uniqueCells.forEach(cell => {
                         const color = getColorByCell(cell);
                         div.innerHTML += `
-                    <i style="background:${color};
-                        width:12px;height:12px;
-                        float:left;margin-right:6px;
-                        transform:translateY(4px);"></i>
-                    <span style="font-size:11px;">${cell}</span><br>`;
+            <i style="background:${color};
+                width:12px;height:12px;
+                float:left;margin-right:6px;
+                transform:translateY(4px);"></i>
+            <span style="font-size:11px;">${cell}</span><br>`;
                     });
 
                     return div;
                 }
 
+
+
+                for (let i = 0; i < colors.length; i++) {
+                    div.innerHTML +=
+                        '<i style="background:' + colors[i] +
+                        '; width: 12px; height: 12px; float:left; margin-right:6px; transform: translateY(4px);"></i> ' +
+                        '<span style="font-size: 11px;">' + labels[i] + '</span><br>';
+                }
+
                 return div;
             };
-
             return legend;
         }
-
 
         function updateMetricButtonStyles() {
             const buttons = document.querySelectorAll('.metric-btn');

@@ -152,12 +152,20 @@ class ViewTelkominfraController extends Controller
                 }
 
                 if (!empty($visualData)) {
-                    $midIndex = intval(count($visualData) / 2);
+                    $latitudes = array_column($visualData, 'latitude');
+                    $longitudes = array_column($visualData, 'longitude');
+
+                    $minLat = min($latitudes);
+                    $maxLat = max($latitudes);
+                    $minLon = min($longitudes);
+                    $maxLon = max($longitudes);
+
                     $centerCoords = [
-                        $visualData[$midIndex]['latitude'],
-                        $visualData[$midIndex]['longitude'],
+                        ($minLat + $maxLat) / 2,
+                        ($minLon + $maxLon) / 2,
                     ];
                 }
+
             } catch (\Exception $e) {
                 Log::error("Gagal memproses file NMF untuk PerjalananData ID: " . $dataItem->id . ". Error: " . $e->getMessage());
             }
@@ -176,27 +184,32 @@ class ViewTelkominfraController extends Controller
         // === TAMBAHKAN DATA GABUNGAN DULU ===
         $mergedMaps = [];
         foreach (['Before', 'After'] as $status) {
-            if (!empty($mergedData[$status])) {
-                $midIndex = intval(count($mergedData[$status]) / 2);
-                $centerCoords = [
-                    $mergedData[$status][$midIndex]['latitude'],
-                    $mergedData[$status][$midIndex]['longitude'],
-                ];
-                if ($status == 'Before') {
-                    $fileName = 'Sebelum';
-                } else if ($status == 'After') {
-                    $fileName = 'Sesudah';
-                }
-                $mergedMaps[] = [
-                    'id' => "Merged_{$status}",
-                    'centerCoords' => $centerCoords,
-                    'visualData' => $mergedData[$status],
-                    'fileName' => "Gabungan Data {$fileName} Maintenance",
-                    'perangkat' => 'Semua perangkat',
-                    'status' => $status,
-                ];
-            }
+        if (!empty($mergedData[$status])) {
+            $latitudes = array_column($mergedData[$status], 'latitude');
+            $longitudes = array_column($mergedData[$status], 'longitude');
+
+            $minLat = min($latitudes);
+            $maxLat = max($latitudes);
+            $minLon = min($longitudes);
+            $maxLon = max($longitudes);
+
+            $centerCoords = [
+                ($minLat + $maxLat) / 2,
+                ($minLon + $maxLon) / 2,
+            ];
+
+            $fileName = $status === 'Before' ? 'Sebelum' : 'Sesudah';
+
+            $mergedMaps[] = [
+                'id' => "Merged_{$status}",
+                'centerCoords' => $centerCoords,
+                'visualData' => $mergedData[$status],
+                'fileName' => "Gabungan Data {$fileName} Maintenance",
+                'perangkat' => 'Semua Perangkat',
+                'status' => $status,
+            ];
         }
+    }
 
         // === GABUNGKAN: gabungan dulu, lalu per file ===
         $mapsData = array_merge($mergedMaps, $individualMaps);
