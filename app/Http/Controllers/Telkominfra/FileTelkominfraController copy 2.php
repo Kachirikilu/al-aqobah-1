@@ -264,7 +264,6 @@ class FileTelkominfraController extends Controller
                 if (str_starts_with($line, 'CHI')) {
                     $n_value_chi = $parts[6] ?? null;
                     $bandwidth_chi = $n_value_chi / 5;
-                    $cell_chi = $parts[9] ?? null;
                     continue;
                 }
                 
@@ -353,7 +352,7 @@ class FileTelkominfraController extends Controller
                             'n_value'           => $nValue,
                             'latitude'          => $lat, 
                             'longitude'         => $lon, 
-                            'cell_id'           => $cell_chi,
+                            'cell_id'           => $parts[7] ?? null,
                         ];
                     } catch (\Exception $e) {
                         Log::warning("Gagal parsing baris MIMOMEAS ke-$lineCount: " . $e->getMessage());

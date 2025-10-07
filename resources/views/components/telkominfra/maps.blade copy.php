@@ -25,7 +25,7 @@
 <div class="mt-8">
     <h3 class="text-2xl font-extrabold text-gray-800 mb-6 border-b pb-2">Visualisasi Data Log</h3>
 
-    <div class="mb-4 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+    <div class="mb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
         <button type="button" data-value="rsrp"
             class="metric-btn metric-btn-active w-1/2 w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
             RSRP
@@ -41,10 +41,6 @@
         <button type="button" data-value="sinr"
             class="metric-btn w-1/2 w-auto bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
             SINR
-        </button>
-        <button type="button" data-value="cell"
-            class="metric-btn w-1/2 w-auto bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
-            CELL
         </button>
         <button type="button" data-value="serv"
             class="metric-btn w-1/2 w-auto bg-gray-600 hover:bg-gray-700 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
@@ -198,26 +194,24 @@
                 if (selectedMetric === "sinr") color = getColorBySINR(sinr);
                 if (selectedMetric === "serv") color = getColorBySERV(frequency);
                 if (selectedMetric === "bw") color = getColorByBW(bandwidth);
-                if (selectedMetric === "cell") color = getColorByCell(cell);
 
-
-                // let seg = L.polyline([
-                //     [start[0], start[1]],
-                //     [end[0], end[1]]
-                // ], {
-                //     color: color,
-                //     weight: 6,
-                //     opacity: 0.8
-                // });
-
-                let seg = L.circleMarker([start[0], start[1]], {
-                    radius: 3,
-                    fillColor: color,
-                    color: '#000000',
-                    weight: 0,
-                    opacity: 1,
-                    fillOpacity: 0.8
+                let seg = L.polyline([
+                    [start[0], start[1]],
+                    [end[0], end[1]]
+                ], {
+                    color: color,
+                    weight: 6,
+                    opacity: 0.8
                 });
+
+                // let seg = L.circleMarker([start[0], start[1]], {
+                //     radius: 3,
+                //     fillColor: color,
+                //     color: '#000000',
+                //     weight: 0,
+                //     opacity: 1,
+                //     fillOpacity: 0.8
+                // });
 
                 let freValue = frequency;
                 if (freValue == 2300 || freValue == 2400) {
@@ -226,7 +220,6 @@
 
                 seg.bindPopup(
                     "Segmen Drive Test<br>" +
-                    "Cell ID: <b>" + cell + "</b><br>" +
                     "RSRP: <b>" + rsrp.toFixed(1) + " dBm</b><br>" +
                     "RSSI: <b>" + rssi.toFixed(1) + " dBm</b><br>" +
                     "RSRQ: <b>" + rsrq.toFixed(1) + " dB</b><br>" +
@@ -248,7 +241,7 @@
             if (entry.legend) {
                 map.removeControl(entry.legend);
             }
-            entry.legend = getColorLegend(selectedMetric, mapId);
+            entry.legend = getColorLegend(selectedMetric);
             entry.legend.addTo(map);
         }
 
@@ -327,28 +320,6 @@
             return '#C0C0C0';
         }
 
-        function getColorByCell(cell) {
-            if (!cell) return '#C0C0C0';
-
-            const str = cell.toString();
-            let hash = 2166136261;
-            for (let i = 0; i < str.length; i++) {
-                hash ^= str.charCodeAt(i);
-                hash = Math.imul(hash, 1677761992901391973989);
-            }
-
-            hash = (hash ^ (hash >>> 16)) >>> 0;
-
-            const hue = hash % 360;
-            const saturation = 60 + ((hash >> 8) % 30);
-            const lightness = 60 + ((hash >> 16) % 20);
-
-            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        }
-
-
-
-
         // function getColorByRSRP(rsrp) {
         //     if (rsrp >= -85) return '#1B1464';
         //     if (rsrp >= -95) return '#A3CB38';
@@ -383,7 +354,7 @@
         // }
 
         // ========== Legend Dinamis ==========
-        function getColorLegend(metric, mapId) {
+        function getColorLegend(metric) {
             var legend = L.control({
                 position: 'bottomright'
             });
@@ -409,7 +380,7 @@
                         '#c23616',
                         '#000000',
                     ]
-                } else if (metric !== "cell") {
+                } else {
                     colors = [
                         '#0652DD',
                         '#1289A7',
@@ -489,16 +460,6 @@
                     ];
                     div.innerHTML += '<b>Serving System</b><br>';
                 } else if (metric === "bw") {
-                    const entry = mapRegistry[mapId];
-                    let allCells = [];
-
-                    if (entry && entry.data && entry.data.length > 0) {
-                        entry.data.forEach(d => {
-                            if (d.bandwidth !== undefined && d.bandwidth !== null) {
-                                allCells.push(d.bandwidth);
-                            }
-                        });
-                    }
                     labels = [
                         '20 MHz',
                         '15 MHz',
@@ -508,35 +469,7 @@
                         '1.4 MHz',
                     ];
                     div.innerHTML += '<b>Bandwidth</b><br>';
-                } else if (metric === "cell") {
-                    div.innerHTML += '<b>Cell ID</b><br>';
-
-                    const entry = mapRegistry[mapId];
-                    let allCells = [];
-
-                    if (entry && entry.data && entry.data.length > 0) {
-                        entry.data.forEach(d => {
-                            if (d.cell_id !== undefined && d.cell_id !== null) {
-                                allCells.push(d.cell_id);
-                            }
-                        });
-                    }
-
-                    const uniqueCells = [...new Set(allCells)];
-                    uniqueCells.forEach(cell => {
-                        const color = getColorByCell(cell);
-                        div.innerHTML += `
-            <i style="background:${color};
-                width:12px;height:12px;
-                float:left;margin-right:6px;
-                transform:translateY(4px);"></i>
-            <span style="font-size:11px;">${cell}</span><br>`;
-                    });
-
-                    return div;
                 }
-
-
 
                 for (let i = 0; i < colors.length; i++) {
                     div.innerHTML +=
@@ -574,8 +507,6 @@
                     colorMetric = 'text-gray-600';
                 } else if (selectedMetric === 'bw') {
                     colorMetric = 'text-gray-800';
-                } else if (selectedMetric === 'cell') {
-                    colorMetric = 'text-yellow-400';
                 }
 
                 let selecName
@@ -591,8 +522,6 @@
                     selecName = 'Serving System & Band';
                 } else if (selectedMetric == 'bw') {
                     selecName = 'Bandwidth';
-                } else if (selectedMetric == 'cell') {
-                    selecName = 'Cell ID';
                 }
 
                 metricKetElement.innerHTML = `Metrik Aktif: <b class="${colorMetric}">${selecName}</b>`;

@@ -25,7 +25,7 @@
 <div class="mt-8">
     <h3 class="text-2xl font-extrabold text-gray-800 mb-6 border-b pb-2">Visualisasi Data Log</h3>
 
-    <div class="mb-4 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+    <div class="mb-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
         <button type="button" data-value="rsrp"
             class="metric-btn metric-btn-active w-1/2 w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
             RSRP
@@ -42,10 +42,6 @@
             class="metric-btn w-1/2 w-auto bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
             SINR
         </button>
-        <button type="button" data-value="cell"
-            class="metric-btn w-1/2 w-auto bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
-            CELL
-        </button>
         <button type="button" data-value="serv"
             class="metric-btn w-1/2 w-auto bg-gray-600 hover:bg-gray-700 text-white font-semibold px-6 py-1 rounded-lg transition duration-150 shadow-md">
             SERV
@@ -58,42 +54,16 @@
 
     <div id="metric-keterangan" class="mb-3 ml-2"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="grid grid-cols-1 gap-4">
-            @foreach (collect($mapsData)->where('status', 'Before') as $mapItem)
-                @if (!is_int($mapItem['id']))
-                    <x-telkominfra.map.item-map :mapItem="$mapItem" />
-                @endif
-            @endforeach
-        </div>
-        <div class="grid grid-cols-1 gap-4">
-            @foreach (collect($mapsData)->where('status', 'After') as $mapItem)
-                @if (!is_int($mapItem['id']))
-                    <x-telkominfra.map.item-map :mapItem="$mapItem" />
-                @endif
-            @endforeach
-        </div>
-    </div>
-
-    <div class="relative flex items-center my-6">
-        <div class="flex-grow border-t border-gray-300"></div>
-        <span class="mx-4 text-gray-500 text-sm font-medium">Data Log Terpisah</span>
-        <div class="flex-grow border-t border-gray-300"></div>
-    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="grid grid-cols-1 gap-4">
             @foreach (collect($mapsData)->where('status', 'Before') as $mapItem)
-                @if (is_int($mapItem['id']))
-                    <x-telkominfra.map.item-map :mapItem="$mapItem" />
-                @endif
+                <x-telkominfra.map.item-map :mapItem="$mapItem" />
             @endforeach
         </div>
         <div class="grid grid-cols-1 gap-4">
             @foreach (collect($mapsData)->where('status', 'After') as $mapItem)
-                @if (is_int($mapItem['id']))
-                    <x-telkominfra.map.item-map :mapItem="$mapItem" />
-                @endif
+                <x-telkominfra.map.item-map :mapItem="$mapItem" />
             @endforeach
         </div>
     </div>
@@ -168,7 +138,7 @@
 
             let measurementPoints = visualData.map(function(d) {
                 return [d.latitude, d.longitude, d.rsrp, d.rssi, d.rsrq, d.sinr, d.pci, d.earfcn, d.band, d
-                    .frekuensi, d.bandwidth, d.n_value, d.cell_id, d.timestamp_waktu
+                    .frekuensi, d.bandwidth, d.n_value, d.timestamp_waktu
                 ];
             });
 
@@ -188,8 +158,7 @@
                     n_value = end[11],
                     latitude = end[0],
                     longitude = end[1],
-                    cell = end[12],
-                    waktu = end[13];
+                    waktu = end[12];
 
                 let color;
                 if (selectedMetric === "rsrp") color = getColorByRSRP(rsrp);
@@ -198,8 +167,6 @@
                 if (selectedMetric === "sinr") color = getColorBySINR(sinr);
                 if (selectedMetric === "serv") color = getColorBySERV(frequency);
                 if (selectedMetric === "bw") color = getColorByBW(bandwidth);
-                if (selectedMetric === "cell") color = getColorByCell(cell);
-
 
                 // let seg = L.polyline([
                 //     [start[0], start[1]],
@@ -210,7 +177,7 @@
                 //     opacity: 0.8
                 // });
 
-                let seg = L.circleMarker([start[0], start[1]], {
+                let seg = L.circleMarker([latitude, longitude], {
                     radius: 3,
                     fillColor: color,
                     color: '#000000',
@@ -222,11 +189,10 @@
                 let freValue = frequency;
                 if (freValue == 2300 || freValue == 2400) {
                     freValue = "2300-2400";
-                }
+                } 
 
                 seg.bindPopup(
                     "Segmen Drive Test<br>" +
-                    "Cell ID: <b>" + cell + "</b><br>" +
                     "RSRP: <b>" + rsrp.toFixed(1) + " dBm</b><br>" +
                     "RSSI: <b>" + rssi.toFixed(1) + " dBm</b><br>" +
                     "RSRQ: <b>" + rsrq.toFixed(1) + " dB</b><br>" +
@@ -248,110 +214,88 @@
             if (entry.legend) {
                 map.removeControl(entry.legend);
             }
-            entry.legend = getColorLegend(selectedMetric, mapId);
+            entry.legend = getColorLegend(selectedMetric);
             entry.legend.addTo(map);
         }
 
         // ========== Warna Metric ==========
         function getColorByRSRP(rsrp) {
-            if (rsrp >= -80) return '#0652DD';
-            if (rsrp >= -85) return '#1289A7';
-            if (rsrp >= -90) return '#009432';
-            if (rsrp >= -95) return '#A3CB38';
-            if (rsrp >= -100) return '#C4E538';
-            if (rsrp >= -105) return '#FFC312';
-            if (rsrp >= -110) return '#F79F1F';
-            if (rsrp >= -115) return '#EE5A24';
-            if (rsrp > -120) return '#c23616';
+            if (rsrp >= -80) return '#0051ff';
+            if (rsrp >= -85) return '#16bef7';
+            if (rsrp >= -90) return '#00ffc8';
+            if (rsrp >= -95) return '#2ECC71';
+            if (rsrp >= -100) return '#F4D03E';
+            if (rsrp >= -105) return '#FF8C00';
+            if (rsrp >= -110) return '#FF4500';
+            if (rsrp >= -115) return '#d82a17';
+            if (rsrp > -120) return '#800000';
             if (rsrp <= -120) return '#000000';
             return '#C0C0C0';
         }
 
         function getColorByRSSI(rssi) {
-            if (rssi >= -52) return '#0652DD';
-            if (rssi >= -58) return '#1289A7';
-            if (rssi >= -64) return '#009432';
-            if (rssi >= -70) return '#A3CB38';
-            if (rssi >= -76) return '#C4E538';
-            if (rssi >= -82) return '#FFC312';
-            if (rssi >= -88) return '#F79F1F';
-            if (rssi >= -94) return '#EE5A24';
-            if (rssi > -100) return '#c23616';
+            if (rssi >= -52) return '#0051ff';
+            if (rssi >= -58) return '#16bef7';
+            if (rssi >= -64) return '#00ffc8';
+            if (rssi >= -70) return '#2ECC71';
+            if (rssi >= -76) return '#F4D03E';
+            if (rssi >= -82) return '#FF8C00';
+            if (rssi >= -88) return '#FF4500';
+            if (rssi >= -94) return '#d82a17';
+            if (rssi > -100) return '#800000';
             if (rssi <= -100) return '#000000';
             return '#C0C0C0';
         }
 
         function getColorByRSRQ(rsrq) {
-            if (rsrq >= -3) return '#0652DD';
-            if (rsrq >= -5) return '#1289A7';
-            if (rsrq >= -7) return '#009432';
-            if (rsrq >= -9) return '#A3CB38';
-            if (rsrq >= -11) return '#C4E538';
-            if (rsrq >= -13) return '#FFC312';
-            if (rsrq >= -15) return '#F79F1F';
-            if (rsrq >= -17) return '#EE5A24';
-            if (rsrq > -19) return '#c23616';
+            if (rsrq >= -3) return '#0051ff';
+            if (rsrq >= -5) return '#16bef7';
+            if (rsrq >= -7) return '#00ffc8';
+            if (rsrq >= -9) return '#2ECC71';
+            if (rsrq >= -11) return '#F4D03E';
+            if (rsrq >= -13) return '#FF8C00';
+            if (rsrq >= -15) return '#FF4500';
+            if (rsrq >= -17) return '#d82a17';
+            if (rsrq > -19) return '#800000';
             if (rsrq <= -19) return '#000000';
             return '#C0C0C0';
         }
 
         function getColorBySINR(sinr) {
-            if (sinr >= 20) return '#0652DD';
-            if (sinr >= 15) return '#1289A7';
-            if (sinr >= 10) return '#009432';
-            if (sinr >= 5) return '#A3CB38';
-            if (sinr >= 0) return '#C4E538';
-            if (sinr >= -5) return '#FFC312';
-            if (sinr >= -10) return '#F79F1F';
-            if (sinr >= -15) return '#EE5A24';
-            if (sinr > -20) return '#c23616';
+            if (sinr >= 20) return '#0051ff';
+            if (sinr >= 15) return '#16bef7';
+            if (sinr >= 10) return '#00ffc8';
+            if (sinr >= 5) return '#2ECC71';
+            if (sinr >= 0) return '#F4D03E';
+            if (sinr >= -5) return '#FF8C00';
+            if (sinr >= -10) return '#FF4500';
+            if (sinr >= -15) return '#d82a17';
+            if (sinr > -20) return '#800000';
             if (sinr <= -20) return '#000000';
             return '#C0C0C0';
         }
 
         function getColorBySERV(frequency) {
-            if (frequency == 2300 || frequency == 2400) return '#0652DD';
-            if (frequency == 2100) return '#009432';
-            if (frequency == 1800) return '#FFC312';
-            if (frequency == 900) return '#c23616';
+            if (frequency == 900) return '#0051ff';
+            if (frequency == 1800) return '#00FFC8';
+            if (frequency == 2100) return '#F4D03E';
+            if (frequency == 2300 || frequency == 2400) return '#FF4500';
             return '#C0C0C0';
         }
 
         function getColorByBW(bandwidth) {
-            if (bandwidth == 20) return '#0652DD';
-            if (bandwidth == 15) return '#009432';
-            if (bandwidth == 10) return '#C4E538';
-            if (bandwidth == 5) return '#F79F1F';
-            if (bandwidth == 3) return '#c23616';
-            if (bandwidth == 1.4) return '#000000';
+            if (bandwidth == 1.4) return '#0051ff';
+            if (bandwidth == 3) return '#00ffc8';
+            if (bandwidth == 5) return '#2ECC71';
+            if (bandwidth == 10) return '#FF8C00';
+            if (bandwidth == 15) return '#FF4500';
+            if (bandwidth == 20) return '#800000';
             return '#C0C0C0';
         }
 
-        function getColorByCell(cell) {
-            if (!cell) return '#C0C0C0';
-
-            const str = cell.toString();
-            let hash = 2166136261;
-            for (let i = 0; i < str.length; i++) {
-                hash ^= str.charCodeAt(i);
-                hash = Math.imul(hash, 1677761992901391973989);
-            }
-
-            hash = (hash ^ (hash >>> 16)) >>> 0;
-
-            const hue = hash % 360;
-            const saturation = 60 + ((hash >> 8) % 30);
-            const lightness = 60 + ((hash >> 16) % 20);
-
-            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        }
-
-
-
-
         // function getColorByRSRP(rsrp) {
         //     if (rsrp >= -85) return '#1B1464';
-        //     if (rsrp >= -95) return '#A3CB38';
+        //     if (rsrp >= -95) return '#009432';
         //     if (rsrp >= -100) return '#4cd137';
         //     if (rsrp >= -105) return '#fbc531';
         //     if (rsrp < -105) return '#EA2027';
@@ -359,7 +303,7 @@
         // }
         // function getColorByRSSI(rssi) {
         //     if (rssi >= -85) return '#1B1464';
-        //     if (rssi >= -95) return '#A3CB38';
+        //     if (rssi >= -95) return '#009432';
         //     if (rssi >= -100) return '#4cd137';
         //     if (rssi >= -105) return '#fbc531';
         //     if (rssi < -105) return '#EA2027';
@@ -367,7 +311,7 @@
         // }
         // function getColorByRSRQ(rsrq) {
         //     if (rsrq >= -10) return '#1B1464';
-        //     if (rsrq >= -12) return '#A3CB38';
+        //     if (rsrq >= -12) return '#009432';
         //     if (rsrq >= -16) return '#4cd137';
         //     if (rsrq >= -20) return '#fbc531';
         //     if (rsrq < -20) return '#EA2027';
@@ -375,7 +319,7 @@
         // }
         // function getColorBySINR(sinr) {
         //     if (sinr >= 20) return '#1B1464';
-        //     if (sinr >= 10) return '#A3CB38';
+        //     if (sinr >= 10) return '#009432';
         //     if (sinr >= 0) return '#4cd137';
         //     if (sinr >= -5) return '#fbc531';
         //     if (sinr < -5) return '#EA2027';
@@ -383,7 +327,7 @@
         // }
 
         // ========== Legend Dinamis ==========
-        function getColorLegend(metric, mapId) {
+        function getColorLegend(metric) {
             var legend = L.control({
                 position: 'bottomright'
             });
@@ -395,31 +339,31 @@
 
                 if (metric == "serv") {
                     colors = [
-                        '#0652DD',
-                        '#009432',
-                        '#FFC312',
-                        '#c23616',
+                        '#0051FF',
+                        '#00FFC8',
+                        '#F4D03E',
+                        '#FF4500',
                     ]
                 } else if (metric == "bw") {
                     colors = [
-                        '#0652DD',
-                        '#009432',
-                        '#C4E538',
-                        '#F79F1F',
-                        '#c23616',
-                        '#000000',
+                        '#0051FF',
+                        '#00ffc8',
+                        '#2ECC71',
+                        '#FF8C00',
+                        '#FF4500',
+                        '#800000',
                     ]
-                } else if (metric !== "cell") {
+                } else {
                     colors = [
-                        '#0652DD',
-                        '#1289A7',
-                        '#009432',
-                        '#A3CB38',
-                        '#C4E538',
-                        '#FFC312',
-                        '#F79F1F',
-                        '#EE5A24',
-                        '#c23616',
+                        '#0051FF',
+                        '#16BEF7',
+                        '#00FFC8',
+                        '#2ECC71',
+                        '#F4D03E',
+                        '#FF8C00',
+                        '#FF4500',
+                        '#D82A17',
+                        '#800000',
                         '#000000',
                     ]
                 }
@@ -435,21 +379,21 @@
                         '-110 s/d -105',
                         '-115 s/d -110',
                         '-120 s/d -115',
-                        '≤ -120'
+                        '≥ -120'
                     ];
                     div.innerHTML += '<b>RSRP (dBm)</b><br>';
                 } else if (metric === "rssi") {
                     labels = [
-                        '≥ -52',
-                        '-58 s/d -52',
-                        '-64 s/d -58',
-                        '-70 s/d -64',
-                        '-76 s/d -70',
-                        '-82 s/d -76',
-                        '-88 s/d -82',
-                        '-94 s/d -88',
-                        '-100 s/d -94',
-                        '≤ -100'
+                        '≥ -72',
+                        '-78 s/d -72',
+                        '-84 s/d -78',
+                        '-90 s/d -84',
+                        '-96 s/d -90',
+                        '-102 s/d -102',
+                        '-108 s/d -96',
+                        '-104 s/d -108',
+                        '-120 s/d -104',
+                        '≥ -120'
                     ];
                     div.innerHTML += '<b>RSSI (dBm)</b><br>';
                 } else if (metric === "rsrq") {
@@ -463,7 +407,7 @@
                         '-15 s/d -13',
                         '-17 s/d -15',
                         '-19 s/d -17',
-                        '≤ -19',
+                        '≥ -19',
                     ];
                     div.innerHTML += '<b>RSRQ (dB)</b><br>';
                 } else if (metric === "sinr") {
@@ -477,66 +421,28 @@
                         '-10 s/d -5',
                         '-15 s/d -10',
                         '-20 s/d -15',
-                        '≤ -20',
+                        '≥ -20',
                     ];
                     div.innerHTML += '<b>SINR (dB)</b><br>';
                 } else if (metric === "serv") {
                     labels = [
-                        'L2300-2400 Band 40',
-                        'L2100 Band 1',
-                        'L1800 Band 3',
                         'L900 Band 8',
+                        'L1800 Band 3',
+                        'L2100 Band 1',
+                        'L2300-2400 Band 40',
                     ];
                     div.innerHTML += '<b>Serving System</b><br>';
                 } else if (metric === "bw") {
-                    const entry = mapRegistry[mapId];
-                    let allCells = [];
-
-                    if (entry && entry.data && entry.data.length > 0) {
-                        entry.data.forEach(d => {
-                            if (d.bandwidth !== undefined && d.bandwidth !== null) {
-                                allCells.push(d.bandwidth);
-                            }
-                        });
-                    }
                     labels = [
-                        '20 MHz',
-                        '15 MHz',
-                        '10 MHz',
-                        '5 MHz',
-                        '3 MHz',
                         '1.4 MHz',
+                        '3 MHz',
+                        '5 MHz',
+                        '10 MHz',
+                        '15 MHz',
+                        '20 MHz',
                     ];
                     div.innerHTML += '<b>Bandwidth</b><br>';
-                } else if (metric === "cell") {
-                    div.innerHTML += '<b>Cell ID</b><br>';
-
-                    const entry = mapRegistry[mapId];
-                    let allCells = [];
-
-                    if (entry && entry.data && entry.data.length > 0) {
-                        entry.data.forEach(d => {
-                            if (d.cell_id !== undefined && d.cell_id !== null) {
-                                allCells.push(d.cell_id);
-                            }
-                        });
-                    }
-
-                    const uniqueCells = [...new Set(allCells)];
-                    uniqueCells.forEach(cell => {
-                        const color = getColorByCell(cell);
-                        div.innerHTML += `
-            <i style="background:${color};
-                width:12px;height:12px;
-                float:left;margin-right:6px;
-                transform:translateY(4px);"></i>
-            <span style="font-size:11px;">${cell}</span><br>`;
-                    });
-
-                    return div;
                 }
-
-
 
                 for (let i = 0; i < colors.length; i++) {
                     div.innerHTML +=
@@ -574,28 +480,9 @@
                     colorMetric = 'text-gray-600';
                 } else if (selectedMetric === 'bw') {
                     colorMetric = 'text-gray-800';
-                } else if (selectedMetric === 'cell') {
-                    colorMetric = 'text-yellow-400';
                 }
 
-                let selecName
-                if (selectedMetric == 'rsrp') {
-                    selecName = 'Reference Signal Received Power';
-                } else if (selectedMetric == 'rssi') {
-                    selecName = 'Received Signal Strength Indicator';
-                } else if (selectedMetric == 'rsrq') {
-                    selecName = 'Reference Signal Received Quality';
-                } else if (selectedMetric == 'sinr') {
-                    selecName = 'Signal to Interference plus Noise Ratio';
-                } else if (selectedMetric == 'serv') {
-                    selecName = 'Serving System & Band';
-                } else if (selectedMetric == 'bw') {
-                    selecName = 'Bandwidth';
-                } else if (selectedMetric == 'cell') {
-                    selecName = 'Cell ID';
-                }
-
-                metricKetElement.innerHTML = `Metrik Aktif: <b class="${colorMetric}">${selecName}</b>`;
+                metricKetElement.innerHTML = `Metrik aktif: <b class="${colorMetric}">${selectedMetric.toUpperCase()}</b>`;
             } else {
                 console.error("Elemen dengan ID 'metric-keterangan' tidak ditemukan.");
             }

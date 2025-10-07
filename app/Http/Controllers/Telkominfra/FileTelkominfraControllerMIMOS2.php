@@ -165,36 +165,46 @@ class FileTelkominfraController extends Controller
         $resolveBandFrequency = function (?int $earfcn) {
             $band = null;
             $frekuensi = null;
-            $bandwidth = null;
-            $n_value = null;
+            $bandwidth = null; // Tambahkan Bandwidth
+            $n_value = null;   // Tambahkan nilai N (Resource Blocks)
 
+            // --- Definisi Umum Bandwidth dan N ---
+            // Mapping umum (perlu disesuaikan dengan alokasi spektrum aktual Anda)
             $bandwidth_mapping = [
-                40 => 20, // Band 40 (2300 MHz)
-                3  => 20, // Band 3 (1800 MHz)
-                1  => 10, // Band 1 (2100 MHz)
-                8  => 10, // Band 8 (900 MHz)
-                42 => 20, // Band 42 (3500 MHz)
-                10 => 10, // Band 10 (2100 MHz)
-                13 => 10, // Band 13 (700 MHz)
+                40 => 20, // Band 40 (2300 MHz): Sering 20 MHz
+                3  => 20, // Band 3 (1800 MHz): Sering 20 MHz
+                1  => 10, // Band 1 (2100 MHz): Umumnya 10 MHz atau 20 MHz
+                8  => 10, // Band 8 (900 MHz): Umumnya 5 atau 10 MHz
+                42 => 20, // Band 42 (3500 MHz): Sering 20 MHz
+                10 => 10, // Band 10 (2100 MHz): Umumnya 10 MHz
+                13 => 10, // Band 13 (700 MHz): Umumnya 5 atau 10 MHz
+                // Tambahkan band lain sesuai kebutuhan Anda
             ];
+            // Formula sederhana N (RB) = (Bandwidth dalam MHz) * 5
+            // (Contoh: 20 MHz = 100 RB, 10 MHz = 50 RB)
+            // Ini mengabaikan overhead guard band, tapi cukup untuk perkiraan log.
+            // ----------------------------------------
 
             if ($earfcn !== null) {
                 switch ($earfcn) {
-                    case 39092:
                     case 38750:
                     case 38948: $band = 40; $frekuensi = 2300; break;
                     case 1850: $band = 3;  $frekuensi = 1800; break;
-                    case 225:
-                    case 251:
                     case 500: $band = 1;  $frekuensi = 2100; break;
-                    case 3500: $band = 8;  $frekuensi = 900;  break;
+                    case 3500:   $band = 8;  $frekuensi = 900;  break;
+                    // case 3500:  $band = 42; $frekuensi = 3500; break; // EARFCN yang Anda gunakan di log
+                    // case 1850:  $band = 10; $frekuensi = 2100; break;
+                    
+                    // case 500: 
+                    //     $band = 13; 
+                    //     $frekuensi = 700; 
                         break; 
 
                     default:
-                        // if ($earfcn >= 41590 && $earfcn <= 43589) {
+                        // if ($earfcn >= 41590 && $earfcn <= 43589) { // Band 42 Range
                         //     $band = 42;
                         //     $frekuensi = 3500;
-                        // } elseif ($earfcn >= 0 && $earfcn <= 599) {
+                        // } elseif ($earfcn >= 0 && $earfcn <= 599) { // Band 13 Range
                         //     $band = 13;
                         //     $frekuensi = 700;
                         // } else {
@@ -264,55 +274,81 @@ class FileTelkominfraController extends Controller
                 if (str_starts_with($line, 'CHI')) {
                     $n_value_chi = $parts[6] ?? null;
                     $bandwidth_chi = $n_value_chi / 5;
-                    $cell_chi = $parts[9] ?? null;
                     continue;
                 }
                 
                 if (str_starts_with($line, 'CELLMEAS')) {
-                    $cellmeasBuffer = [
-                        'time'      => $parts[1] ?? null,
-                        'lat'       => $currentGps['lat'] ?? null,
-                        'lon'       => $currentGps['lon'] ?? null,
-                        'pci'       => $parts[10] ?? null,
-                        'earfcn'    => $parts[9] ?? null,
-                    ];
-                    $cellmeasBuffer['timestamp'] = $convertTime($cellmeasBuffer['time'], $logDate);
+                    $pci = $parts[10] ?? null;
                     continue;
                 }
 
-
                 if (str_starts_with($line, 'MIMOMEAS')) {
                     try {
-                        $rawTime = $parts[1] ?? ($cellmeasBuffer['time'] ?? null);
-
-                        $earfcn = (int)($parts[8] ?? ($cellmeasBuffer['earfcn'] ?? null));
-                        if ($earfcn == 0 || $earfcn == 432000 || $earfcn == 467000) {
-                            continue;
-                        }
-
-                        $lat     = $currentGps['lat'] ?? ($cellmeasBuffer['lat'] ?? null);
-                        $lon     = $currentGps['lon'] ?? ($cellmeasBuffer['lon'] ?? null);
-                        $timestampWaktu = $convertTime($rawTime, $logDate) ?? ($cellmeasBuffer['timestamp'] ?? null);
+                        $rawTime = $parts[1] ?? null;
+                        $lat = $currentGps['lat'];
+                        $lon = $currentGps['lon'];
+                        $timestampWaktu = $convertTime($rawTime, $logDate); 
+                        $earfcn = (int)($parts[8] ?? null);
+                        
+                        $bandFreq = $resolveBandFrequency($earfcn); // Panggil fungsi Band/Freq
 
                         if ($lat === null || $lon === null) {
                             Log::warning("MIMOMEAS baris $lineCount tidak memiliki koordinat dari GPS sebelumnya.");
                         }
 
-                        $pci    = $parts[7] ?? ($cellmeasBuffer['pci'] ?? 'Unknown');
+                        // $nValue = $bandFreq['n_value'] ?? 100;
 
-                        $bandFreq  = $resolveBandFrequency($earfcn);
-                        $nValue    = $n_value_chi ?? $bandFreq['n_value'];
+                        $nValue = $n_value_chi ?? $bandFreq['n_value'];
                         $bandwidth = $bandwidth_chi ?? $bandFreq['bandwidth'];
-
-                        $rawRsrp = (float)($parts[14] ?? -120);
-                        $rsrpValue = $rawRsrp >= 0 ? -120 : $rawRsrp;
 
                         $rawRssi = (float)($parts[12] ?? -120);
 
+                        $rawRsrp = (float)($parts[14] ?? -120);
+                        $rsrpValue = $rawRsrp >= 0 ? -120 : $rawRsrp;
+                        // $rawRsrp = (float)($parts[11] ?? -120);
+                        // $rawRssi = isset($parts[12]) ? $rawRsrp : -120;
+
                         $rawRsrq = (float)($parts[13] ?? -20);
                         $rsrqValue = $rawRsrq >= 0 ? -20.0 : $rawRsrq;
+                        // $rsrqValue = $rawRsrq;
+
+                        // $rawSinr = (float)($parts[6] ?? null);
+
+                        // if ($rawSinr == null || $rawSinr < -30.0 || $rawSinr > 30.0) {
+                        //     $rsrp_mW = pow(10, ($rawRsrp / 10));
+                        //     $rsrq_dB = min($rsrqValue, -3.0);
+                        //     $rsrq_linear = pow(10, ($rsrq_dB / 10));
+
+                        //     $epsilon = 1e-12;
+                        //     if ($rsrq_linear < $epsilon) {
+                        //         $rsrq_linear = $epsilon;
+                        //     }
+                        //     if ($nValue <= 0) {
+                        //         $nValue = 100;
+                        //     }
+                        //         if ($rawRssi !== null) {
+                        //             $rssi_mW = pow(10, ($rawRssi / 10));
+                        //         } else {
+                        //             $rssi_mW = ($nValue * $rsrp_mW) / $rsrq_linear;
+                        //         }
+                        //     $interference_noise_mW = $rssi_mW - $rsrp_mW;
+
+                        //     if ($interference_noise_mW <= 0) {
+                        //         $sinrValue = 30.0;
+                        //     } else {
+                        //         $sinr_linear = $rsrp_mW / $interference_noise_mW;
+                        //         $sinr_dB = 10 *  log10($sinr_linear);
+                        //         $sinrValue = max(-30.0, min($sinr_dB, 30.0));
+                        //     }
+                        // } else {
+                        //     $sinrValue = $rawSinr;
+                        // }
 
                         $rawSinr = (float)($parts[11] ?? null);
+                        // $rawSinr1 = $rawSi;
+
+                        // dd($rawSinr);
+
                         if ($rawSinr == null) {
 
                             $rsrp_mW = pow(10, ($rawRsrp / 10));
@@ -341,7 +377,7 @@ class FileTelkominfraController extends Controller
                             'perjalanan_id'     => $perjalananId,
                             'timestamp_waktu'   => $timestampWaktu,
                             'teknologi'         => 'LTE', 
-                            'pci'               => $pci, 
+                            'pci'               => $pci ?? 'Unknown', 
                             'rsrp'              => $rsrpValue,
                             'rssi'              => $rawRssi, 
                             'rsrq'              => $rsrqValue, 
@@ -353,7 +389,7 @@ class FileTelkominfraController extends Controller
                             'n_value'           => $nValue,
                             'latitude'          => $lat, 
                             'longitude'         => $lon, 
-                            'cell_id'           => $cell_chi,
+                            'cell_id'           => $parts[7] ?? null,
                         ];
                     } catch (\Exception $e) {
                         Log::warning("Gagal parsing baris MIMOMEAS ke-$lineCount: " . $e->getMessage());

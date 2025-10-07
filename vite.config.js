@@ -17,9 +17,9 @@ export default defineConfig({
                 'https://4m445w5p-5173.asse.devtunnels.ms',
                 'http://localhost:8000',
                 'http://localhost:5173',
-                'https://unpkg.com/leaflet/dist/leaflet.js',
-                'https://unpkg.com/leaflet/dist/leaflet.css',
-                null, // Tambahkan ini!
+                // 'https://unpkg.com/leaflet/dist/leaflet.js',
+                // 'https://unpkg.com/leaflet/dist/leaflet.css',
+                // null,
             ],
             // origin: [
             //     'https://4m445w5p-8000.asse.devtunnels.ms',
@@ -29,7 +29,8 @@ export default defineConfig({
             credentials: true,
         }, 
         hmr: {
-            host: '4m445w5p-5173.asse.devtunnels.ms',
+            host: 'localhost:5173',
+            // host: '4m445w5p-5173.asse.devtunnels.ms',
             protocol: 'wss',
             clientPort: 443,
         },

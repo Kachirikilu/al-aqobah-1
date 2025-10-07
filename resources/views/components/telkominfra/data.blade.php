@@ -112,6 +112,8 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID</th>
                                 <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Peta</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID Perjalanan</th>
@@ -125,8 +127,8 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Waktu Unggah</th>
                                 <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Aksi</th>
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Hapus</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -134,6 +136,16 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         {{ $perjalanan->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        {{-- Tombol Lihat Detail/Peta --}}
+                                        <button
+                                            onclick="window.location='{{ route('telkominfra.show', $perjalanan->id) }}'"
+                                            class="inline-flex items-center px-3 py-1.5 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-300 transition ease-in-out duration-150">
+                                            Lihat Peta
+                                        </button>
+
+                            
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                         {{ $perjalanan->id_perjalanan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -142,17 +154,11 @@
                                         {{ $perjalanan->nama_pengguna }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $perjalanan->created_at->format('d M Y H:i:s') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        {{-- Tombol Lihat Detail/Peta --}}
-                                        <button
-                                            onclick="window.location='{{ route('telkominfra.show', $perjalanan->id) }}'"
-                                            class="inline-flex items-center px-3 py-1.5 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-300 transition ease-in-out duration-150 mr-2">
-                                            Lihat Peta
-                                        </button>
 
+                                  <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                         {{-- Form Hapus --}}
-                                        <form action="{{ route('perjalanan.destroy', $perjalanan->id) }}"
-                                            method="POST" class="inline-block" 
+                                        <form action="{{ route('perjalanan.destroy', $perjalanan->id) }}" method="POST"
+                                            class="inline-block"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus data perjalanan ini? Data log yang terkait juga akan terhapus.');">
                                             @csrf
                                             @method('DELETE')
@@ -160,6 +166,7 @@
                                                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded text-xs uppercase transition ease-in-out duration-150">Hapus</button>
                                         </form>
                                     </td>
+
                                 </tr>
                             @empty
                                 <tr>

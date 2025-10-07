@@ -62,16 +62,12 @@ class ViewTelkominfraController extends Controller
     }
 
 
-    public function show(Request $request, string $id)
+  public function show(Request $request, string $id) 
     {
         $perjalanan = Perjalanan::where('id', $id)->firstOrFail();
         $perjalananDatas = PerjalananData::where('perjalanan_id', $perjalanan->id)->get(); 
         
         $mapsData = []; 
-        $mergedData = [
-            'Before' => [],
-            'After' => [],
-        ];
 
         $avgAccumulators = [
             'Before' => [
@@ -88,48 +84,57 @@ class ViewTelkominfraController extends Controller
             ],
         ];
 
-        $individualMaps = [];
-
-        // === LOOP UNTUK SETIAP FILE ===
         foreach ($perjalananDatas as $dataItem) {
             $visualData = [];
             $centerCoords = [-2.9105859, 104.8536157];
 
             try {
                 $nmfPath = public_path('uploads/perjalanan/' . $dataItem->file_nmf);
+
                 $parser = new FileTelkominfraController();
                 $dataSinyal = $parser->parseNmfSinyal($nmfPath, $dataItem->id); 
 
                 foreach ($dataSinyal as $sinyal) {
+                    
                     if ($sinyal['latitude'] === null || $sinyal['longitude'] === null) {
                         continue; 
                     }
-
+                    
                     $status = $dataItem->status;
-
-                    // --- Akumulasi rata-rata ---
                     if (isset($avgAccumulators[$status])) {
-                        foreach (['rsrp', 'rssi', 'rsrq', 'sinr'] as $metric) {
-                            if (isset($sinyal[$metric])) {
-                                $avgAccumulators[$status]["{$metric}_sum"] += (float)$sinyal[$metric];
-                                $avgAccumulators[$status]["{$metric}_count"]++;
-                            }
+                        if (isset($sinyal['rsrp'])) {
+                            $avgAccumulators[$status]['rsrp_sum'] += (float) $sinyal['rsrp'];
+                            $avgAccumulators[$status]['rsrp_count']++;
+                        }
+                        if (isset($sinyal['rssi'])) {
+                            $avgAccumulators[$status]['rssi_sum'] += (float) $sinyal['rssi'];
+                            $avgAccumulators[$status]['rssi_count']++;
+                        }
+                        if (isset($sinyal['rsrq'])) {
+                            $avgAccumulators[$status]['rsrq_sum'] += (float) $sinyal['rsrq'];
+                            $avgAccumulators[$status]['rsrq_count']++;
+                        }
+                        if (isset($sinyal['sinr'])) {
+                            $avgAccumulators[$status]['sinr_sum'] += (float) $sinyal['sinr'];
+                            $avgAccumulators[$status]['sinr_count']++;
                         }
                     }
+                    // --- Akhir Akumulasi ---
 
-                    // --- Format waktu ---
                     $rawTimestamp = $sinyal['timestamp_waktu'] ?? null;
                     $formattedTimestamp = null;
+
                     if ($rawTimestamp) {
                         try {
                             $carbonTime = Carbon::parse($rawTimestamp);
-                            $formattedTimestamp = $carbonTime->format('H:i:s d M Y');
+                            $formattedTimestamp = $carbonTime->format('H:i:s d M Y'); 
+                            
                         } catch (\Exception $e) {
                             $formattedTimestamp = 'Invalid Time';
                         }
                     }
 
-                    $point = [
+                    $visualData[] = [
                         'id'        => $dataItem->id,
                         'latitude'  => (float) $sinyal['latitude'],
                         'longitude' => (float) $sinyal['longitude'],
@@ -138,19 +143,14 @@ class ViewTelkominfraController extends Controller
                         'rsrq'      => $sinyal['rsrq'] ?? null,
                         'sinr'      => $sinyal['sinr'] ?? null,
                         'pci'       => $sinyal['pci'] ?? null,
-                        'earfcn'    => $sinyal['earfcn'] ?? null,
-                        'band'      => $sinyal['band'] ?? null,
+                        'earfcn'   => $sinyal['earfcn'] ?? null,
+                        'band'     => $sinyal['band'] ?? null,
                         'frekuensi' => $sinyal['frekuensi'] ?? null,
                         'bandwidth' => $sinyal['bandwidth'] ?? null,
-                        'n_value'   => $sinyal['n_value'] ?? null,
+                        'n_value' => $sinyal['n_value'] ?? null,
                         'timestamp_waktu' => $formattedTimestamp,
-                        'cell_id' => $sinyal['cell_id'] ?? null
                     ];
-
-                    $visualData[] = $point;
-                    $mergedData[$status][] = $point;
                 }
-
                 if (!empty($visualData)) {
                     $midIndex = intval(count($visualData) / 2);
                     $centerCoords = [
@@ -162,8 +162,7 @@ class ViewTelkominfraController extends Controller
                 Log::error("Gagal memproses file NMF untuk PerjalananData ID: " . $dataItem->id . ". Error: " . $e->getMessage());
             }
 
-            // Simpan ke data per file
-            $individualMaps[] = [
+            $mapsData[] = [
                 'id' => $dataItem->id,
                 'centerCoords' => $centerCoords,
                 'visualData' => $visualData,
@@ -173,35 +172,6 @@ class ViewTelkominfraController extends Controller
             ];
         }
 
-        // === TAMBAHKAN DATA GABUNGAN DULU ===
-        $mergedMaps = [];
-        foreach (['Before', 'After'] as $status) {
-            if (!empty($mergedData[$status])) {
-                $midIndex = intval(count($mergedData[$status]) / 2);
-                $centerCoords = [
-                    $mergedData[$status][$midIndex]['latitude'],
-                    $mergedData[$status][$midIndex]['longitude'],
-                ];
-                if ($status == 'Before') {
-                    $fileName = 'Sebelum';
-                } else if ($status == 'After') {
-                    $fileName = 'Sesudah';
-                }
-                $mergedMaps[] = [
-                    'id' => "Merged_{$status}",
-                    'centerCoords' => $centerCoords,
-                    'visualData' => $mergedData[$status],
-                    'fileName' => "Gabungan Data {$fileName} Maintenance",
-                    'perangkat' => 'Semua perangkat',
-                    'status' => $status,
-                ];
-            }
-        }
-
-        // === GABUNGKAN: gabungan dulu, lalu per file ===
-        $mapsData = array_merge($mergedMaps, $individualMaps);
-
-        // === HITUNG RATA-RATA ===
         $signalAverages = [];
         foreach ($avgAccumulators as $status => $data) {
             $signalAverages[$status] = [
@@ -211,6 +181,46 @@ class ViewTelkominfraController extends Controller
                 'sinr_avg' => $data['sinr_count'] > 0 ? round($data['sinr_sum'] / $data['sinr_count'], 2) : 0,
             ];
         }
+
+        $isBeforeEmpty = $avgAccumulators['Before']['rsrp_count'] === null &&
+                         $avgAccumulators['Before']['rssi_count'] === null &&
+                         $avgAccumulators['Before']['rsrq_count'] === null &&
+                         $avgAccumulators['Before']['sinr_count'] === null;
+
+        $isAfterEmpty = $avgAccumulators['After']['rsrp_count'] === null &&
+                        $avgAccumulators['After']['rssi_count'] === null &&
+                        $avgAccumulators['After']['rsrq_count'] === null &&
+                        $avgAccumulators['After']['sinr_count'] === null;
+
+        if ($isBeforeEmpty && !$isAfterEmpty) {
+            $signalAverages['Before'] = [
+                'rsrp_avg' => null,
+                'rssi_avg' => null,
+                'rsrq_avg' => null,
+                'sinr_avg' => null,
+            ];
+            Log::info("Data 'Before' kosong, menggunakan data 'After' sebagai fallback.");
+
+        } elseif ($isAfterEmpty && !$isBeforeEmpty) {
+            $signalAverages['After'] = [
+                'rsrp_avg' => null,
+                'rssi_avg' => null,
+                'rsrq_avg' => null,
+                'sinr_avg' => null,
+            ];
+            Log::info("Data 'After' kosong, menggunakan data 'Before' sebagai fallback.");
+            
+        } elseif ($isAfterEmpty && $isBeforeEmpty) {
+            $signalAverages = [
+                'rsrp_avg' => null,
+                'rssi_avg' => null,
+                'rsrq_avg' => null,
+                'sinr_avg' => null,
+            ];
+            Log::warning("Data 'Before' dan 'After' kosong untuk perbandingan sinyal.");
+        }
+        
+        // --- END: LOGIKA FALLBACK UNTUK DATA YANG HILANG ---
 
         if ($request->wantsJson() || $request->is('api/*')) {
             $payload = [
@@ -225,13 +235,12 @@ class ViewTelkominfraController extends Controller
                 ->header('Content-Length', strlen($json));
         }
 
-
+        
         return view('telkominfra-show', [
             'perjalananDetail' => $perjalanan,
             'mapsData' => $mapsData, 
             'signalAverages' => $signalAverages,
         ]);
     }
-        
 
 }

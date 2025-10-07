@@ -18,16 +18,18 @@
         </div>
 
         {{-- Form Hapus Log --}}
-        <form action="{{ route('perjalananData.destroy', $mapItem['id']) }}" method="POST"
-            class="inline-block"
-            onsubmit="return confirm('Apakah Anda yakin ingin menghapus data log ini? Ini tidak dapat dibatalkan.');">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-                class="ml-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-1.5 px-3 rounded-lg text-xs uppercase transition ease-in-out duration-150 shadow-sm">
-                Hapus Log
-            </button>
-        </form>
+        @if (is_int($mapItem['id']))
+            <form action="{{ route('perjalananData.destroy', $mapItem['id']) }}" method="POST"
+                class="inline-block"
+                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data log ini? Ini tidak dapat dibatalkan.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    class="ml-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-1.5 px-3 rounded-lg text-xs uppercase transition ease-in-out duration-150 shadow-sm">
+                    Hapus Log
+                </button>
+            </form>
+        @endif
     </div>
 
     {{-- Div Peta --}}

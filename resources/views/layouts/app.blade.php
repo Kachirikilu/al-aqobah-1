@@ -46,8 +46,8 @@
 
         @stack('modals')
         @stack('scripts') 
-        @vite('resources/js/app.js')
-        <script src="{{ secure_asset('js/my.js') }}"></script>
+    @vite('resources/js/app.js')
+    <script src="{{ asset('js/my.js') }}"></script>
 
         @livewireScripts
     </body>

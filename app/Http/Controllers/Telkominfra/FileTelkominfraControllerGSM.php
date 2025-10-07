@@ -184,10 +184,9 @@ class FileTelkominfraController extends Controller
                     case 38750:
                     case 38948: $band = 40; $frekuensi = 2300; break;
                     case 1850: $band = 3;  $frekuensi = 1800; break;
-                    case 225:
-                    case 251:
                     case 500: $band = 1;  $frekuensi = 2100; break;
-                    case 3500: $band = 8;  $frekuensi = 900;  break;
+                    case 6:
+                    case 3500:   $band = 8;  $frekuensi = 900;  break;
                         break; 
 
                     default:
@@ -264,55 +263,53 @@ class FileTelkominfraController extends Controller
                 if (str_starts_with($line, 'CHI')) {
                     $n_value_chi = $parts[6] ?? null;
                     $bandwidth_chi = $n_value_chi / 5;
-                    $cell_chi = $parts[9] ?? null;
                     continue;
                 }
-                
-                if (str_starts_with($line, 'CELLMEAS')) {
-                    $cellmeasBuffer = [
+
+                if (str_starts_with($line, 'MIMOMEAS')) {
+                    $mimomeasBuffer = [
                         'time'      => $parts[1] ?? null,
                         'lat'       => $currentGps['lat'] ?? null,
                         'lon'       => $currentGps['lon'] ?? null,
-                        'pci'       => $parts[10] ?? null,
-                        'earfcn'    => $parts[9] ?? null,
+                        'earfcn'    => $parts[8] ?? null,
+                        'rsrp'      =>  (float)($parts[14] ?? -120),
+                        'rssi'      => (float)($parts[12] ?? -120),
+                        'rsrq'      => (float)($parts[13] ?? -20),
+                        'sinr'      => (float)($parts[11] ?? null),
                     ];
-                    $cellmeasBuffer['timestamp'] = $convertTime($cellmeasBuffer['time'], $logDate);
+                    $mimomeasBuffer['timestamp'] = $convertTime($mimomeasBuffer['time'], $logDate);
                     continue;
                 }
 
-
-                if (str_starts_with($line, 'MIMOMEAS')) {
+                if (str_starts_with($line, 'CELLMEAS')) {
                     try {
-                        $rawTime = $parts[1] ?? ($cellmeasBuffer['time'] ?? null);
-
-                        $earfcn = (int)($parts[8] ?? ($cellmeasBuffer['earfcn'] ?? null));
-                        if ($earfcn == 0 || $earfcn == 432000 || $earfcn == 467000) {
-                            continue;
-                        }
-
-                        $lat     = $currentGps['lat'] ?? ($cellmeasBuffer['lat'] ?? null);
-                        $lon     = $currentGps['lon'] ?? ($cellmeasBuffer['lon'] ?? null);
-                        $timestampWaktu = $convertTime($rawTime, $logDate) ?? ($cellmeasBuffer['timestamp'] ?? null);
+                        $rawTime = $parts[1] ?? null;
+                        $lat = $currentGps['lat'] ?? $mimomeasBuffer['lat'];
+                        $lon = $currentGps['lon'] ?? $mimomeasBuffer['lon'];
+                        $timestampWaktu = $convertTime($rawTime, $logDate);
+                        
+                    
 
                         if ($lat === null || $lon === null) {
-                            Log::warning("MIMOMEAS baris $lineCount tidak memiliki koordinat dari GPS sebelumnya.");
+                            Log::warning("CELLMEAS baris $lineCount tidak memiliki koordinat dari GPS sebelumnya.");
                         }
 
-                        $pci    = $parts[7] ?? ($cellmeasBuffer['pci'] ?? 'Unknown');
-
+                        $earfcn = (int)($parts[9] ?? null) ?? $mimomeasBuffer['earfcn'];
                         $bandFreq  = $resolveBandFrequency($earfcn);
                         $nValue    = $n_value_chi ?? $bandFreq['n_value'];
                         $bandwidth = $bandwidth_chi ?? $bandFreq['bandwidth'];
 
-                        $rawRsrp = (float)($parts[14] ?? -120);
-                        $rsrpValue = $rawRsrp >= 0 ? -120 : $rawRsrp;
 
-                        $rawRssi = (float)($parts[12] ?? -120);
 
-                        $rawRsrq = (float)($parts[13] ?? -20);
+                
+                        $rawRsrp = (float)($parts[12] ?? -120) ?? $cellmeasBuffer['rsrp'];
+
+                        $rawRssi = (float)($parts[11] ?? -120) ?? $cellmeasBuffer['Rssi'];
+
+                        $rawRsrq = (float)($parts[13] ?? -20) ?? $cellmeasBuffer['rsrq'];
                         $rsrqValue = $rawRsrq >= 0 ? -20.0 : $rawRsrq;
 
-                        $rawSinr = (float)($parts[11] ?? null);
+                        $rawSinr = $cellmeasBuffer['sinr'] ?? null;
                         if ($rawSinr == null) {
 
                             $rsrp_mW = pow(10, ($rawRsrp / 10));
@@ -341,22 +338,22 @@ class FileTelkominfraController extends Controller
                             'perjalanan_id'     => $perjalananId,
                             'timestamp_waktu'   => $timestampWaktu,
                             'teknologi'         => 'LTE', 
-                            'pci'               => $pci, 
-                            'rsrp'              => $rsrpValue,
+                            'pci'               => $parts[10] ?? 'Unknown', 
+                            'rsrp'              => $rawRsrp,
                             'rssi'              => $rawRssi, 
                             'rsrq'              => $rsrqValue, 
                             'sinr'              => $sinrValue,
                             'earfcn'            => $earfcn,
                             'band'              => $bandFreq['band'],
                             'frekuensi'         => $bandFreq['frekuensi'],
-                            'bandwidth'         => $bandwidth,
+                            'bandwidth'         => $bandFreq['bandwidth'],
                             'n_value'           => $nValue,
                             'latitude'          => $lat, 
                             'longitude'         => $lon, 
-                            'cell_id'           => $cell_chi,
+                            'cell_id'           => $parts[7] ?? null,
                         ];
                     } catch (\Exception $e) {
-                        Log::warning("Gagal parsing baris MIMOMEAS ke-$lineCount: " . $e->getMessage());
+                        Log::warning("Gagal parsing baris CELLMEAS ke-$lineCount: " . $e->getMessage());
                     }
                 }
             }
