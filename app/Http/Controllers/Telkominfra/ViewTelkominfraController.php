@@ -123,7 +123,7 @@ class ViewTelkominfraController extends Controller
                     if ($rawTimestamp) {
                         try {
                             $carbonTime = Carbon::parse($rawTimestamp);
-                            $formattedTimestamp = $carbonTime->format('H:i:s d M Y');
+                            $formattedTimestamp = $carbonTime->format('H:i:s d/m/y');
                         } catch (\Exception $e) {
                             $formattedTimestamp = 'Invalid Time';
                         }

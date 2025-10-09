@@ -7,14 +7,15 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles') 
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        @stack('styles') 
+     
 
         <!-- Styles -->
         @livewireStyles
@@ -47,7 +48,7 @@
         @stack('modals')
         @stack('scripts') 
     @vite('resources/js/app.js')
-    <script src="{{ asset('js/my.js') }}"></script>
+    <script src="{{ secure_asset('js/my.js') }}"></script>
 
         @livewireScripts
     </body>

@@ -45,10 +45,6 @@ Route::middleware([
         'update' => 'admin.schedules.update',
         'destroy' => 'admin.schedules.destroy',
     ]);
-
-    Route::get('/telkominfra', [ViewTelkominfraController::class, 'index'])->name('telkominfra.index');
-    Route::get('/telkominfra/{id}', [ViewTelkominfraController::class, 'show'])->name('telkominfra.show');
-    // Route::get('perjalanan/create', [TelkominfraController::class, 'create'])->name('perjalanan.create');
     Route::post('perjalanan', [DataTelkominfraController::class, 'store'])->name('perjalanan.store');
     Route::put('perjalanan/{id}', [DataTelkominfraController::class, 'update'])->name('perjalanan.update');
     Route::delete('perjalanan/{id}', [DataTelkominfraController::class, 'destroy'])->name('perjalanan.destroy');
@@ -57,3 +53,8 @@ Route::middleware([
     Route::get('/esp32Cam', [ApiController::class, 'getData']);
     Route::get('/esp32Cam_motion', [ApiController::class, 'getMotion']);
 });
+
+ Route::get('/telkominfra', [ViewTelkominfraController::class, 'index'])->name('telkominfra.index');
+    Route::get('/telkominfra/{id}', [ViewTelkominfraController::class, 'show'])->name('telkominfra.show');
+    // Route::get('perjalanan/create', [TelkominfraController::class, 'create'])->name('perjalanan.create');
+    

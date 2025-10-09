@@ -298,7 +298,7 @@ class FileTelkominfraController extends Controller
                             Log::warning("MIMOMEAS baris $lineCount tidak memiliki koordinat dari GPS sebelumnya.");
                         }
 
-                        $pci    = $parts[7] ?? ($cellmeasBuffer['pci'] ?? 'Unknown');
+                        $pci    = $parts[9] ?? ($cellmeasBuffer['pci'] ?? 'Unknown');
 
                         $bandFreq  = $resolveBandFrequency($earfcn);
                         $nValue    = $n_value_chi ?? $bandFreq['n_value'];

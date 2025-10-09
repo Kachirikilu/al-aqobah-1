@@ -1,4 +1,4 @@
-<aside class="hidden lg:block bg-gray-700 text-white w-64 left-0 h-auto py-8 px-4 z-50">
+<aside class="hidden lg:block bg-gray-700 text-white w-56 left-0 h-auto py-8 px-4 z-50">
     <h2 class="text-2xl font-semibold mb-6 border-b border-gray-600 pb-2">Admin Panel</h2>
     <ul class="space-y-2">
         <li><a href="/" class="'hover:bg-gray-700' block py-2 px-4 rounded">Home</a></li>
@@ -33,13 +33,13 @@
             </a></li>
 
         <li><a href="{{ route('profile.show') }}"
-                class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a>
+                class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-700' }} block py-2 px-4 rounded">{{ Auth::user()->name ?? 'Pengunjung' }}</a>
         </li>
         <li>
             <form method="POST" action="{{ route('logout') }}" x-data>
                 @csrf
                 <button type="submit" class="block py-2 px-4 hover:bg-gray-700 rounded">
-                    {{ __('Logout') }}
+                    {{ Auth::check() ? 'Logout' : 'Login' }}
                 </button>
             </form>
         </li>
@@ -86,7 +86,7 @@
                             @endif
                         </span>
                     </a></li>
-                 <li><a href="/telkominfra"
+                <li><a href="/telkominfra"
                         class="group {{ request()->is('telkominfra*') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">
                         Telkominfra
                         <span class="group-hover:opacity-30 transition-opacity duration-200">
@@ -96,14 +96,15 @@
                         </span>
                     </a></li>
                 <li><a href="{{ route('profile.show') }}"
-                        class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">{{ Auth::user()->name }}</a>
+                        class="{{ request()->is('user/profile') ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100' }} block py-2 px-4 rounded">{{ Auth::user()->name ?? 'Pengunjung' }}</a>
                 </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
                         <button type="submit" class="w-full text-left block py-2 px-4 hover:bg-gray-100 rounded">
-                            {{ __('Logout') }}
+                            {{ Auth::check() ? 'Logout' : 'Login' }}
                         </button>
+
                     </form>
                 </li>
                 <li>

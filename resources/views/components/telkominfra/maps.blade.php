@@ -1,5 +1,7 @@
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    {{-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> --}}
+    <link rel="stylesheet" href="{{ secure_asset('css/leaflet/leaflet.css') }}" />
+
     <style>
         #map {
             height: 400px;
@@ -60,9 +62,8 @@
         </button>
     </div>
 
-    <div class="flex justify-center mt-2 mb-4">
+    <div class="flex mx-4 mt-2 mb-3">
         <label for="ratio-switch" class="flex items-center cursor-pointer select-none">
-            <span class="text-sm text-gray-600 mr-2 font-semibold">Detail</span>
             <div class="relative">
                 <input type="checkbox" id="ratio-switch" class="sr-only peer">
                 <div class="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-green-400 transition-colors duration-300">
@@ -76,7 +77,8 @@
     </div>
 
 
-    <div id="metric-keterangan" class="mb-3 ml-2"></div>
+    <div id="metric-keterangan" class="mb-3 ml-2">Metrik Aktif: <b class="text-green-600">Reference Signal Received
+            Power</b></div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="grid grid-cols-1 gap-4">
@@ -121,7 +123,8 @@
 
 
 @push('scripts')
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    {{-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> --}}
+    <script src="{{ secure_asset('js/leaflet/leaflet.js') }}"></script>
 
     <script>
         var allMapsData = @json($mapsData ?? []);
@@ -240,26 +243,37 @@
                 });
 
                 let freValue = frequency;
-                if (freValue == 2300 || freValue == 2400) {
-                    freValue = "2300-2400";
-                }
+                // if (freValue == 2300 || freValue == 2400) {
+                //     freValue = "2300-2400";
+                // }
 
-                seg.bindPopup(
-                    "Segmen Drive Test<br>" +
-                    "Cell ID: <b>" + cell + "</b><br>" +
-                    "RSRP: <b>" + rsrp.toFixed(1) + " dBm</b><br>" +
-                    "RSSI: <b>" + rssi.toFixed(1) + " dBm</b><br>" +
-                    "RSRQ: <b>" + rsrq.toFixed(1) + " dB</b><br>" +
-                    "SINR: <b>" + sinr.toFixed(1) + " dB</b><br>" +
-                    "PCI: <b>" + pci + "</b><br>" +
-                    "Earfcn: <b>" + earfcn + "</b><br>" +
-                    "Band: <b>" + band + "</b><br>" +
-                    "Frequency: <b>" + freValue + " MHz</b><br>" +
-                    "Bandwidth: <b>" + bandwidth + " MHz</b><br>" +
-                    "N-Value: <b>" + n_value + "</b><br>" +
-                    "Waktu: <b>" + waktu + "</b><br>" +
-                    "Koordinat: " + latitude.toFixed(6) + ", " + longitude.toFixed(6)
-                );
+                const popUp = isCompactRatio ? seg.bindPopup(
+                        "RSRP: <b>" + rsrp.toFixed(1) + " dBm</b><br>" +
+                        "RSSI: <b>" + rssi.toFixed(1) + " dBm</b><br>" +
+                        "RSRQ: <b>" + rsrq.toFixed(1) + " dB</b><br>" +
+                        "SINR: <b>" + sinr.toFixed(1) + " dB</b><br>" +
+                        "Band: <b>" + band + "</b><br>" +
+                        "Latitude: <b>" + latitude.toFixed(6) + "</b><br>" +
+                        "Longitude: <b>" + longitude.toFixed(6) + "</b><br>" +
+                        "Waktu: <b>" + waktu + "</b>"
+                    ) :
+                    seg.bindPopup(
+                        "RSRP: <b>" + rsrp.toFixed(1) + " dBm</b><br>" +
+                        "RSSI: <b>" + rssi.toFixed(1) + " dBm</b><br>" +
+                        "RSRQ: <b>" + rsrq.toFixed(1) + " dB</b><br>" +
+                        "SINR: <b>" + sinr.toFixed(1) + " dB</b><br>" +
+                        "N-Value: <b>" + n_value + "</b><br>" +
+                        "Cell ID: <b>" + cell + "</b><br>" +
+                        "PCI: <b>" + pci + "</b><br>" +
+                        "Earfcn: <b>" + earfcn + "</b><br>" +
+                        "Band: <b>" + band + "</b><br>" +
+                        "Frequency: <b>" + freValue + " MHz</b><br>" +
+                        "Bandwidth: <b>" + bandwidth + " MHz</b><br>" +
+                        // "Koordinat: " + latitude.toFixed(6) + ", " + longitude.toFixed(6)
+                        "Latitude: <b>" + latitude.toFixed(6) + "</b><br>" +
+                        "Longitude: <b>" + longitude.toFixed(6) + "</b><br>" +
+                        "Waktu: <b>" + waktu + "</b>"
+                    );
 
                 layer.addLayer(seg);
             }
@@ -276,11 +290,9 @@
 
         let isCompactRatio = false;
 
-        // Event Listener Switch
         document.getElementById('ratio-switch').addEventListener('change', function() {
             isCompactRatio = this.checked;
-            console.log('Mode Rasio:', isCompactRatio ? 'Ringkas (5 level)' : 'Detail (10 level)');
-            redrawMaps(); // panggil ulang render / chart kamu
+            redrawMaps();
         });
 
         // ========= FUNGSI GET METRIC INFO (versi efisien) =========
@@ -296,44 +308,38 @@
 
             const metricConfigs = {
                 rsrp: {
-                    labels: isCompactRatio ?
-                        ['≥ -85', '-95 s/d -85', '-100 s/d -95', '-105 s/d -100', '≤ -105'] :
-                        ['≥ -80', '-85 s/d -80', '-90 s/d -85', '-95 s/d -90', '-100 s/d -95', '-105 s/d -100',
-                            '-110 s/d -105', '-115 s/d -110', '-120 s/d -115', '≤ -120'
-                        ],
-                    mins: isCompactRatio ?
-                        [-85, -95, -100, -105, -9999] :
-                        [-80, -85, -90, -95, -100, -105, -110, -115, -120, -9999]
+                    labels: isCompactRatio ? ['≥ -85', '-95 s/d -85', '-100 s/d -95', '-105 s/d -100', '≤ -105'] : [
+                        '≥ -80', '-85 s/d -80', '-90 s/d -85', '-95 s/d -90', '-100 s/d -95', '-105 s/d -100',
+                        '-110 s/d -105', '-115 s/d -110', '-120 s/d -115', '≤ -120'
+                    ],
+                    mins: isCompactRatio ? [-85, -95, -100, -105, -9999] : [-80, -85, -90, -95, -100, -105, -110, -115,
+                        -120, -9999
+                    ]
                 },
                 rssi: {
-                    labels: isCompactRatio ?
-                        ['≥ -70', '-75 s/d -70', '-80 s/d -75', '-85 s/d -80', '≤ -85'] :
-                        ['≥ -52', '-58 s/d -52', '-64 s/d -58', '-70 s/d -64', '-76 s/d -70', '-82 s/d -76',
-                            '-88 s/d -82', '-94 s/d -88', '-100 s/d -94', '≤ -100'
-                        ],
-                    mins: isCompactRatio ?
-                        [-70, -75, -80, -85, -9999] :
-                        [-52, -58, -64, -70, -76, -82, -88, -94, -100, -9999]
+                    labels: isCompactRatio ? ['≥ -67', '-73 s/d -67', '-79 s/d -73', '-85 s/d -79', '≤ -85'] : ['≥ -52',
+                        '-58 s/d -52', '-64 s/d -58', '-70 s/d -64', '-76 s/d -70', '-82 s/d -76',
+                        '-88 s/d -82', '-94 s/d -88', '-100 s/d -94', '≤ -100'
+                    ],
+                    mins: isCompactRatio ? [-67, -73, -79, -85, -9999] : [-52, -58, -64, -70, -76, -82, -88, -94, -100,
+                        -9999
+                    ]
                 },
                 rsrq: {
-                    labels: isCompactRatio ?
-                        ['≥ -10', '-14 s/d -10', '-16 s/d -14', '-20 s/d -16', '≤ -20'] :
-                        ['≥ -3', '-5 s/d -3', '-7 s/d -5', '-9 s/d -7', '-11 s/d -9', '-13 s/d -11', '-15 s/d -13',
-                            '-17 s/d -15', '-19 s/d -17', '≤ -19'
-                        ],
-                    mins: isCompactRatio ?
-                        [-10, -14, -16, -20, -9999] :
-                        [-3, -5, -7, -9, -11, -13, -15, -17, -19, -9999]
+                    labels: isCompactRatio ? ['≥ -10', '-14 s/d -10', '-16 s/d -14', '-20 s/d -16', '≤ -20'] : ['≥ -3',
+                        '-5 s/d -3', '-7 s/d -5', '-9 s/d -7', '-11 s/d -9', '-13 s/d -11', '-15 s/d -13',
+                        '-17 s/d -15', '-19 s/d -17', '≤ -19'
+                    ],
+                    mins: isCompactRatio ? [-10, -14, -16, -20, -9999] : [-3, -5, -7, -9, -11, -13, -15, -17, -19, -
+                        9999
+                    ]
                 },
                 sinr: {
-                    labels: isCompactRatio ?
-                        ['≥ 20', '10 s/d 20', '0 s/d 10', '-10 s/d 0', '≤ -10'] :
-                        ['≥ 20', '15 s/d 20', '10 s/d 15', '5 s/d 10', '0 s/d 5', '-5 s/d 0', '-10 s/d -5',
-                            '-15 s/d -10', '-20 s/d -15', '≤ -20'
-                        ],
-                    mins: isCompactRatio ?
-                        [20, 10, 0, -5, -9999] :
-                        [20, 15, 10, 5, 0, -5, -10, -15, -20, -9999]
+                    labels: isCompactRatio ? ['≥ 20', '10 s/d 20', '0 s/d 10', '-10 s/d 0', '≤ -10'] : ['≥ 20',
+                        '15 s/d 20', '10 s/d 15', '5 s/d 10', '0 s/d 5', '-5 s/d 0', '-10 s/d -5',
+                        '-15 s/d -10', '-20 s/d -15', '≤ -20'
+                    ],
+                    mins: isCompactRatio ? [20, 10, 0, -5, -9999] : [20, 15, 10, 5, 0, -5, -10, -15, -20, -9999]
                 }
             };
 
@@ -350,7 +356,6 @@
                 color: colors[i] || '#000000'
             }));
 
-            // Hanya label + warna
             if (value === null) {
                 return {
                     labels: config.labels,
@@ -358,7 +363,6 @@
                 };
             }
 
-            // Jika ada nilai
             for (let i = 0; i < ranges.length; i++) {
                 if (value >= ranges[i].min) {
                     if (counters) counters[i]++;
@@ -379,7 +383,8 @@
 
 
         function getColorBySERV(frequency) {
-            if (frequency == 2300 || frequency == 2400) return '#0652DD';
+            // if (frequency == 2300 || frequency == 2400) return '#0652DD';
+            if (frequency == 2300) return '#0652DD';
             if (frequency == 2100) return '#009432';
             if (frequency == 1800) return '#FFC312';
             if (frequency == 900) return '#c23616';
@@ -399,54 +404,119 @@
         function getColorByCell(cell) {
             if (!cell) return '#C0C0C0';
 
+            // Ambil sharedColors dari getMetricInfo (pakai warna dasar)
+            // const sharedColors = [
+            //     '#0652DD',
+            //     '#f7b731',
+            //     '#009432',
+            //     '#e84393',
+            //     '#273c75',
+            //     '#EE5A24',
+            //     '#00b894',
+            //     '#c44569',
+            //     '#4cd137',
+            //     '#6F1E51',
+            //     '#fa8231',
+            //     '#192a56',
+            //     '#20bf6b',
+            //     '#f5cd79',
+            //     '#e84118',
+            //     '#786fa6',
+            //     '#0097e6',
+            //     '#eb3b5a',
+            //     '#546de5',
+            //     '#d63031',
+            //     '#2f3640',
+            //     '#e15f41',
+            //     '#dcdde1',
+            //     '#5758BB',
+            //     '#00bcd4'
+            // ];
+            // const sharedColors = [
+            //     '#EA2027', // 🔴 merah kuat
+            //     '#FFC312', // 🟡 kuning cerah
+            //     '#4cd137', // 🟢 hijau lime
+            //     '#0097e6', // 🔵 biru terang
+            //     '#EE5A24', // 🟠 oranye gelap
+            //     '#a55eea', // 💜 violet cerah
+            //     '#3ae374', // 🟢 hijau neon
+            //     '#ffb8b8', // 🌸 pink lembut
+            //     '#192a56', // 🔵 navy
+            // ];
+
+            const sharedColors = [
+                '#EA2027', // merah
+                '#0652DD', // biru
+                '#ADFF2F', // hijau kekuningan terang
+                '#e84393', // magenta
+                '#FFC312', // kuning
+                '#182C61', // teal gelap
+                '#F97F51', // oranye
+                '#9980FA', // ungu
+                '#009432', // hijau gelap
+                '#00cec9', // cyan
+                '#fdcb6e', // emas
+                '#b33939' // pink terang
+            ];
+
+            // const sharedColors = [
+            //     '#FF0000', // merah
+            //     '#00FF00', // hijau
+            //     '#0000FF', // biru
+            //     '#FFFF00', // kuning (merah+hijau)
+            //     '#FF00FF', // magenta (merah+biru)
+            //     '#00FFFF', // cyan (hijau+biru)
+            //     '#FFA500', // oranye (merah+kuning)
+            //     '#ADFF2F', // hijau kekuningan (terang)
+            //     '#800080', // ungu (merah+biru gelap)
+            //     '#008080', // teal (hijau+biru gelap)
+            //     '#FFD700', // emas (kuning terang)
+            //     '#FF69B4'  // pink terang (magenta terang)
+            // ];
+
+
+
+
+
+
+            // Simpan cache warna agar tiap cell selalu konsisten warnanya
+            if (!window.cellColorCache) {
+                window.cellColorCache = new Map();
+            }
+
+            // Kalau sudah ada di cache, langsung pakai
+            if (window.cellColorCache.has(cell)) {
+                return window.cellColorCache.get(cell);
+            }
+
+            const existingCount = window.cellColorCache.size;
+
+            // Jika masih dalam jangkauan sharedColors → gunakan warna dari daftar
+            if (existingCount < sharedColors.length) {
+                const color = sharedColors[existingCount];
+                window.cellColorCache.set(cell, color);
+                return color;
+            }
+
+            // Jika lebih banyak daripada sharedColors, generate warna baru dari hash
             const str = cell.toString();
             let hash = 2166136261;
             for (let i = 0; i < str.length; i++) {
                 hash ^= str.charCodeAt(i);
-                hash = Math.imul(hash, 1677761992901391973989);
+                hash = Math.imul(hash, 16777619);
             }
-
             hash = (hash ^ (hash >>> 16)) >>> 0;
 
             const hue = hash % 360;
-            const saturation = 60 + ((hash >> 8) % 30);
-            const lightness = 60 + ((hash >> 16) % 20);
+            const saturation = 55 + ((hash >> 8) % 25); // jaga kontras
+            const lightness = 50 + ((hash >> 16) % 20);
 
-            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            window.cellColorCache.set(cell, color);
+            return color;
         }
 
-        // function getColorByRSRP(rsrp) {
-        //     if (rsrp >= -85) return '#1B1464';
-        //     if (rsrp >= -95) return '#A3CB38';
-        //     if (rsrp >= -100) return '#4cd137';
-        //     if (rsrp >= -105) return '#fbc531';
-        //     if (rsrp < -105) return '#EA2027';
-        //     return '#C0C0C0';
-        // }
-        // function getColorByRSSI(rssi) {
-        //     if (rssi >= -85) return '#1B1464';
-        //     if (rssi >= -95) return '#A3CB38';
-        //     if (rssi >= -100) return '#4cd137';
-        //     if (rssi >= -105) return '#fbc531';
-        //     if (rssi < -105) return '#EA2027';
-        //     return '#C0C0C0';
-        // }
-        // function getColorByRSRQ(rsrq) {
-        //     if (rsrq >= -10) return '#1B1464';
-        //     if (rsrq >= -12) return '#A3CB38';
-        //     if (rsrq >= -16) return '#4cd137';
-        //     if (rsrq >= -20) return '#fbc531';
-        //     if (rsrq < -20) return '#EA2027';
-        //     return '#C0C0C0';
-        // }
-        // function getColorBySINR(sinr) {
-        //     if (sinr >= 20) return '#1B1464';
-        //     if (sinr >= 10) return '#A3CB38';
-        //     if (sinr >= 0) return '#4cd137';
-        //     if (sinr >= -5) return '#fbc531';
-        //     if (sinr < -5) return '#EA2027';
-        //     return '#C0C0C0';
-        // }
+
 
         // ========== Legend Dinamis ==========
         function getColorLegend(metric, mapId) {
@@ -455,16 +525,11 @@
             });
 
             legend.onAdd = function(map) {
-                const div = L.DomUtil.create(
-                    'div',
-                    'info p-2 text-sm bg-white bg-opacity-90 shadow-md rounded-md'
-                );
-
+                const div = L.DomUtil.create('div', 'info p-2 text-sm bg-white bg-opacity-40 shadow-md rounded-md');
                 const {
                     labels,
                     colors
                 } = getMetricInfo(metric);
-
                 const entry = mapRegistry[mapId];
                 const hasData = entry && entry.data && entry.data.length > 0;
 
@@ -473,22 +538,23 @@
                     const counts = Array(labels.length).fill(0);
                     data.forEach(v => calcFunc(v, counts));
 
-                    div.innerHTML += `<div class="text-xs mt-1">Total data: ${total}</div>`;
+                    div.innerHTML += `<div class="text-xs my-1">Total data: ${total}</div>`;
                     labels.forEach((label, i) => {
                         const count = counts[i];
                         const percent = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
                         div.innerHTML += `
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-1">
-                            <i style="background:${colors[i]};
-                                width:12px;height:12px;
-                                display:inline-block;
-                                margin-right:4px;
-                                border-radius:2px;"></i>
-                            <span>${label}</span>
-                        </div>
-                        <span class="ml-2">(${percent}%)</span>
-                    </div>`;
+                <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-1">
+                        <i style="background:${colors[i]};
+                            width:12px;height:12px;
+                            display:inline-block;
+                            margin-right:4px;
+                            border-radius:2px;
+                            transform:translateY(-1px)"></i>
+                        <span style="font-size:10px;">${label}</span>
+                    </div>
+                    <span class="ml-2" style="font-size:10px;">(${percent}%)</span>
+                </div>`;
                     });
                 }
 
@@ -532,11 +598,11 @@
                         div.innerHTML += '<span class="text-gray-500 text-xs">Tidak ada data.</span>';
                     }
 
-                    // === SERVING SYSTEM ===
+                    // === SERVING SYSTEM (Frequency) === 🆕
                 } else if (metric === "serv") {
                     div.innerHTML += '<b>Serving System</b><br>';
-                    let allBands = [];
 
+                    let allBands = [];
                     if (hasData) {
                         entry.data.forEach(d => {
                             if (d.frekuensi !== undefined && d.frekuensi !== null) {
@@ -545,39 +611,48 @@
                         });
                     }
 
-                    const uniqueBands = [...new Set(allBands)];
+                    const total = allBands.length;
                     const bandLabelMap = {
-                        '2300': 'L2300-2400 Band 40',
-                        '2400': 'L2300-2400 Band 40',
+                        '2300': 'L2300 Band 40',
                         '2100': 'L2100 Band 1',
                         '1800': 'L1800 Band 3',
                         '900': 'L900 Band 8',
                     };
                     const bandColorMap = {
                         '2300': '#0652DD',
-                        '2400': '#0652DD',
                         '2100': '#009432',
                         '1800': '#FFC312',
                         '900': '#c23616',
                     };
 
+                    const uniqueBands = [...new Set(allBands)];
+                    div.innerHTML += `<div class="text-xs my-1">Total data: ${total}</div>`;
+
                     uniqueBands.forEach(band => {
+                        const count = allBands.filter(b => b === band).length;
+                        const percent = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
                         const label = bandLabelMap[band] || `L${band}`;
-                        const color = bandColorMap[band] || '#000000';
+                        const color = bandColorMap[band] || '#000';
                         div.innerHTML += `
-                    <i style="background:${color};
-                        width:12px;height:12px;
-                        float:left;margin-right:6px;
-                        transform:translateY(4px);"></i>
-                    <span style="font-size:11px;">${label}</span><br>`;
+                <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-1">
+                        <i style="background:${color};
+                            width:12px;height:12px;
+                            display:inline-block;
+                            margin-right:4px;
+                            border-radius:2px;
+                            transform:translateY(-1px)"></i>
+                        <span style="font-size:10px;">${label}</span>
+                    </div>
+                    <span class="ml-2" style="font-size:10px;">(${percent}%)</span>
+                </div>`;
                     });
 
                     if (uniqueBands.length === 0)
-                        div.innerHTML += `<span style="color:gray;font-size:11px;">Tidak ada data frequency</span><br>`;
-
+                        div.innerHTML += `<span style="color:gray;font-size:10px;">Tidak ada data frequency</span><br>`;
                     return div;
 
-                    // === BANDWIDTH ===
+                    // === BANDWIDTH === 🆕
                 } else if (metric === "bw") {
                     div.innerHTML += '<b>Bandwidth</b><br>';
                     let allBandwidths = [];
@@ -589,7 +664,7 @@
                         });
                     }
 
-                    const uniqueBandwidths = [...new Set(allBandwidths)];
+                    const total = allBandwidths.length;
                     const bwColorMap = {
                         '20': '#0652DD',
                         '15': '#009432',
@@ -598,26 +673,35 @@
                         '3': '#c23616',
                         '1.4': '#000000',
                     };
-
                     const bwOrder = ['20', '15', '10', '5', '3', '1.4'];
+                    const uniqueBandwidths = [...new Set(allBandwidths)];
                     const sortedBandwidths = bwOrder.filter(bw => uniqueBandwidths.includes(bw));
 
+                    div.innerHTML += `<div class="text-xs my-1">Total data: ${total}</div>`;
                     sortedBandwidths.forEach(bw => {
-                        const color = bwColorMap[bw] || '#000000';
+                        const count = allBandwidths.filter(v => v === bw).length;
+                        const percent = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                        const color = bwColorMap[bw] || '#000';
                         div.innerHTML += `
-                    <i style="background:${color};
-                        width:12px;height:12px;
-                        float:left;margin-right:6px;
-                        transform:translateY(4px);"></i>
-                    <span style="font-size:11px;">${bw} MHz</span><br>`;
+                <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-1">
+                        <i style="background:${color};
+                            width:12px;height:12px;
+                            display:inline-block;
+                            margin-right:4px;
+                            border-radius:2px;
+                            transform:translateY(-1px)"></i>
+                        <span style="font-size:10px;">${bw} MHz</span>
+                    </div>
+                    <span class="ml-2" style="font-size:10px;">(${percent}%)</span>
+                </div>`;
                     });
 
                     if (sortedBandwidths.length === 0)
-                        div.innerHTML += `<span style="color:gray;font-size:11px;">Tidak ada data bandwidth</span><br>`;
-
+                        div.innerHTML += `<span style="color:gray;font-size:10px;">Tidak ada data bandwidth</span><br>`;
                     return div;
 
-                    // === CELL ID ===
+                    // === CELL ID === 🆕
                 } else if (metric === "cell") {
                     div.innerHTML += '<b>Cell ID</b><br>';
                     let allCells = [];
@@ -625,21 +709,35 @@
                     if (hasData) {
                         entry.data.forEach(d => {
                             if (d.cell_id !== undefined && d.cell_id !== null)
-                                allCells.push(d.cell_id);
+                                allCells.push(String(d.cell_id));
                         });
                     }
 
+                    const total = allCells.length;
                     const uniqueCells = [...new Set(allCells)];
+
+                    div.innerHTML += `<div class="text-xs my-1">Total data: ${total}</div>`;
                     uniqueCells.forEach(cell => {
+                        const count = allCells.filter(v => v === cell).length;
+                        const percent = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
                         const color = getColorByCell(cell);
                         div.innerHTML += `
-                    <i style="background:${color};
-                        width:12px;height:12px;
-                        float:left;margin-right:6px;
-                        transform:translateY(4px);"></i>
-                    <span style="font-size:11px;">${cell}</span><br>`;
+                <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-1">
+                        <i style="background:${color};
+                            width:12px;height:12px;
+                            display:inline-block;
+                            margin-right:4px;
+                            border-radius:2px;
+                            transform:translateY(-1px)"></i>
+                        <span style="font-size:10px;">${cell}</span>
+                    </div>
+                    <span  class="ml-2" style="font-size:10px;">(${percent}%)</span>
+                </div>`;
                     });
 
+                    if (uniqueCells.length === 0)
+                        div.innerHTML += `<span style="color:gray;font-size:10px;">Tidak ada data Cell ID</span><br>`;
                     return div;
                 }
 
@@ -692,10 +790,10 @@
                 } else if (selectedMetric == 'bw') {
                     selecName = 'Bandwidth';
                 } else if (selectedMetric == 'cell') {
-                    selecName = 'Cell ID';
+                    selecName = 'Cell Identifier';
                 }
 
-                metricKetElement.innerHTML = `Metrik Aktif: <b class="${colorMetric}">${selecName}</b>`;
+                metricKetElement.innerHTML = `<b class="${colorMetric}">${selecName}</b>`;
             } else {
                 console.error("Elemen dengan ID 'metric-keterangan' tidak ditemukan.");
             }

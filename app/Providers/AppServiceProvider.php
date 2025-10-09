@@ -22,12 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // if (env('APP_URL')) {
-        //     URL::forceRootUrl(env('APP_URL'));
-        // }
-        // // if (env('APP_ENV') !== 'local') {
-        // //     URL::forceScheme('https');
-        // // }
+        if (env('APP_URL')) {
+            URL::forceRootUrl(env('APP_URL'));
+        }
+        if (env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
         // if (env('APP_ENV') !== 'local' && !env('DEVTUNNEL')) {
         //     URL::forceScheme('https');
         // }

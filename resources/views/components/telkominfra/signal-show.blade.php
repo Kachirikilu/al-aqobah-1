@@ -74,7 +74,7 @@
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSSI</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $rssiBefore ?? 'N/A' }} dBm</dd>
             </div>
-            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div class="bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSRQ</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $rsrqBefore ?? 'N/A' }} dB</dd>
             </div>
@@ -96,13 +96,13 @@
                     {!! $formatSignalDiff($rsrpBefore, $rsrpAfter, ' dBm') !!}
                 </dd>
             </div>
-            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div class="bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSSI</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {!! $formatSignalDiff($rssiBefore, $rssiAfter, ' dBm') !!}
                 </dd>
             </div>
-            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div class="bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">Rata-rata RSRQ</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {!! $formatSignalDiff($rsrqBefore, $rsrqAfter, ' dB') !!}
